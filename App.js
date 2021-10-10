@@ -1,19 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, Image, ScrollView, SafeAreaView, FlatList} from 'react-native';
-import SignUpForm from './components/SignUpForm';
 import firebase from 'firebase';
 import ProfileScreen from "./components/ProfileScreen";
-import { Card } from 'react-native-paper';
-import LoginForm from "./components/LoginForm";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { createStackNavigator } from '@react-navigation/stack';
-import FoodDetails from "./components/FoodDetails";
-import FoodList from "./components/FoodList";
-import AddFood from "./components/AddFood";
+import RatingDetails from "./components/RatingDetails";
+import Feed from "./components/Feed";
+import AddRating from "./components/AddRating";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import Notifications from "./components/Notifications";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -64,11 +60,11 @@ export default function App() {
   const StackNavigation = () => {
     return(
         <Stack.Navigator>
-          <Stack.Screen name={'Car List'} component={FoodList}/>
-          <Stack.Screen name={'Car Details'} component={FoodDetails}/>
-          <Stack.Screen name={'Edit Car'} component={AddFood}/>
+          <Stack.Screen name={'Ratings Feed'} component={Feed}/>
+          <Stack.Screen name={'Ratings Details'} component={RatingDetails}/>
+          <Stack.Screen name={'Edit Rating'} component={AddRating}/>
           {
-            //<Stack.Screen name={'Add Car'} component={AddFood}/>
+            //<Stack.Screen name={'Add Car'} component={AddRating}/>
           }
         </Stack.Navigator>
     )
@@ -78,15 +74,17 @@ export default function App() {
     return (
           <NavigationContainer>
               <Tab.Navigator>
-                <Tab.Screen
+                  <Tab.Screen
+                      name="Add"
+                      component={AddRating}
+                      options={{tabBarIcon: (color) => (
+                          <Ionicons name="add" color={color} size={30} />)}}
+                  />
+                  <Tab.Screen
                     name="Home"
                     component={StackNavigation}
-                    options={{tabBarIcon: () => ( <Ionicons name="home" size={30} />),headerShown:null}}
-                />
-                <Tab.Screen
-                    name="Add"
-                    component={AddFood}
-                    options={{tabBarIcon: () => ( <Ionicons name="add" size={30} />)}}
+                    options={{tabBarIcon: ({color, size}) => (
+                        <Ionicons name="home" color={color} size={size} />),headerShown:null}}
                 />
                 <Tab.Screen
                     name="Profile"

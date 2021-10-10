@@ -6,7 +6,6 @@ import {
     View,
     TextInput,
     Alert,
-    ActivityIndicator,
     StyleSheet,
     SafeAreaView,
     ScrollView, Image,
@@ -16,7 +15,7 @@ import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 
-const AddFood = ({navigation, route}) => {
+const AddRating = ({navigation, route}) => {
 
 
     if (!firebase.auth().currentUser) {
@@ -64,47 +63,47 @@ const AddFood = ({navigation, route}) => {
             </ScrollView>
         )
     } else {
-        const initialState = {brand: '', model: '', year: '', licensePlate: ''}
+        const initialState = {Sted: '', Maden: '', Atmosfaeren: '', Service: '', ValueForMoney: '', Eventuelt: ''}
 
-        const [newCar, setNewCar] = useState(initialState);
+        const [newRating, setNewRating] = useState(initialState);
 
-        /*Returnerer true, hvis vi er på edit car*/
-        const isEditCar = route.name === "Edit Car";
+        /*Returnerer true, hvis vi er på edit Rating*/
+        const isEditRating = route.name === "Edit Rating";
 
         useEffect(() => {
-            if (isEditCar) {
-                const car = route.params.car[1];
-                setNewCar(car)
+            if (isEditRating) {
+                const rating = route.params.rating[1];
+                setNewRating(rating)
             }
             //Fjern data, når vi går væk fra screenen
             return () => {
-                setNewCar(initialState)
+                setNewRating(initialState)
             };
         }, []);
 
         const changeTextInput = (name, event) => {
-            setNewCar({...newCar, [name]: event});
+            setNewRating({...newRating, [name]: event});
         }
 
         const handleSave = () => {
-            const {brand, model, year, licensePlate} = newCar;
+            const {Sted, Maden, Atmosfaeren, Service, ValueForMoney, Eventuelt} = newRating;
 
-            if (brand.length === 0 || model.length === 0 || year.length === 0 || licensePlate.length === 0) {
+            if (Sted.length === 0 || Maden.length === 0 || Atmosfaeren.length === 0 || Service.length === 0 || ValueForMoney.length === 0) {
                 return Alert.alert('Et af felterne er tomme');
             }
 
-            if (isEditCar) {
-                const id = route.params.car[0];
+            if (isEditRating) {
+                const id = route.params.rating[0];
                 try {
                     firebase
                         .database()
-                        .ref(`/Cars/${id}`)
+                        .ref(`/Ratings/${id}`)
                         // Vi bruger update, så kun de felter vi angiver, bliver ændret
-                        .update({brand, model, year, licensePlate});
+                        .update({Sted, Maden, Atmosfaeren, Service, ValueForMoney, Eventuelt});
                     // Når bilen er ændret, går vi tilbage.
                     Alert.alert("Din info er nu opdateret");
-                    const car = [id, newCar]
-                    navigation.navigate("Car Details", {car});
+                    const raing = [id, newRating]
+                    navigation.navigate("Ratings Details", {raing});
                 } catch (error) {
                     console.log(`Error: ${error.message}`);
                 }
@@ -113,10 +112,10 @@ const AddFood = ({navigation, route}) => {
                 try {
                     firebase
                         .database()
-                        .ref('/Cars/')
-                        .push({brand, model, year, licensePlate});
+                        .ref('/Ratings/')
+                        .push({Sted, Maden, Atmosfaeren, Service, ValueForMoney, Eventuelt});
                     Alert.alert(`Saved`);
-                    setNewCar(initialState)
+                    setNewRating(initialState)
                 } catch (error) {
                     console.log(`Error: ${error.message}`);
                 }
@@ -132,7 +131,7 @@ const AddFood = ({navigation, route}) => {
                                 <View style={styles.row} key={index}>
                                     <Text style={styles.label}>{key}</Text>
                                     <TextInput
-                                        value={newCar[key]}
+                                        value={newRating[key]}
                                         onChangeText={(event) => changeTextInput(key, event)}
                                         style={styles.input}
                                     />
@@ -140,15 +139,15 @@ const AddFood = ({navigation, route}) => {
                             )
                         })
                     }
-                    {/*Hvis vi er inde på edit car, vis save changes i stedet for add car*/}
-                    <Button title={isEditCar ? "Save changes" : "Add car"} onPress={() => handleSave()}/>
+                    {/*Hvis vi er inde på edit Rating, vis save changes i stedet for add Rating*/}
+                    <Button title={isEditRating ? "Gem ændringer" : "Tilføj anmeldelse"} onPress={() => handleSave()}/>
                 </ScrollView>
             </SafeAreaView>
         );
     }
 }
 
-export default AddFood;
+export default AddRating;
 
 const styles = StyleSheet.create({
     container: {

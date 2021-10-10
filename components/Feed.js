@@ -5,18 +5,15 @@ import {
     FlatList,
     Text,
     View,
-    TextInput,
-    ActivityIndicator,
     StyleSheet,
     TouchableOpacity, Image, ScrollView,
 } from 'react-native';
 import firebase from "firebase";
-import AddFood from "./AddFood";
 import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 
-const FoodList = ({navigation}) => {
+const Feed = ({navigation}) => {
 
 
     //Hvis der af en eller anden grund ikke skulle være muligt at fremfinde den aktive bruger,
@@ -72,21 +69,21 @@ const FoodList = ({navigation}) => {
     }
 
 
-    const [cars, setCars] = useState('');
+    const [ratings, setRatings] = useState('');
 
 
     useEffect(() =>{
-        if(!cars)
+        if(!ratings)
             firebase
                 .database()
-                .ref('/Cars')
+                .ref('/Ratings')
                 .on('value', snapshot => {
-                    setCars(snapshot.val())
+                    setRatings(snapshot.val())
                 });
     },[]);
 
     // Vi viser ingenting hvis der ikke er data
-    if (!cars) {
+    if (!ratings) {
 
         return (
             <View>
@@ -97,11 +94,11 @@ const FoodList = ({navigation}) => {
                     No posts found :(
                 </Text>
                 <TouchableOpacity style={styles.container} onPress={() => {
-                    const car = null
-                    navigation.navigate('Add Car', car)
+                    const rating = null
+                    navigation.navigate('Add Rating', rating)
                 }}>
                     <Text>
-                        Press here to add a car
+                        Press here to rate a venue
                     </Text>
                 </TouchableOpacity>
                 <Text>Current user: {firebase.auth().currentUser.email}</Text>
@@ -111,26 +108,28 @@ const FoodList = ({navigation}) => {
         );
     }
 
-    const handleSelectCar = id => {
+    const handleSelectRating = id => {
         /*Her søger vi direkte i vores array af biler og finder bil objektet som matcher idet vi har tilsendt*/
-        const car = Object.entries(cars).find(car => car[0] === id /*id*/)
-        navigation.navigate('Car Details', {car});
+        const rating = Object.entries(ratings).find(rating => rating[0] === id /*id*/)
+        navigation.navigate('Ratings Details', {rating});
     }
 
     // Flatlist forventer et array. Derfor tager vi alle values fra vores cars objekt, og bruger som array til listen
-    const carArray = Object.values(cars);
-    const carKeys = Object.keys(cars);
+    const ratingsArray = Object.values(ratings);
+    const ratingsKeys = Object.keys(ratings);
 
     return (
         <FlatList
-            data={carArray}
-            // Vi bruger carKeys til at finde ID på den aktuelle bil og returnerer dette som key,
-            // og giver det med som ID til CarListItem
-            keyExtractor={(item, index) => carKeys[index]}
+            data={ratingsArray}
+            // Vi bruger ratingsKeys til at finde ID på den aktuelle bil og returnerer dette som key
+            keyExtractor={(item, index) => ratingsKeys[index]}
             renderItem={({item,index}) => { return(
-                <TouchableOpacity style={styles.container} onPress={() => handleSelectCar(carKeys[index])}>
+                <TouchableOpacity style={styles.container} onPress={() => handleSelectRating(ratingsKeys[index])}>
                     <Text>
-                        {item.brand}, {item.model}
+                        {
+        //Måske vi skulle lave et gennemsnit af mad, service, atmosfære og value for money i stedet for bare maden
+                        }
+                        {item.Sted}, {item.Maden}
                     </Text>
                 </TouchableOpacity>
             ) } }
@@ -139,7 +138,7 @@ const FoodList = ({navigation}) => {
     )
 }
 
-export default FoodList;
+export default Feed;
 
 const styles = StyleSheet.create({
     container: {
