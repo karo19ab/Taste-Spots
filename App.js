@@ -11,7 +11,7 @@ import Feed from "./components/Feed";
 import AddRating from "./components/AddRating";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
-//Stine tjekker
+//Malene overskriver
 // Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: "AIzaSyAtDYZsBwF5FBtu44xeOnDzAXZiHGedSJc",
