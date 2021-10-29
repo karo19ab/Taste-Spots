@@ -2,6 +2,7 @@ import React, {useEffect, useState} from 'react';
 import {Text, View, StyleSheet, Image, ScrollView, SafeAreaView, FlatList} from 'react-native';
 import firebase from 'firebase';
 import ProfileScreen from "./components/ProfileScreen";
+import SearchProfile from "./components/SearchProfile";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -76,17 +77,23 @@ export default function App() {
           <NavigationContainer>
               <Tab.Navigator>
                   <Tab.Screen
+                    name="Feed"
+                    component={StackNavigation}
+                    options={{tabBarIcon: ({color, size}) => (
+                        <Ionicons name="heart" color={color} size={size} />),headerShown:null}}
+                  />
+                  <Tab.Screen
+                      name="Search"
+                      component={SearchProfile}
+                      options={{tabBarIcon: (color) => (
+                              <Ionicons name="search" color={color} size={30} />)}}
+                  />
+                  <Tab.Screen
                       name="Add"
                       component={AddRating}
                       options={{tabBarIcon: (color) => (
-                          <Ionicons name="add" color={color} size={30} />)}}
+                              <Ionicons name="add" color={color} size={30} />)}}
                   />
-                  <Tab.Screen
-                    name="Home"
-                    component={StackNavigation}
-                    options={{tabBarIcon: ({color, size}) => (
-                        <Ionicons name="home" color={color} size={size} />),headerShown:null}}
-                />
                 <Tab.Screen
                     name="Profile"
                     component={ProfileScreen}

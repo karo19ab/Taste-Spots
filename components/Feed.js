@@ -20,7 +20,7 @@ const Feed = ({navigation}) => {
     //skal der udprintes en besked om dette igennem en tekstkomponent
     if (!firebase.auth().currentUser) {
 
-        //Her oprettes bruger state variblen
+        //Her oprettes bruger state variablen
         const [user, setUser] = useState({loggedIn: false});
 
         //onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
