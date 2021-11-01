@@ -86,8 +86,8 @@ export default function App() {
                   <Tab.Screen
                       name="Search"
                       component={SearchProfile}
-                      options={{tabBarIcon: (color) => (
-                              <Ionicons name="search" color={color} size={30} />)}}
+                      options={{tabBarIcon: ({color, size}) => (
+                              <Ionicons name="search" color={color} size={size} />)}}
                   />
                   <Tab.Screen
                       name="Add"

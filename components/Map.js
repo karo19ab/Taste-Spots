@@ -1,13 +1,16 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button, StyleSheet, Image, SafeAreaView, ScrollView} from 'react-native';
+import {View, Text, Button, StyleSheet, Image, SafeAreaView, ScrollView, Dimensions} from 'react-native';
 import firebase from 'firebase';
 import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 import Constants from 'expo-constants';
-import MapView, { Marker } from 'react-native-maps';
+import MapView, {Marker} from 'react-native-maps';
 import * as Location from 'expo-location';
 import {Accuracy} from "expo-location";
+import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+
+
 
 
 function Map () {
@@ -39,7 +42,7 @@ function Map () {
 
     //Her instantieres alle anvendte statevariabler
     const [hasLocationPermission, setlocationPermission] = useState(false)
-    const [currentLocation, setCurrentLocation] = useState(null)
+    const [currentLocation1, setCurrentLocation] = useState(null)
     const [userMarkerCoordinates, setUserMarkerCoordinates] = useState([])
     const [selectedCoordinate, setSelectedCoordinate] = useState(null)
     const [selectedAddress, setSelectedAddress] = useState(null)
@@ -69,7 +72,7 @@ function Map () {
     * Resultatet fra kaldet benyttes til at fastsætte værdien af currentlokation.
     * argumentet, Accuracy.Balanced, angiver den nøjagtighed vi ønsker skal bruges til at angive positionen.
     * Læs mere på den førnævnte dokumentation
-      */
+    */
     const updateLocation = async () => {
         await Location.getCurrentPositionAsync({accuracy: Accuracy.Balanced}).then((item)=>{
             setCurrentLocation(item.coords)
@@ -90,7 +93,7 @@ function Map () {
   * Dernæst aktiveres et asynkront kald, i form af den prædefinerede metode, reverseGeocodeAsync.
   * reverseGeocodeAsync omsætter koordinatsættet til en række data, herunder område- og adresse data.
   * selectedAdress sættes til at være resultatet af det asynkrone kald
-  */
+    */
     const handleSelectMarker = async coordinate =>{
         setSelectedCoordinate(coordinate)
         await Location.reverseGeocodeAsync(coordinate).then((data) => {
@@ -118,16 +121,17 @@ function Map () {
         return (
             <View>
                 <Button style title="update location" onPress={updateLocation} />
-                {currentLocation && (
+                {currentLocation1 && (
                     <Text>
-                        {`lat: ${currentLocation.latitude},\nLong:${
-                            currentLocation.longitude
-                        }\nacc: ${currentLocation.accuracy}`}
+                        {`lat: ${currentLocation1.latitude},\nLong:${
+                            currentLocation1.longitude
+                        }\nacc: ${currentLocation1.accuracy}`}
                     </Text>
                 )}
             </View>
         );
     };
+
 
 
 
@@ -165,13 +169,79 @@ function Map () {
   */
     {
         return (
-            <SafeAreaView style={styles.container}>
-                <RenderCurrentLocation props={{hasLocationPermission: hasLocationPermission, currentLocation: currentLocation}} />
+            <View style= {styles.container}>
+                {
+                    // https://www.npmjs.com/package/react-native-google-places-autocomplete
+                    // Video: https://www.youtube.com/watch?v=qlELLikT3FU&ab_channel=DarwinTech
+                }
+                <GooglePlacesAutocomplete
+                    placeholder='Search'
+                    miniLenght={2}
+                    autoFocus={false}
+                    fetchDetails={true}
+                    renderDescription={row=>row.description}
+
+                    onPress={(data, details = null) => {
+                        // 'details' is provided when fetchDetails = true
+                        console.log(data, details);
+                        //TODO Herunder kan man tilføje logik, når der trykkes på det søgte
+
+                    }}
+                    getDefaultValue={()=>''}
+                    query={{
+                        // Husk at krypter API key, fordi ellers er den tilgængelig for alle!
+                        key: 'AIzaSyCc8mR9JJqFV35qcL7WXn8nBvFPNGZ101w',
+                        language: 'en', // Resultatets sprog
+                        types: "establishment",
+                        components: "country:dk",
+                        // Forsøger at sætte søgning til at søge inden for en radius af 20km af KBH (Virker ikke)
+                        radius: 20000,
+                        location: {
+                            latitude: 55.676098,
+                            longitude: 12.568337,
+                        },
+                    }}
+                    styles={{
+                        container: { flex: 0, position: "absolute", width: "100%", zIndex: 1},
+                        listView: {backgroundColor: "grey"},
+                    }}
+                    currentLocation={true}
+                    currentLocationLabel='Current Location'
+                    nearbyPlacesAPI='GooglePlacesSearch'
+                    GoogleReverseGeocodingQuery={{
+                        // ved ikke helt hvad man bruger dette til
+                    }}
+                    GooglePlacesSearchQuery={{
+                        rankby: 'distance',
+                        type: 'restaurant'
+                    }}
+                    GooglePlacesDetailsQuery={{
+                        fields: 'formatted_address'
+                    }}
+                    debounce={200} // devouncer req i ms. Sat til 0 for at fjerne debounce
+
+                />
+
+                {
+                    <RenderCurrentLocation props={{hasLocationPermission: hasLocationPermission, currentLocation1: currentLocation1}} />
+                }
                 <MapView
-                    provider={"google"}
+                    provider={'google'}
+                    initialRegion={{
+                        latitude: 55.676098,
+                        longitude: 12.568337,
+                        latitudeDelta: 0.0922,
+                        longitudeDelta: 0.0421,
+                    }}
                     style={styles.map}
+                    //style={styles.map}
+
+
                     showsUserLocation
-                    onLongPress={handleLongPress}>
+                    onLongPress={handleLongPress}
+
+
+                    >
 
                     <Marker
                         coordinate={{ latitude: 55.676195, longitude: 12.569419 }}
@@ -187,7 +257,8 @@ function Map () {
                         coordinate={{ latitude: 55.674082, longitude: 12.598108 }}
                         title="Christiania"
                         description="blablabal"
-                    />
+                    >
+                    </Marker>
 
                     {userMarkerCoordinates.map((coordinate, index) => (
                         <Marker
@@ -197,7 +268,10 @@ function Map () {
                         />
                     ))}
 
+
+
                 </MapView>
+
                 {selectedCoordinate && selectedAddress && (
                     <View style={styles.infoBox}>
                         <Text style={styles.infoText}>
@@ -209,21 +283,25 @@ function Map () {
                         <Button title="close" onPress={closeInfoBox} />
                     </View>
                 )}
-            </SafeAreaView>
+
+            </View>
         );
     }
 }
 
-//Lokal styling til brug i ProfileScreen
+//Lokal styling til brug i Map
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        justifyContent: 'center',
-        paddingTop: Constants.statusBarHeight,
-        backgroundColor: '#ecf0f1',
-        padding: 8,
+        //justifyContent: 'center',
+        //paddingTop: Constants.statusBarHeight,
+        //backgroundColor: '#ecf0f1',
+        //padding: 8,
     },
-    map: { flex: 1 },
+    map: {
+        width: Dimensions.get("window").width,
+        height: Dimensions.get("window").height,
+    },
     infoBox: {
         height: 200,
         position: 'absolute',
@@ -233,7 +311,6 @@ const styles = StyleSheet.create({
         backgroundColor: 'yellow',
         justifyContent: 'center',
         alignItems: 'center',
-        flex: 1,
     },
     infoText: {
         fontSize: 15,
@@ -254,4 +331,4 @@ const styles = StyleSheet.create({
 });
 
 //Eksport af Loginform, således denne kan importeres og benyttes i andre komponenter
-export default Map
+export default Map;
