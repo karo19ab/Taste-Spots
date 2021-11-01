@@ -62,7 +62,7 @@ const Feed = ({navigation}) => {
                     <LoginForm />
                 </Card>
                 <Text style={styles.paragraph2}>
-                    Tekst der skaber lidt plads til login-knap
+                    Tekst der skaber lidt plads til login-knap 10hi
                 </Text>
             </ScrollView>
         );

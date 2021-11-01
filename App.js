@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Text, View, StyleSheet, Image, ScrollView, SafeAreaView, FlatList} from 'react-native';
+
 import firebase from 'firebase';
 import ProfileScreen from "./components/ProfileScreen";
 import SearchProfile from "./components/SearchProfile";
@@ -10,6 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RatingDetails from "./components/RatingDetails";
 import Feed from "./components/Feed";
 import AddRating from "./components/AddRating";
+import Map from "./components/Map";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 //Malene overskriver
@@ -77,10 +78,10 @@ export default function App() {
           <NavigationContainer>
               <Tab.Navigator>
                   <Tab.Screen
-                    name="Feed"
-                    component={StackNavigation}
-                    options={{tabBarIcon: ({color, size}) => (
-                        <Ionicons name="heart" color={color} size={size} />),headerShown:null}}
+                      name="Feed"
+                      component={StackNavigation}
+                      options={{tabBarIcon: ({color, size}) => (
+                              <Ionicons name="pizza" color={color} size={size} />),headerShown:null}}
                   />
                   <Tab.Screen
                       name="Search"
@@ -91,8 +92,18 @@ export default function App() {
                   <Tab.Screen
                       name="Add"
                       component={AddRating}
-                      options={{tabBarIcon: (color) => (
-                              <Ionicons name="add" color={color} size={30} />)}}
+                      options={{tabBarIcon: ({color, size}) => (
+                              <Ionicons name="add" color={color} size={size} />)}}
+                  />
+                  <Tab.Screen
+                      name="Map"
+                      component={Map}
+                      options={{
+                          tabBarLabel: 'Map',
+                          tabBarIcon: ({color, size}) => (
+                              <MaterialCommunityIcons name="map" color={color} size={size}/>
+                          ),
+                      }}
                   />
                 <Tab.Screen
                     name="Profile"
