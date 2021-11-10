@@ -1,6 +1,6 @@
 # Kommentarer til opgave 3
 
-Vi opdaterer programmet løbende, så hvis ikke programmet ligner hvad der kan ses i YT-videoen, så er det derfor. Vi henviser derfor til https://github.com/karo19ab/Opgave-3.git 
+Vi opdaterer programmet løbende, så hvis ikke programmet ligner hvad der kan ses i YT-videoen, så er det derfor. Vi henviser i så fald til https://github.com/karo19ab/Opgave-3.git 
 
 Der vil være hjemmelavet kodekommentering til den rigtig aflevering af projektet, og vi beklager meget, at det er blevet lavet endnu!
 
