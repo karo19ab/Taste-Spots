@@ -1,11 +1,8 @@
 # Kommentarer til opgave 3
 
-Dette er en meget basic version, som egentlig mest af alt består af diverse øvelser, som er blevet sammensat til en app. 
+Vi opdaterer programmet løbende, så hvis ikke programmet ligner hvad der kan ses i YT-videoen, så er det derfor. Vi henviser derfor til
 
-Den sparsomme tid vi har lagt for dagen er ikke blevet brug på at ændre og tilføje kommentarer til koden (dårlig kodeskik, we know), men er til gengæld blevet brugt på at få Google Places API op at køre. 
-For tre kode n00bs som os, der kan en enkelt API godt tage rigtig lang tid at få til at fungere, så det beklager vi selvfølgelig. 
-
-Der vil være hjemmelavet kodekommentering til den rigtig aflevering af projektet!
+Der vil være hjemmelavet kodekommentering til den rigtig aflevering af projektet, og vi beklager meget, at det er blevet lavet endnu!
 
 NB: Når vi selv har downloadet koden fra Github, er der kommet nogle advarsler når vi har kørt "expo start" omkring Watchman på Mac. Vi håber ikke I får samme problem, men koden virker stadig som tiltænkt, uanset om du trykker "tilføj til papirkurv" eller "ignorér". Vi håber derfor ikke at det volder jer nogen problemer :)
 
