@@ -15,8 +15,7 @@ import firebase from "firebase";
 import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
-import Spot_Rating from "../SpotRating/Spot_Rating";
-
+import SpotRating from "./SpotRating";
 
 const AddRating = ({navigation, route}) => {
 
@@ -66,7 +65,7 @@ const AddRating = ({navigation, route}) => {
             </ScrollView>
         )
     } else {
-        const initialState = {"Noget ekstra du vil dele?": ''}
+        const initialState = {Recommend: ''}
 
         const [newRating, setNewRating] = useState(initialState);
 
@@ -89,7 +88,7 @@ const AddRating = ({navigation, route}) => {
         }
 
         const handleSave = () => {
-            const {initialState} = newRating;
+            const {Recommend} = newRating;
 
             if (initialState.length === 0) {
                 return Alert.alert('Et af felterne er tomme');
@@ -102,7 +101,7 @@ const AddRating = ({navigation, route}) => {
                         .database()
                         .ref(`/Ratings/${id}`)
                         // Vi bruger update, så kun de felter vi angiver, bliver ændret
-                        .update({initialState});
+                        .update({Recommend});
                     // Når bilen er ændret, går vi tilbage.
                     Alert.alert("Din info er nu opdateret");
                     const raing = [id, newRating]
@@ -116,7 +115,7 @@ const AddRating = ({navigation, route}) => {
                     firebase
                         .database()
                         .ref('/Ratings/')
-                        .push({initialState});
+                        .push({Recommend});
                     Alert.alert(`Saved`);
                     setNewRating(initialState)
                 } catch (error) {
@@ -139,7 +138,7 @@ const AddRating = ({navigation, route}) => {
                                     <Text style={styles.label}>
                                         Hvor mange spots vil du give xx
                                     </Text>
-                                    <Spot_Rating ratingObj={ratingObj} style={styles.rating}/>
+                                    <SpotRating/>
                                     <Text style={styles.label}>{key}</Text>
                                     <TextInput
                                         value={newRating[key]}
@@ -152,7 +151,7 @@ const AddRating = ({navigation, route}) => {
                         })
                     }
                     {/*Hvis vi er inde på edit Rating, vis save changes i stedet for add Rating*/}
-                    <Button title={isEditRating ? "Gem ændringer" : "Tilføj anmeldelse"} onPress={() => handleSave()}/>
+                    <Button title={isEditRating ? "Gem ændringer" : "Tilføj anmeldelse"} onPress={() => handleSave()} style={styles.button}/>
                 </ScrollView>
             </SafeAreaView>
         );
@@ -165,9 +164,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        paddingTop: '5%',
         backgroundColor: '#FFFFFF',
-        padding: 8,
     },
     row: {
         flexDirection: 'row',
@@ -177,7 +174,8 @@ const styles = StyleSheet.create({
     label: {
         fontWeight: 'bold',
         textAlign: "center",
-        fontSize: 20,
+        fontSize: 25,
+        marginTop: 20
     },
     input: {
         borderWidth: 1,
@@ -204,8 +202,5 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
-    },
-    rating: {
-
     }
 });

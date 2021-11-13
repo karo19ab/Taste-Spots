@@ -46,9 +46,9 @@ const Feed = ({navigation}) => {
 
         return (
             <ScrollView>
-                <Image
+                {/*<Image
                     source={require('../assets/feedPic.jpeg')}
-                    style={styles.image}/>
+                    style={styles.image}/>*/}
 
                 <Text style={styles.paragraph}>
                     Opret eller Login for at se hvor dine venner har spist for nylig!
@@ -86,7 +86,7 @@ const Feed = ({navigation}) => {
     if (!ratings) {
 
         return (
-            <View>
+            <View style={styles.container}>
                 <Image
                     source={require('../assets/welcomePic.jpeg')}
                     style={styles.image}/>
@@ -148,7 +148,7 @@ const styles = StyleSheet.create({
         marginTop: "5%",
         padding: 5,
         height: 50,
-        justifyContent:'center'
+        justifyContent:'center',
     },
     label: { fontWeight: 'bold' },
     image: {

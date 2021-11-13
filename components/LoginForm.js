@@ -39,7 +39,7 @@ function LoginForm() {
     //Dernæst er der to inputfelter, som løbeende sætter værdien af state-variablerne, mail og password.
     // Afslutningsvis, angives det at, hvis errorMessage får fastsat en værdi, skal denne udskrives i en tekstkomponent.
     return (
-        <View>
+        <View style={styles.container}>
             <Text style={styles.header}>Login</Text>
             <TextInput
                 style={{borderWidth:1}}
@@ -79,9 +79,15 @@ const styles = StyleSheet.create({
         fontSize: 40,
     },
     inputField: {
+        borderColor: 'black',
+        backgroundColor: '#fff',
+        borderRadius:30,
         borderWidth: 1,
-        margin: 10,
-        padding: 10,
+        width:250,
+        height:45,
+        marginBottom:15,
+        flexDirection: 'row',
+        alignItems:'center'
     },
 });
 
