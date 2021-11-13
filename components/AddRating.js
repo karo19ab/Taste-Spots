@@ -8,12 +8,15 @@ import {
     Alert,
     StyleSheet,
     SafeAreaView,
-    ScrollView, Image,
+    ScrollView,
+    Image,
 } from 'react-native';
 import firebase from "firebase";
 import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
+import Spot_Rating from "../SpotRating/Spot_Rating";
+
 
 const AddRating = ({navigation, route}) => {
 
@@ -63,7 +66,7 @@ const AddRating = ({navigation, route}) => {
             </ScrollView>
         )
     } else {
-        const initialState = {Sted: '', Maden: '', Atmosfaeren: '', Service: '', ValueForMoney: '', Eventuelt: ''}
+        const initialState = {"Noget ekstra du vil dele?": ''}
 
         const [newRating, setNewRating] = useState(initialState);
 
@@ -86,9 +89,9 @@ const AddRating = ({navigation, route}) => {
         }
 
         const handleSave = () => {
-            const {Sted, Maden, Atmosfaeren, Service, ValueForMoney, Eventuelt} = newRating;
+            const {initialState} = newRating;
 
-            if (Sted.length === 0 || Maden.length === 0 || Atmosfaeren.length === 0 || Service.length === 0 || ValueForMoney.length === 0) {
+            if (initialState.length === 0) {
                 return Alert.alert('Et af felterne er tomme');
             }
 
@@ -99,7 +102,7 @@ const AddRating = ({navigation, route}) => {
                         .database()
                         .ref(`/Ratings/${id}`)
                         // Vi bruger update, så kun de felter vi angiver, bliver ændret
-                        .update({Sted, Maden, Atmosfaeren, Service, ValueForMoney, Eventuelt});
+                        .update({initialState});
                     // Når bilen er ændret, går vi tilbage.
                     Alert.alert("Din info er nu opdateret");
                     const raing = [id, newRating]
@@ -113,7 +116,7 @@ const AddRating = ({navigation, route}) => {
                     firebase
                         .database()
                         .ref('/Ratings/')
-                        .push({Sted, Maden, Atmosfaeren, Service, ValueForMoney, Eventuelt});
+                        .push({initialState});
                     Alert.alert(`Saved`);
                     setNewRating(initialState)
                 } catch (error) {
@@ -122,18 +125,27 @@ const AddRating = ({navigation, route}) => {
             }
         }
 
+        const ratingObj = {
+            ratings: 3,
+            views: 34000
+        }
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView>
                     {
                         Object.keys(initialState).map((key, index) => {
                             return (
-                                <View style={styles.row} key={index}>
+                                <View key={index}>
+                                    <Text style={styles.label}>
+                                        Hvor mange spots vil du give xx
+                                    </Text>
+                                    <Spot_Rating ratingObj={ratingObj} style={styles.rating}/>
                                     <Text style={styles.label}>{key}</Text>
                                     <TextInput
                                         value={newRating[key]}
                                         onChangeText={(event) => changeTextInput(key, event)}
                                         style={styles.input}
+                                        placeholder={"Hvad skal dine venner vide?"}
                                     />
                                 </View>
                             )
@@ -164,12 +176,16 @@ const styles = StyleSheet.create({
     },
     label: {
         fontWeight: 'bold',
-        width: 100
+        textAlign: "center",
+        fontSize: 20,
     },
     input: {
         borderWidth: 1,
-        padding:5,
-        flex: 1
+        padding:10,
+        height: 40,
+        margin: 15,
+        marginTop: 5,
+
     },
     image: {
         marginHorizontal: "10%",
@@ -189,4 +205,7 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
+    rating: {
+
+    }
 });
