@@ -15,7 +15,6 @@ import LoginForm from "./LoginForm";
 
 const Feed = ({navigation}) => {
 
-
     //Hvis der af en eller anden grund ikke skulle være muligt at fremfinde den aktive bruger,
     //skal der udprintes en besked om dette igennem en tekstkomponent
     if (!firebase.auth().currentUser) {
@@ -45,26 +44,27 @@ const Feed = ({navigation}) => {
 
 
         return (
-            <ScrollView>
-                {/*<Image
+            <View style={styles.page}>
+                <ScrollView>
+                    <Image
                     source={require('../assets/feedPic.jpeg')}
-                    style={styles.image}/>*/}
+                    style={styles.image}/>
 
-                <Text style={styles.paragraph}>
-                    Opret eller Login for at se hvor dine venner har spist for nylig!
-                </Text>
 
-                <Card style={{padding:20}}>
+
+                    <Text style={styles.paragraph}>
+                        Opret eller Login for at se hvor dine venner har spist for nylig!
+                    </Text>
+
                     <SignUpForm />
-                </Card>
 
-                <Card style={{padding:20}}>
                     <LoginForm />
-                </Card>
-                <Text style={styles.paragraph2}>
-                    Tekst der skaber lidt plads til login-knap 10hi
-                </Text>
-            </ScrollView>
+
+                    <Text style={styles.paragraph2}>
+                        Tekst der skaber lidt plads til login-knap 10hi
+                    </Text>
+                </ScrollView>
+            </View>
         );
     }
 
@@ -119,7 +119,7 @@ const Feed = ({navigation}) => {
     const ratingsKeys = Object.keys(ratings);
 
     return (
-        <FlatList
+        <FlatList style={styles.page}
             data={ratingsArray}
             // Vi bruger ratingsKeys til at finde ID på den aktuelle bil og returnerer dette som key
             keyExtractor={(item, index) => ratingsKeys[index]}
@@ -149,6 +149,10 @@ const styles = StyleSheet.create({
         padding: 5,
         height: 50,
         justifyContent:'center',
+        backgroundColor: '#fff'
+    },
+    page: {
+        backgroundColor: "#DFD0C0"
     },
     label: { fontWeight: 'bold' },
     image: {
@@ -164,9 +168,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     paragraph2: {
-        marginTop: '50%',
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
+        marginBottom: '30%'
     },
+
 });

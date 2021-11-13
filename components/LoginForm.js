@@ -1,9 +1,10 @@
 import React, {useState} from 'react';
-import {Button,Text,
+import {
+    Button, Text,
     View,
     TextInput,
     ActivityIndicator,
-    StyleSheet,
+    StyleSheet, TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase';
 
@@ -16,7 +17,7 @@ function LoginForm() {
 
     //Her defineres brugeroprettelsesknappen, som aktiverer handleSubmit igennem onPress
     const renderButton = () => {
-        return <Button onPress={() => handleSubmit()} title="Login" />;
+        return <Button onPress={() => handleSubmit()} title="Login" style={styles.button}/>;
     };
 
     /*
@@ -40,16 +41,16 @@ function LoginForm() {
     // Afslutningsvis, angives det at, hvis errorMessage får fastsat en værdi, skal denne udskrives i en tekstkomponent.
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Login</Text>
+            <Text style={styles.header}>Log in</Text>
             <TextInput
                 style={{borderWidth:1}}
-                placeholder="email"
+                placeholder="Email"
                 value={email}
                 onChangeText={(email) => setEmail(email)}
                 style={styles.inputField}
             />
             <TextInput
-                placeholder="password"
+                placeholder="Password"
                 value={password}
                 onChangeText={(password) => setPassword(password)}
                 secureTextEntry
@@ -58,17 +59,17 @@ function LoginForm() {
             {errorMessage && (
                 <Text style={styles.error}>Error: {errorMessage}</Text>
             )}
+            <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]}>
+                <Text style={styles.loginText}>Login</Text>
+            </TouchableOpacity>
             {renderButton()}
         </View>
     );
 }
 
-
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -87,7 +88,20 @@ const styles = StyleSheet.create({
         height:45,
         marginBottom:15,
         flexDirection: 'row',
-        alignItems:'center'
+        alignItems:'center',
+        textAlign: 'center'
+    },
+    buttonContainer: {
+        height:45,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom:20,
+        width:250,
+        borderRadius:30,
+    },
+    loginButton: {
+        backgroundColor: '#3498db',
     },
 });
 

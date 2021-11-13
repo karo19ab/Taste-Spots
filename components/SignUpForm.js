@@ -40,15 +40,15 @@ function SignUpForm() {
     // Afslutningsvis, angives det at, hvis errorMessage får fastsat en værdi, skal denne udskrives i en tekstkomponent.
     return (
         <View style={styles.container}>
-            <Text style={styles.header}>Sign up</Text>
+            <Text style={styles.header}>Opret Bruger</Text>
             <TextInput
-                placeholder="email"
+                placeholder="Email"
                 value={email}
                 onChangeText={(email) => setEmail(email)}
                 style={styles.inputField}
             />
             <TextInput
-                placeholder="password"
+                placeholder="Password"
                 value={password}
                 onChangeText={(password) => setPassword(password)}
                 secureTextEntry
@@ -67,7 +67,6 @@ function SignUpForm() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -78,7 +77,6 @@ const styles = StyleSheet.create({
         fontSize: 40,
     },
     inputField: {
-        borderColor: 'black',
         backgroundColor: '#fff',
         borderRadius:30,
         borderWidth: 1,
@@ -86,7 +84,8 @@ const styles = StyleSheet.create({
         height:45,
         marginBottom:15,
         flexDirection: 'row',
-        alignItems:'center'
+        alignItems:'center',
+        textAlign: 'center'
     },
 });
 
