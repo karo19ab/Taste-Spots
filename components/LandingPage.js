@@ -12,15 +12,14 @@ import {
     Button
 } from 'react-native';
 import GlobalStyles from "../globalStyles/GlobalStyles";
-import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
+
 import FirstImage from "../assets/spices1.png"
+import LoginForm from "./LoginForm";
 
 
 
 const LandingPage = (props) => {
-    let [fontsLoaded] = useFonts({
-        Inter_900Black,
-    });
+
     return (
         <View style={GlobalStyles.container}>
             <ImageBackground source={FirstImage} resizeMode="cover" style={styles.landingImage}>
@@ -28,11 +27,9 @@ const LandingPage = (props) => {
                 <TouchableOpacity style={[GlobalStyles.buttonContainer, styles.signupButton]}>
                     <Text style={styles.loginText}>Opret bruger</Text>
                 </TouchableOpacity>
-                <Text style={styles.loginLink}>Har du allerede en bruger?
-                    <TouchableOpacity>
-                        <Text style={styles.loginLink}>Login her</Text>
-                    </TouchableOpacity>
-                </Text>
+                <TouchableOpacity onPress={LoginForm}>
+                    <Text style={styles.loginLink}>Har du allerede en bruger? <Text style={styles.loginHer}>Login her</Text></Text>
+                </TouchableOpacity>
             </ImageBackground>
         </View>
     );
@@ -53,19 +50,23 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     signupButton: {
-        backgroundColor: 'black',
+        backgroundColor: '#DFD0C0',
     },
     loginLink: {
         textAlign: 'center',
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 20,
-        marginLeft: "1%",
-        marginTop: "1%"
+        fontSize: 18,
+        textShadowColor: 'black',
+        textShadowOffset: {width: -1, height: 1},
+        textShadowRadius: 10
     },
     loginText: {
         color: "#fff",
         fontSize: 20,
-        fontWeight: "bold"
+        fontWeight: "bold",
+    },
+    loginHer: {
+        color: '#FFCC00'
     }
 });

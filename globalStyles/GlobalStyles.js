@@ -23,10 +23,9 @@ const GlobalStyles = StyleSheet.create({
             marginLeft: '10%',
         },
         logoName: {
-            fontSize: 45,
-            fontWeight: 'bold',
+            fontSize: 50,
             color: "#fff",
-            fontFamily: 'Inter_900Black'
+            marginLeft: "23%"
         }
     });
 
