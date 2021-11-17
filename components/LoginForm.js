@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import firebase from 'firebase';
 
-function LoginForm() {
+const LoginForm = (props) => {
     //Instantiering af state-variabler, der skal benyttes i SignUpForm
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -59,7 +59,7 @@ function LoginForm() {
             {errorMessage && (
                 <Text style={styles.error}>Error: {errorMessage}</Text>
             )}
-            <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]}>
+            <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={() => handleSubmit(props.navigation.navigate('MainNavigator'))}>
                 <Text style={styles.loginText}>Login</Text>
             </TouchableOpacity>
             {renderButton()}

@@ -19,7 +19,7 @@ import LoginForm from "./LoginForm";
 
 
 const LandingPage = (props) => {
-
+console.log(props)
     return (
         <View style={GlobalStyles.container}>
             <ImageBackground source={FirstImage} resizeMode="cover" style={styles.landingImage}>
@@ -27,7 +27,7 @@ const LandingPage = (props) => {
                 <TouchableOpacity style={[GlobalStyles.buttonContainer, styles.signupButton]}>
                     <Text style={styles.loginText}>Opret bruger</Text>
                 </TouchableOpacity>
-                <TouchableOpacity onPress={LoginForm}>
+                <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
                     <Text style={styles.loginLink}>Har du allerede en bruger? <Text style={styles.loginHer}>Login her</Text></Text>
                 </TouchableOpacity>
             </ImageBackground>
@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     signupButton: {
-        backgroundColor: '#DFD0C0',
+        backgroundColor: '#B45626',
+        shadowOpacity: 0.3,
     },
     loginLink: {
         textAlign: 'center',
@@ -59,14 +60,14 @@ const styles = StyleSheet.create({
         fontSize: 18,
         textShadowColor: 'black',
         textShadowOffset: {width: -1, height: 1},
-        textShadowRadius: 10
+        textShadowRadius: 10,
+        marginTop: '5%'
     },
     loginText: {
         color: "#fff",
         fontSize: 20,
-        fontWeight: "bold",
     },
     loginHer: {
-        color: '#FFCC00'
+        color: '#FFBA0A'
     }
 });
