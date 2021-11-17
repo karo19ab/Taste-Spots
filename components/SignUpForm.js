@@ -62,8 +62,6 @@ function SignUpForm() {
     );
 }
 
-
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,

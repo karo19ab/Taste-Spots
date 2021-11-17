@@ -16,7 +16,6 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SignUpForm from "./components/SignUpForm";
 import LoginForm from "./components/LoginForm";
 import LandingPage from "./components/LandingPage";
-import {Text} from 'react-native'
 
 //Malene overskriver
 // Your web app's Firebase configuration
@@ -79,68 +78,64 @@ export default function App() {
     )
   }
 
-  if(false){
-      return (
-          <Text>
-              Hejsa
-          </Text>
-      )
-  }
+  const MainTabNavigator = () => {
 
-
-    return (
-          <NavigationContainer>
-              <Tab.Navigator>
-                  <Tab.Screen
-                      name="Feed"
-                      component={StackNavigation}
-                      options={{tabBarIcon: ({color, size}) => (
-                              <Ionicons name="restaurant" color={color} size={size} />),headerShown:null}}
-                  />
-                  <Tab.Screen
-                      name="Search"
-                      component={SearchProfile}
-                      options={{tabBarIcon: ({color, size}) => (
-                              <Ionicons name="search" color={color} size={size} />)}}
-                  />
-                  <Tab.Screen
-                      name="Add"
-                      component={AddRating}
-                      options={{tabBarIcon: ({color, size}) => (
-                              <Ionicons name="add" color={color} size={size} />)}}
-                  />
-                  <Tab.Screen
-                      name="Map"
-                      component={Map}
-                      options={{
-                          tabBarLabel: 'Map',
-                          tabBarIcon: ({color, size}) => (
-                              <MaterialCommunityIcons name="map" color={color} size={size}/>
-                          ),
-                      }}
-                  />
-                <Tab.Screen
-                    name="Profile"
-                    component={ProfileScreen}
-                    options={{
+      return(
+          <Tab.Navigator>
+              <Tab.Screen
+                  name="Feed"
+                  component={StackNavigation}
+                  options={{tabBarIcon: ({color, size}) => (
+                          <Ionicons name="restaurant" color={color} size={size} />),headerShown:null}}
+              />
+              <Tab.Screen
+                  name="Search"
+                  component={SearchProfile}
+                  options={{tabBarIcon: ({color, size}) => (
+                          <Ionicons name="search" color={color} size={size} />)}}
+              />
+              <Tab.Screen
+                  name="Add"
+                  component={AddRating}
+                  options={{tabBarIcon: ({color, size}) => (
+                          <Ionicons name="add" color={color} size={size} />)}}
+              />
+              <Tab.Screen
+                  name="Map"
+                  component={Map}
+                  options={{
+                      tabBarLabel: 'Map',
+                      tabBarIcon: ({color, size}) => (
+                          <MaterialCommunityIcons name="map" color={color} size={size}/>
+                      ),
+                  }}
+              />
+              <Tab.Screen
+                  name="Profile"
+                  component={ProfileScreen}
+                  options={{
                       tabBarLabel: 'Profile',
                       tabBarIcon: ({color, size}) => (
                           <MaterialCommunityIcons name="account" color={color} size={size}/>
                       ),
-                    }}
-                />
-                  {/*Nedenfor er landing page - den skal ikke være en del af stack navigator*/}
-                  <Tab.Screen
-                      name="Taste Spots"
-                      component={LandingPage}
-                      options={{
-                          tabBarLabel: 'Landing',
-                          tabBarIcon: ({color, size}) => (
-                              <MaterialCommunityIcons name="account" color={color} size={size}/>
-                          ),
-                      }}
-                  />
-              </Tab.Navigator>
+                  }}
+              />
+          </Tab.Navigator>
+          )
+
+  }
+    return (
+          <NavigationContainer>
+              <Stack.Navigator screenOptions={{
+                  headerShown: false
+              }}>
+                  {
+                      !firebase.auth().currentUser
+                      && <Stack.Screen name={'LandingPage'} component={LandingPage}/>
+                  }
+                  <Stack.Screen name={'MainNavigator'} component={MainTabNavigator}/>
+                  <Stack.Screen name={'Login'} component={LoginForm}/>
+              </Stack.Navigator>
           </NavigationContainer>
     );
 }
