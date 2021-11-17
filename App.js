@@ -10,6 +10,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import RatingDetails from "./components/RatingDetails";
 import Feed from "./components/Feed";
 import AddRating from "./components/AddRating";
+import ImagePickerExample from "./components/AddRating";
 import Map from "./components/Map";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SignUpForm from "./components/SignUpForm";
