@@ -18,7 +18,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.MaleneStineKasper.foodiegemz",
+      "bundleIdentifier": "com.MaleneStineKasper.tastespots",
       "config": {"googleMapsApiKey": "AIzaSyCc8mR9JJqFV35qcL7WXn8nBvFPNGZ101w"}
     },
     "android": {
@@ -30,13 +30,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "plugins": [
-      [
-        "expo-image-picker",
-        {
-          "photosPermission": "The app accesses your photos to let you share them with your friends."
-        }
-      ]
-    ]
+
   }
 }

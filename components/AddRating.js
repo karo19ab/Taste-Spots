@@ -15,6 +15,8 @@ import firebase from "firebase";
 import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
+// import LoginPls from "./LoginPls";
+import {GooglePlacesAutocomplete} from "react-native-google-places-autocomplete";
 import SpotRating from "./SpotRating";
 
 const AddRating = ({navigation, route}) => {
@@ -131,6 +133,55 @@ const AddRating = ({navigation, route}) => {
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView>
+                    <GooglePlacesAutocomplete
+                        placeholder='Search'
+                        miniLenght={2}
+                        autoFocus={false}
+                        fetchDetails={true}
+                        renderDescription={row=>row.description}
+
+                        onPress={(data, details = null) => {
+                            //TODO Herunder kan man tilføje logik, når der trykkes på det søgte
+
+                            // 'details' is provided when fetchDetails = true
+                            console.log(details);
+                            // Måske der skal laves en try-catch her...
+                            //stedValgt = details.name
+
+
+                        }}
+                        getDefaultValue={()=>''}
+                        query={{
+                            // Husk at kryptér API key, fordi ellers er den tilgængelig for alle!
+                            key: 'AIzaSyCc8mR9JJqFV35qcL7WXn8nBvFPNGZ101w', // Google Places API som vi har skabt
+                            language: 'en', // Resultatets sprog
+                            types: "establishment", // Viser kun businesses. Kan desværre ikke sætte det til kun restauranter fx...
+                            components: "country:dk", // Viser kun resultater fra DK
+                            // Forsøger at sætte søgning til at søge inden for en radius af 20km af KBH (Virker ikke)
+                        }}
+                        styles={{
+                            container: { flex: 0, width: "100%", zIndex: 1},
+                            listView: {backgroundColor: "grey"},
+                        }}
+                        currentLocation={true}
+                        currentLocationLabel='Current Location'
+                        nearbyPlacesAPI='GooglePlacesSearch'
+                        GoogleReverseGeocodingQuery={{
+                            // kan bruges til reverse geocoding
+                        }}
+                        GooglePlacesSearchQuery={{
+                            rankby: 'distance',
+                            type: 'restaurant'
+                        }}
+                        GooglePlacesDetailsQuery={{
+                            // Man skal bare skille fields ad med et komma-tegn.
+                            // Mulige req kan ses her: https://developers.google.com/maps/documentation/places/web-service/details
+                            fields: 'name,place_id,geometry,url'
+
+                        }}
+                        debounce={200} // devouncer req i ms. Sat til 0 for at fjerne debounce
+
+                    />
                     {
                         Object.keys(initialState).map((key, index) => {
                             return (

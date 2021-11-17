@@ -1,10 +1,10 @@
 {
   "devToolsPort": 19002,
   "expoServerPort": null,
-  "packagerPort": 19000,
-  "expoServerNgrokUrl": "https://qb-zd6.stinelonborg.brugerinddragelse.exp.direct",
-  "packagerNgrokUrl": "https://packager.qb-zd6.stinelonborg.brugerinddragelse.exp.direct",
-  "ngrokPid": 3306,
+  "packagerPort": null,
+  "expoServerNgrokUrl": null,
+  "packagerNgrokUrl": null,
+  "ngrokPid": null,
   "packagerPid": null,
   "webpackServerPort": null
 }

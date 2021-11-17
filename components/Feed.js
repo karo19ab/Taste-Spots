@@ -15,6 +15,7 @@ import LoginForm from "./LoginForm";
 
 const Feed = ({navigation}) => {
 
+
     //Hvis der af en eller anden grund ikke skulle være muligt at fremfinde den aktive bruger,
     //skal der udprintes en besked om dette igennem en tekstkomponent
     if (!firebase.auth().currentUser) {
@@ -95,14 +96,13 @@ const Feed = ({navigation}) => {
                 </Text>
                 <TouchableOpacity style={styles.container} onPress={() => {
                     const rating = null
-                    navigation.navigate('Add Rating', rating)
+                    navigation.navigate('Add', rating)
                 }}>
                     <Text>
                         Press here to rate a venue
                     </Text>
                 </TouchableOpacity>
                 <Text>Current user: {firebase.auth().currentUser.email}</Text>
-                <Button onPress={() => handleLogOut()} title="Log out" />
             </View>
 
         );
@@ -168,10 +168,10 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     paragraph2: {
+        marginTop: '50%',
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
         marginBottom: '30%'
     },
-
 });
