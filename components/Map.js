@@ -1,44 +1,39 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button, StyleSheet, Image, SafeAreaView, ScrollView, Dimensions} from 'react-native';
+import {
+    View,
+    Text,
+    Button,
+    StyleSheet,
+    Image,
+    ScrollView,
+    Dimensions,
+    Alert
+} from 'react-native';
 import firebase from 'firebase';
 import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 import Constants from 'expo-constants';
-import MapView, {Marker} from 'react-native-maps';
+import MapView, {Marker,Callout} from 'react-native-maps';
 import * as Location from 'expo-location';
 import {Accuracy} from "expo-location";
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import LoginPls from "./LoginPls";
+import {render} from "react-dom";
 
 
 
 
 function Map () {
 
-    //Her oprettes bruger state variblen
-    const [user, setUser] = useState({loggedIn: false});
-
-    //onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
-    //Pba. brugerens status foretages et callback i form af setUSer metoden, som håndterer user-state variablens status.
-    function onAuthStateChange(callback) {
-        return firebase.auth().onAuthStateChanged(user => {
-            if (user) {
-                callback({loggedIn: true, user: user});
-            } else {
-                callback({loggedIn: false});
-            }
-        });
-    }
-
-    //Heri aktiverer vi vores listener i form af onAuthStateChanged, så vi dynamisk observerer om brugeren er aktiv eller ej.
-    useEffect(() => {
-        const unsubscribe = onAuthStateChange(setUser);
-        return () => {
-            unsubscribe();
-        };
-    }, []);
+   <LoginPls/>
 
     // -------------------------------------------------------------------------------------
+
+    const initialState = {name: '', lati: '', longi: '', uid: ''}
+    const [newSpotWish, setNewSpotWish] = useState(initialState);
+
+
 
     //Her instantieres alle anvendte statevariabler
     const [hasLocationPermission, setlocationPermission] = useState(false)
@@ -132,6 +127,52 @@ function Map () {
         );
     };
 
+    const [region, setRegion] = React.useState({
+        latitude: 55.676098,
+        longitude: 12.568337,
+        latitudeDelta: 0.0922,
+        longitudeDelta: 0.0421,
+    })
+
+    const [place, setPlace] = React.useState({
+        name: 'Rådhuspladsen'
+    })
+
+
+    function savePlace () {
+        const {name, lati, longi, uid} = newSpotWish;
+        try {
+            firebase
+                .database()
+                .ref('/SpotWishlist/')
+                .push({name, lati, longi, uid});
+            Alert.alert(`Added to Wishlist :)`);
+            setNewSpotWish(initialState)
+        } catch (error) {
+            console.log(`Error: ${error.message}`);
+        }
+    }
+
+    function buttons () {
+        Alert.alert (
+            `${newSpotWish.name}`,
+            'What do you wish to do with this spot?',
+            [
+                {
+                    text: 'Cancel',
+                    style: 'cancel'
+                },
+                {
+                    text: 'Add to Wishlist',
+                    onPress: () => savePlace()
+                },
+                {
+                    text: 'Rate the Spot',
+                    onPress: () => console.log('Navigate pls')
+                }
+            ]
+        )
+    }
 
 
 
@@ -167,24 +208,45 @@ function Map () {
   * hvorved selectedCoordinate og selectedAddres får en værdi og der udskrives data om den vaælgte markør
   *
   */
+
+
     {
         return (
             <View style= {styles.container}>
                 {
                     // https://www.npmjs.com/package/react-native-google-places-autocomplete
                     // Video: https://www.youtube.com/watch?v=qlELLikT3FU&ab_channel=DarwinTech
+
                 }
                 <GooglePlacesAutocomplete
                     placeholder='Search'
-                    miniLenght={2}
+                    minLenght={2}
                     autoFocus={false}
                     fetchDetails={true}
                     renderDescription={row=>row.description}
 
                     onPress={(data, details = null) => {
-                        // 'details' is provided when fetchDetails = true
-                        console.log(data, details);
                         //TODO Herunder kan man tilføje logik, når der trykkes på det søgte
+
+                        // Vil forsøge at gøre så man laver en "pin" og zoomer ind på stedet, når man søger
+                        setRegion({
+                            latitude: details.geometry.location.lat,
+                            longitude: details.geometry.location.lng,
+                            latitudeDelta: 0.05,
+                            longitudeDelta: 0.0321,
+                        })
+                        setPlace({
+                            name: details.name
+                        })
+
+                        setNewSpotWish({
+                            name: details.name,
+                            lati: details.geometry.location.lat,
+                            longi: details.geometry.location.lng,
+                            uid: firebase.auth().currentUser.uid,
+                        })
+
+                       // buttons();
 
                     }}
                     getDefaultValue={()=>''}
@@ -194,29 +256,27 @@ function Map () {
                         language: 'en', // Resultatets sprog
                         types: "establishment",
                         components: "country:dk",
-                        // Forsøger at sætte søgning til at søge inden for en radius af 20km af KBH (Virker ikke)
-                        radius: 20000,
-                        location: {
-                            latitude: 55.676098,
-                            longitude: 12.568337,
-                        },
+                        radius: 10000,
+
+
+
                     }}
                     styles={{
                         container: { flex: 0, position: "absolute", width: "100%", zIndex: 1},
                         listView: {backgroundColor: "grey"},
                     }}
-                    currentLocation={true}
-                    currentLocationLabel='Current Location'
+                    //currentLocation={true}
+                    //currentLocationLabel='Current Location'
                     nearbyPlacesAPI='GooglePlacesSearch'
                     GoogleReverseGeocodingQuery={{
                         // ved ikke helt hvad man bruger dette til
                     }}
                     GooglePlacesSearchQuery={{
                         rankby: 'distance',
-                        type: 'restaurant'
+                        type: 'restaurant,bar,cafe'
                     }}
                     GooglePlacesDetailsQuery={{
-                        fields: 'formatted_address'
+                        fields: 'formatted_address,geometry,name'
                     }}
                     debounce={200} // devouncer req i ms. Sat til 0 for at fjerne debounce
 
@@ -227,38 +287,25 @@ function Map () {
                 }
                 <MapView
                     provider={'google'}
-                    initialRegion={{
-                        latitude: 55.676098,
-                        longitude: 12.568337,
-                        latitudeDelta: 0.0922,
-                        longitudeDelta: 0.0421,
-                    }}
+                    initialRegion={region}
                     style={styles.map}
                     //style={styles.map}
 
 
                     showsUserLocation
                     onLongPress={handleLongPress}
-
-
                     >
 
                     <Marker
-                        coordinate={{ latitude: 55.676195, longitude: 12.569419 }}
-                        title="Rådhuspladsen"
-                        description="blablabal"
-                    />
-                    <Marker
-                        coordinate={{ latitude: 55.673035, longitude: 12.568756 }}
-                        title="Tivoli"
-                        description="blablabal"
-                    />
-                    <Marker
-                        coordinate={{ latitude: 55.674082, longitude: 12.598108 }}
-                        title="Christiania"
-                        description="blablabal"
+                        coordinate={region}
+                        // TODO Skal lige have tilføjet en slags zoom funktion, så man følger pin
                     >
+                        <Callout onPress={() => buttons()}>
+                            <Text>{place.name}</Text>
+                        </Callout>
+
                     </Marker>
+
 
                     {userMarkerCoordinates.map((coordinate, index) => (
                         <Marker
@@ -326,7 +373,7 @@ const styles = StyleSheet.create({
         marginTop: '50%',
         fontSize: 18,
         fontWeight: 'bold',
-        textAlign: 'center',
+        textAlign: 'left',
     }
 });
 

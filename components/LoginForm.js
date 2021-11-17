@@ -1,17 +1,19 @@
 import React, {useState} from 'react';
-import {Button,Text,
+import {
+    Button,
+    Text,
     View,
     TextInput,
-    ActivityIndicator,
     StyleSheet,
 } from 'react-native';
 import firebase from 'firebase';
+
 
 function LoginForm() {
     //Instantiering af state-variabler, der skal benyttes i SignUpForm
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isCompleted, setIsCompleted] = useState(false);
+    // const [isCompleted, setIsCompleted] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null)
 
     //Her defineres brugeroprettelsesknappen, som aktiverer handleSubmit igennem onPress
@@ -34,6 +36,7 @@ function LoginForm() {
             setErrorMessage(error.message)
         }
     }
+
 
     //I return oprettes en tekstkomponent, der angiver at dette er SignUpfrom
     //Dernæst er der to inputfelter, som løbeende sætter værdien af state-variablerne, mail og password.

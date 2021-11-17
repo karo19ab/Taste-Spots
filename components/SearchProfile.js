@@ -1,13 +1,8 @@
 import React from 'react';
 import {
-    SafeAreaView,
-    Text,
     StyleSheet,
-    View,
-    FlatList,
-    TextInput,
 } from 'react-native';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Searchbar } from "react-native-paper";
 
 const SearchProfile = (props) => {

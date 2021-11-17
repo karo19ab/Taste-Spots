@@ -14,34 +14,14 @@ import firebase from "firebase";
 import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
+import LoginPls from "./LoginPls";
+import {GooglePlacesAutocomplete} from "react-native-google-places-autocomplete";
 
 const AddRating = ({navigation, route}) => {
 
+    <LoginPls/>
 
     if (!firebase.auth().currentUser) {
-        //Her oprettes bruger state variblen
-        const [user, setUser] = useState({loggedIn: false});
-
-        //onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
-        //Pba. brugerens status foretages et callback i form af setUSer metoden, som håndterer user-state variablens status.
-        function onAuthStateChange(callback) {
-            return firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    callback({loggedIn: true, user: user});
-                } else {
-                    callback({loggedIn: false});
-                }
-            });
-        }
-
-        //Heri aktiverer vi vores listener i form af onAuthStateChanged, så vi dynamisk observerer om brugeren er aktiv eller ej.
-        useEffect(() => {
-            const unsubscribe = onAuthStateChange(setUser);
-            return () => {
-                unsubscribe();
-            };
-        }, []);
-
         return (
             <ScrollView>
                 <Image
@@ -64,6 +44,9 @@ const AddRating = ({navigation, route}) => {
         )
     } else {
         const initialState = {Sted: '', Maden: '', Atmosfaeren: '', Service: '', ValueForMoney: '', Eventuelt: ''}
+        let stedValgt = ''
+        const objects =  Object.keys(initialState)
+        const slice = objects.slice(1)
 
         const [newRating, setNewRating] = useState(initialState);
 
@@ -87,8 +70,8 @@ const AddRating = ({navigation, route}) => {
 
         const handleSave = () => {
             const {Sted, Maden, Atmosfaeren, Service, ValueForMoney, Eventuelt} = newRating;
-
-            if (Sted.length === 0 || Maden.length === 0 || Atmosfaeren.length === 0 || Service.length === 0 || ValueForMoney.length === 0) {
+            //Sted = stedValgt
+            if (Maden.length === 0 || Atmosfaeren.length === 0 || Service.length === 0 || ValueForMoney.length === 0) {
                 return Alert.alert('Et af felterne er tomme');
             }
 
@@ -99,7 +82,7 @@ const AddRating = ({navigation, route}) => {
                         .database()
                         .ref(`/Ratings/${id}`)
                         // Vi bruger update, så kun de felter vi angiver, bliver ændret
-                        .update({Sted, Maden, Atmosfaeren, Service, ValueForMoney, Eventuelt});
+                        .update({Maden, Atmosfaeren, Service, ValueForMoney, Eventuelt});
                     // Når bilen er ændret, går vi tilbage.
                     Alert.alert("Din info er nu opdateret");
                     const raing = [id, newRating]
@@ -109,7 +92,9 @@ const AddRating = ({navigation, route}) => {
                 }
 
             } else {
+
                 try {
+
                     firebase
                         .database()
                         .ref('/Ratings/')
@@ -124,11 +109,64 @@ const AddRating = ({navigation, route}) => {
 
         return (
             <SafeAreaView style={styles.container}>
-                <ScrollView>
+
+                <View>
+                    <GooglePlacesAutocomplete
+                        placeholder='Search'
+                        miniLenght={2}
+                        autoFocus={false}
+                        fetchDetails={true}
+                        renderDescription={row=>row.description}
+
+                        onPress={(data, details = null) => {
+                            //TODO Herunder kan man tilføje logik, når der trykkes på det søgte
+
+                            // 'details' is provided when fetchDetails = true
+                            console.log(details);
+                            // Måske der skal laves en try-catch her...
+                            stedValgt = details.name
+
+
+                        }}
+                        getDefaultValue={()=>''}
+                        query={{
+                            // Husk at kryptér API key, fordi ellers er den tilgængelig for alle!
+                            key: 'AIzaSyCc8mR9JJqFV35qcL7WXn8nBvFPNGZ101w', // Google Places API som vi har skabt
+                            language: 'en', // Resultatets sprog
+                            types: "establishment", // Viser kun businesses. Kan desværre ikke sætte det til kun restauranter fx...
+                            components: "country:dk", // Viser kun resultater fra DK
+                            // Forsøger at sætte søgning til at søge inden for en radius af 20km af KBH (Virker ikke)
+                        }}
+                        styles={{
+                            container: { flex: 0, width: "100%", zIndex: 1},
+                            listView: {backgroundColor: "grey"},
+                        }}
+                        currentLocation={true}
+                        currentLocationLabel='Current Location'
+                        nearbyPlacesAPI='GooglePlacesSearch'
+                        GoogleReverseGeocodingQuery={{
+                            // kan bruges til reverse geocoding
+                        }}
+                        GooglePlacesSearchQuery={{
+                            rankby: 'distance',
+                            type: 'restaurant'
+                        }}
+                        GooglePlacesDetailsQuery={{
+                            // Man skal bare skille fields ad med et komma-tegn.
+                            // Mulige req kan ses her: https://developers.google.com/maps/documentation/places/web-service/details
+                            fields: 'name,place_id,geometry,url'
+
+                        }}
+                        debounce={200} // devouncer req i ms. Sat til 0 for at fjerne debounce
+
+                    />
                     {
-                        Object.keys(initialState).map((key, index) => {
+
+                        slice.map((key, index) => {
+
                             return (
                                 <View style={styles.row} key={index}>
+
                                     <Text style={styles.label}>{key}</Text>
                                     <TextInput
                                         value={newRating[key]}
@@ -141,7 +179,7 @@ const AddRating = ({navigation, route}) => {
                     }
                     {/*Hvis vi er inde på edit Rating, vis save changes i stedet for add Rating*/}
                     <Button title={isEditRating ? "Gem ændringer" : "Tilføj anmeldelse"} onPress={() => handleSave()}/>
-                </ScrollView>
+                </View>
             </SafeAreaView>
         );
     }

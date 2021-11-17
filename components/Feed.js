@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {useState, useEffect} from 'react';
 import {
-    Button,
     FlatList,
     Text,
     View,
@@ -12,38 +11,15 @@ import firebase from "firebase";
 import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
+import LoginPls from "./LoginPls";
 
 const Feed = ({navigation}) => {
 
+    <LoginPls/>
 
     //Hvis der af en eller anden grund ikke skulle være muligt at fremfinde den aktive bruger,
     //skal der udprintes en besked om dette igennem en tekstkomponent
     if (!firebase.auth().currentUser) {
-
-        //Her oprettes bruger state variablen
-        const [user, setUser] = useState({loggedIn: false});
-
-        //onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
-        //Pba. brugerens status foretages et callback i form af setUSer metoden, som håndterer user-state variablens status.
-        function onAuthStateChange(callback) {
-            return firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    callback({loggedIn: true, user: user});
-                } else {
-                    callback({loggedIn: false});
-                }
-            });
-        }
-
-        //Heri aktiverer vi vores listener i form af onAuthStateChanged, så vi dynamisk observerer om brugeren er aktiv eller ej.
-        useEffect(() => {
-            const unsubscribe = onAuthStateChange(setUser);
-            return () => {
-                unsubscribe();
-            };
-        }, []);
-
-
         return (
             <ScrollView>
                 <Image
@@ -95,14 +71,13 @@ const Feed = ({navigation}) => {
                 </Text>
                 <TouchableOpacity style={styles.container} onPress={() => {
                     const rating = null
-                    navigation.navigate('Add Rating', rating)
+                    navigation.navigate('Add', rating)
                 }}>
                     <Text>
                         Press here to rate a venue
                     </Text>
                 </TouchableOpacity>
                 <Text>Current user: {firebase.auth().currentUser.email}</Text>
-                <Button onPress={() => handleLogOut()} title="Log out" />
             </View>
 
         );

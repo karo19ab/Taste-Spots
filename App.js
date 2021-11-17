@@ -1,5 +1,4 @@
 import React, {useEffect, useState} from 'react';
-
 import firebase from 'firebase';
 import ProfileScreen from "./components/ProfileScreen";
 import SearchProfile from "./components/SearchProfile";
@@ -16,13 +15,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 //Malene overskriver
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAtDYZsBwF5FBtu44xeOnDzAXZiHGedSJc",
-  authDomain: "brugerinddragelse-317c1.firebaseapp.com",
-  databaseURL: "https://brugerinddragelse-317c1-default-rtdb.europe-west1.firebasedatabase.app/",
-  projectId: "brugerinddragelse-317c1",
-  storageBucket: "brugerinddragelse-317c1.appspot.com",
-  messagingSenderId: "747991614026",
-  appId: "1:747991614026:web:1c721bd804f75890e29cb3"
+    apiKey: "AIzaSyAtDYZsBwF5FBtu44xeOnDzAXZiHGedSJc",
+    authDomain: "brugerinddragelse-317c1.firebaseapp.com",
+    databaseURL: "https://brugerinddragelse-317c1-default-rtdb.europe-west1.firebasedatabase.app",
+    projectId: "brugerinddragelse-317c1",
+    storageBucket: "brugerinddragelse-317c1.appspot.com",
+    messagingSenderId: "747991614026",
+    appId: "1:747991614026:web:1c721bd804f75890e29cb3"
 };
 
 //Her instantieres en StackNavigator.
@@ -66,9 +65,6 @@ export default function App() {
           <Stack.Screen name={'Ratings Feed'} component={Feed}/>
           <Stack.Screen name={'Ratings Details'} component={RatingDetails}/>
           <Stack.Screen name={'Edit Rating'} component={AddRating}/>
-          {
-            //<Stack.Screen name={'Add Car'} component={AddRating}/>
-          }
         </Stack.Navigator>
     )
   }
@@ -81,7 +77,7 @@ export default function App() {
                       name="Feed"
                       component={StackNavigation}
                       options={{tabBarIcon: ({color, size}) => (
-                              <Ionicons name="pizza" color={color} size={size} />),headerShown:null}}
+                              <Ionicons name="restaurant" color={color} size={size} />),headerShown:null}}
                   />
                   <Tab.Screen
                       name="Search"
