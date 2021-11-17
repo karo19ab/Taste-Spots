@@ -15,6 +15,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SignUpForm from "./components/SignUpForm";
 import LoginForm from "./components/LoginForm";
 import LandingPage from "./components/LandingPage";
+import {Text} from 'react-native'
 
 //Malene overskriver
 // Your web app's Firebase configuration
@@ -75,6 +76,14 @@ export default function App() {
           }
         </Stack.Navigator>
     )
+  }
+
+  if(false){
+      return (
+          <Text>
+              Hejsa
+          </Text>
+      )
   }
 
 
