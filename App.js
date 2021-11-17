@@ -118,7 +118,7 @@ export default function App() {
                       ),
                     }}
                 />
-                  {/*Nedenfor er landing page - skal ikke være en del af tab.navigator.. men kunne ikke få den ud foran*/}
+                  {/*Nedenfor er landing page - den skal ikke være en del af stack navigator*/}
                   <Tab.Screen
                       name="Taste Spots"
                       component={LandingPage}

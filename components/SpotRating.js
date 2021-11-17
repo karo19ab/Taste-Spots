@@ -36,3 +36,4 @@ class SpotRating extends Component {
 
 export default SpotRating
 
+
