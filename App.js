@@ -1,4 +1,5 @@
 import React, {useEffect, useState} from 'react';
+
 import firebase from 'firebase';
 import ProfileScreen from "./components/ProfileScreen";
 import SearchProfile from "./components/SearchProfile";
@@ -11,6 +12,9 @@ import Feed from "./components/Feed";
 import AddRating from "./components/AddRating";
 import Map from "./components/Map";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import SignUpForm from "./components/SignUpForm";
+import LoginForm from "./components/LoginForm";
+import LandingPage from "./components/LandingPage";
 
 //Malene overskriver
 // Your web app's Firebase configuration
@@ -62,9 +66,13 @@ export default function App() {
   const StackNavigation = () => {
     return(
         <Stack.Navigator>
-          <Stack.Screen name={'Ratings Feed'} component={Feed}/>
-          <Stack.Screen name={'Ratings Details'} component={RatingDetails}/>
-          <Stack.Screen name={'Edit Rating'} component={AddRating}/>
+            <Stack.Screen name={'Ratings Feed'} component={Feed}/>
+            <Stack.Screen name={'Ratings Details'} component={RatingDetails}/>
+            <Stack.Screen name={'Edit Rating'} component={AddRating}/>
+
+          {
+            //<Stack.Screen name={'Add Car'} component={AddRating}/>
+          }
         </Stack.Navigator>
     )
   }
@@ -111,6 +119,17 @@ export default function App() {
                       ),
                     }}
                 />
+                  {/*Nedenfor er landing page - den skal ikke være en del af stack navigator*/}
+                  <Tab.Screen
+                      name="Taste Spots"
+                      component={LandingPage}
+                      options={{
+                          tabBarLabel: 'Landing',
+                          tabBarIcon: ({color, size}) => (
+                              <MaterialCommunityIcons name="account" color={color} size={size}/>
+                          ),
+                      }}
+                  />
               </Tab.Navigator>
           </NavigationContainer>
     );

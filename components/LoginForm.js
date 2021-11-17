@@ -1,24 +1,23 @@
 import React, {useState} from 'react';
 import {
-    Button,
-    Text,
+    Button, Text,
     View,
     TextInput,
-    StyleSheet,
+    ActivityIndicator,
+    StyleSheet, TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase';
-
 
 function LoginForm() {
     //Instantiering af state-variabler, der skal benyttes i SignUpForm
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    // const [isCompleted, setIsCompleted] = useState(false);
+    const [isCompleted, setIsCompleted] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null)
 
     //Her defineres brugeroprettelsesknappen, som aktiverer handleSubmit igennem onPress
     const renderButton = () => {
-        return <Button onPress={() => handleSubmit()} title="Login" />;
+        return <Button onPress={() => handleSubmit()} title="Login" style={styles.button}/>;
     };
 
     /*
@@ -37,22 +36,21 @@ function LoginForm() {
         }
     }
 
-
     //I return oprettes en tekstkomponent, der angiver at dette er SignUpfrom
     //Dernæst er der to inputfelter, som løbeende sætter værdien af state-variablerne, mail og password.
     // Afslutningsvis, angives det at, hvis errorMessage får fastsat en værdi, skal denne udskrives i en tekstkomponent.
     return (
-        <View>
-            <Text style={styles.header}>Login</Text>
+        <View style={styles.container}>
+            <Text style={styles.header}>Log in</Text>
             <TextInput
                 style={{borderWidth:1}}
-                placeholder="email"
+                placeholder="Email"
                 value={email}
                 onChangeText={(email) => setEmail(email)}
                 style={styles.inputField}
             />
             <TextInput
-                placeholder="password"
+                placeholder="Password"
                 value={password}
                 onChangeText={(password) => setPassword(password)}
                 secureTextEntry
@@ -61,17 +59,17 @@ function LoginForm() {
             {errorMessage && (
                 <Text style={styles.error}>Error: {errorMessage}</Text>
             )}
+            <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]}>
+                <Text style={styles.loginText}>Login</Text>
+            </TouchableOpacity>
             {renderButton()}
         </View>
     );
 }
 
-
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -82,9 +80,28 @@ const styles = StyleSheet.create({
         fontSize: 40,
     },
     inputField: {
+        borderColor: 'black',
+        backgroundColor: '#fff',
+        borderRadius:30,
         borderWidth: 1,
-        margin: 10,
-        padding: 10,
+        width:250,
+        height:45,
+        marginBottom:15,
+        flexDirection: 'row',
+        alignItems:'center',
+        textAlign: 'center'
+    },
+    buttonContainer: {
+        height:45,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom:20,
+        width:250,
+        borderRadius:30,
+    },
+    loginButton: {
+        backgroundColor: '#3498db',
     },
 });
 

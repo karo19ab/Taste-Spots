@@ -8,20 +8,44 @@ import {
     Alert,
     StyleSheet,
     SafeAreaView,
-    ScrollView, Image,
+    ScrollView,
+    Image,
 } from 'react-native';
 import firebase from "firebase";
 import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
-import LoginPls from "./LoginPls";
+// import LoginPls from "./LoginPls";
 import {GooglePlacesAutocomplete} from "react-native-google-places-autocomplete";
+import SpotRating from "./SpotRating";
 
 const AddRating = ({navigation, route}) => {
 
-    <LoginPls/>
 
     if (!firebase.auth().currentUser) {
+        //Her oprettes bruger state variblen
+        const [user, setUser] = useState({loggedIn: false});
+
+        //onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
+        //Pba. brugerens status foretages et callback i form af setUSer metoden, som håndterer user-state variablens status.
+        function onAuthStateChange(callback) {
+            return firebase.auth().onAuthStateChanged(user => {
+                if (user) {
+                    callback({loggedIn: true, user: user});
+                } else {
+                    callback({loggedIn: false});
+                }
+            });
+        }
+
+        //Heri aktiverer vi vores listener i form af onAuthStateChanged, så vi dynamisk observerer om brugeren er aktiv eller ej.
+        useEffect(() => {
+            const unsubscribe = onAuthStateChange(setUser);
+            return () => {
+                unsubscribe();
+            };
+        }, []);
+
         return (
             <ScrollView>
                 <Image
@@ -43,10 +67,7 @@ const AddRating = ({navigation, route}) => {
             </ScrollView>
         )
     } else {
-        const initialState = {Sted: '', Maden: '', Atmosfaeren: '', Service: '', ValueForMoney: '', Eventuelt: ''}
-        let stedValgt = ''
-        const objects =  Object.keys(initialState)
-        const slice = objects.slice(1)
+        const initialState = {Recommend: ''}
 
         const [newRating, setNewRating] = useState(initialState);
 
@@ -69,9 +90,9 @@ const AddRating = ({navigation, route}) => {
         }
 
         const handleSave = () => {
-            const {Sted, Maden, Atmosfaeren, Service, ValueForMoney, Eventuelt} = newRating;
-            //Sted = stedValgt
-            if (Maden.length === 0 || Atmosfaeren.length === 0 || Service.length === 0 || ValueForMoney.length === 0) {
+            const {Recommend} = newRating;
+
+            if (initialState.length === 0) {
                 return Alert.alert('Et af felterne er tomme');
             }
 
@@ -82,7 +103,7 @@ const AddRating = ({navigation, route}) => {
                         .database()
                         .ref(`/Ratings/${id}`)
                         // Vi bruger update, så kun de felter vi angiver, bliver ændret
-                        .update({Maden, Atmosfaeren, Service, ValueForMoney, Eventuelt});
+                        .update({Recommend});
                     // Når bilen er ændret, går vi tilbage.
                     Alert.alert("Din info er nu opdateret");
                     const raing = [id, newRating]
@@ -92,13 +113,11 @@ const AddRating = ({navigation, route}) => {
                 }
 
             } else {
-
                 try {
-
                     firebase
                         .database()
                         .ref('/Ratings/')
-                        .push({Sted, Maden, Atmosfaeren, Service, ValueForMoney, Eventuelt});
+                        .push({Recommend});
                     Alert.alert(`Saved`);
                     setNewRating(initialState)
                 } catch (error) {
@@ -107,10 +126,13 @@ const AddRating = ({navigation, route}) => {
             }
         }
 
+        const ratingObj = {
+            ratings: 3,
+            views: 34000
+        }
         return (
             <SafeAreaView style={styles.container}>
-
-                <View>
+                <ScrollView>
                     <GooglePlacesAutocomplete
                         placeholder='Search'
                         miniLenght={2}
@@ -124,7 +146,7 @@ const AddRating = ({navigation, route}) => {
                             // 'details' is provided when fetchDetails = true
                             console.log(details);
                             // Måske der skal laves en try-catch her...
-                            stedValgt = details.name
+                            //stedValgt = details.name
 
 
                         }}
@@ -161,25 +183,27 @@ const AddRating = ({navigation, route}) => {
 
                     />
                     {
-
-                        slice.map((key, index) => {
-
+                        Object.keys(initialState).map((key, index) => {
                             return (
-                                <View style={styles.row} key={index}>
-
+                                <View key={index}>
+                                    <Text style={styles.label}>
+                                        Hvor mange spots vil du give xx
+                                    </Text>
+                                    <SpotRating/>
                                     <Text style={styles.label}>{key}</Text>
                                     <TextInput
                                         value={newRating[key]}
                                         onChangeText={(event) => changeTextInput(key, event)}
                                         style={styles.input}
+                                        placeholder={"Hvad skal dine venner vide?"}
                                     />
                                 </View>
                             )
                         })
                     }
                     {/*Hvis vi er inde på edit Rating, vis save changes i stedet for add Rating*/}
-                    <Button title={isEditRating ? "Gem ændringer" : "Tilføj anmeldelse"} onPress={() => handleSave()}/>
-                </View>
+                    <Button title={isEditRating ? "Gem ændringer" : "Tilføj anmeldelse"} onPress={() => handleSave()} style={styles.button}/>
+                </ScrollView>
             </SafeAreaView>
         );
     }
@@ -191,9 +215,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        paddingTop: '5%',
         backgroundColor: '#FFFFFF',
-        padding: 8,
     },
     row: {
         flexDirection: 'row',
@@ -202,12 +224,17 @@ const styles = StyleSheet.create({
     },
     label: {
         fontWeight: 'bold',
-        width: 100
+        textAlign: "center",
+        fontSize: 25,
+        marginTop: 20
     },
     input: {
         borderWidth: 1,
-        padding:5,
-        flex: 1
+        padding:10,
+        height: 40,
+        margin: 15,
+        marginTop: 5,
+
     },
     image: {
         marginHorizontal: "10%",
@@ -226,5 +253,5 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
-    },
+    }
 });

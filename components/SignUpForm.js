@@ -39,17 +39,16 @@ function SignUpForm() {
     //Dernæst er der to inputfelter, som løbeende sætter værdien af state-variablerne, mail og password.
     // Afslutningsvis, angives det at, hvis errorMessage får fastsat en værdi, skal denne udskrives i en tekstkomponent.
     return (
-        <View>
-            <Text style={styles.header}>Sign up</Text>
+        <View style={styles.container}>
+            <Text style={styles.header}>Opret Bruger</Text>
             <TextInput
-                style={{borderWidth:1}}
-                placeholder="email"
+                placeholder="Email"
                 value={email}
                 onChangeText={(email) => setEmail(email)}
                 style={styles.inputField}
             />
             <TextInput
-                placeholder="password"
+                placeholder="Password"
                 value={password}
                 onChangeText={(password) => setPassword(password)}
                 secureTextEntry
@@ -68,7 +67,6 @@ function SignUpForm() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
     },
@@ -79,9 +77,15 @@ const styles = StyleSheet.create({
         fontSize: 40,
     },
     inputField: {
+        backgroundColor: '#fff',
+        borderRadius:30,
         borderWidth: 1,
-        margin: 10,
-        padding: 10,
+        width:250,
+        height:45,
+        marginBottom:15,
+        flexDirection: 'row',
+        alignItems:'center',
+        textAlign: 'center'
     },
 });
 
