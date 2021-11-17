@@ -70,10 +70,6 @@ export default function App() {
             <Stack.Screen name={'Ratings Feed'} component={Feed}/>
             <Stack.Screen name={'Ratings Details'} component={RatingDetails}/>
             <Stack.Screen name={'Edit Rating'} component={AddRating}/>
-
-          {
-            //<Stack.Screen name={'Add Car'} component={AddRating}/>
-          }
         </Stack.Navigator>
     )
   }
@@ -124,6 +120,7 @@ export default function App() {
           )
 
   }
+
     return (
           <NavigationContainer>
               <Stack.Navigator screenOptions={{
@@ -135,6 +132,7 @@ export default function App() {
                   }
                   <Stack.Screen name={'MainNavigator'} component={MainTabNavigator}/>
                   <Stack.Screen name={'Login'} component={LoginForm}/>
+                  <Stack.Screen name={'SignUpForm'} component={SignUpForm}/>
               </Stack.Navigator>
           </NavigationContainer>
     );

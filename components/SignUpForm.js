@@ -1,23 +1,24 @@
 import React, {useState} from 'react';
-import {Button,Text,
+import {
+    Button,
+    Text,
     View,
     TextInput,
     ActivityIndicator,
     StyleSheet,
+    TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase';
+import StackNavigator from "@react-navigation/stack/src/navigators/createStackNavigator";
+import Feed from "./Feed";
 
-function SignUpForm() {
+const SignUpForm = (props) => {
+
     //Instantiering af state-variabler, der skal benyttes i SignUpForm
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     //const [isCompleted, setIsCompleted] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null)
-
-    //Her defineres brugeroprettelsesknappen, som aktiverer handleSubmit igennem onPress
-    const renderButton = () => {
-        return <Button onPress={() => handleSubmit()} title="Create user" />;
-    };
 
     /*
   * Metoden herunder håndterer oprettelse af brugere ved at anvende den prædefinerede metode, som stilles til rådighed af firebase
@@ -40,6 +41,7 @@ function SignUpForm() {
     // Afslutningsvis, angives det at, hvis errorMessage får fastsat en værdi, skal denne udskrives i en tekstkomponent.
     return (
         <View style={styles.container}>
+
             <Text style={styles.header}>Opret Bruger</Text>
             <TextInput
                 placeholder="Email"
@@ -57,7 +59,9 @@ function SignUpForm() {
             {errorMessage && (
                 <Text style={styles.error}>Error: {errorMessage}</Text>
             )}
-            {renderButton()}
+            <TouchableOpacity style={[styles.buttonContainer, styles.signUpButton]} onPress={() => handleSubmit(props.navigation.navigate('MainNavigator'))}>
+                <Text style={styles.loginText}>Opret bruger</Text>
+            </TouchableOpacity>
         </View>
     );
 }
@@ -67,6 +71,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#DFD0C0'
     },
     header: {
         alignItems: 'center',
@@ -84,6 +89,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems:'center',
         textAlign: 'center'
+    },
+    buttonContainer: {
+        height:45,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom:20,
+        width:250,
+        borderRadius:30,
+    },
+    signUpButton: {
+        backgroundColor: '#B45626',
+        shadowOpacity: 0.1,
     },
 });
 

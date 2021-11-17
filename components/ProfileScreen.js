@@ -1,12 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button, StyleSheet, Image, ScrollView} from 'react-native';
+import {View, Text, Button, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
 import firebase from 'firebase';
 import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
+import GlobalStyles from "../globalStyles/GlobalStyles";
 
-
-function ProfileScreen () {
+const ProfileScreen = (props) => {
 
     //Her oprettes bruger state variblen
     const [user, setUser] = useState({loggedIn: false});
@@ -36,40 +36,22 @@ function ProfileScreen () {
     //Metoden er et asynkrontkald.
     const handleLogOut = async () => {
         await firebase.auth().signOut();
+        props.navigation.navigate('LandingPage')
     };
 
     //Hvis der af en eller anden grund ikke skulle være muligt at fremfinde den aktive bruger,
     //skal der udprintes en besked om dette igennem en tekstkomponent
-    if (!firebase.auth().currentUser) {
-        return (
-                <ScrollView>
-                    <Image
-                        source={require('../assets/profilePic.jpg')}
-                        style={styles.image}/>
-
-                    <Card style={{padding:20}}>
-                        <SignUpForm />
-                    </Card>
-
-                    <Card style={{padding:20}}>
-                        <LoginForm />
-                    </Card>
-                    <Text style={styles.paragraph2}>
-                        Jeg håber virkelig dette kan hjælpe bare en smule!
-                    </Text>
-                </ScrollView>
-        )
-    }else{
-        //I return() udnyttes en prædefineret metode, som firebase stiller til rådighed.
-        // Metoden returnerer mailadressen af den aktive bruger.
-        // Mailadressen udskrives ved brug af en tekstkomponent.
-        return (
-            <View style={styles.container} >
-                <Text>Current user: {firebase.auth().currentUser.email}</Text>
-                <Button onPress={() => handleLogOut()} title="Log out" />
-            </View>
-        );
-    }
+    //I return() udnyttes en prædefineret metode, som firebase stiller til rådighed.
+    // Metoden returnerer mailadressen af den aktive bruger.
+    // Mailadressen udskrives ved brug af en tekstkomponent.
+    return (
+        <View style={styles.container} >
+            <Text>Current user: {firebase.auth().currentUser && firebase.auth().currentUser.email}</Text>
+            <TouchableOpacity style={[GlobalStyles.buttonContainer, styles.loginButton]} onPress={() => handleLogOut()}>
+                <Text style={styles.loginText}>Log ud</Text>
+            </TouchableOpacity>
+        </View>
+    );
 }
 
 //Lokal styling til brug i ProfileScreen
@@ -93,7 +75,11 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
-    }
+    },
+    loginButton: {
+        backgroundColor: '#B45626',
+        shadowOpacity: 0.1,
+    },
 });
 
 //Eksport af Loginform, således denne kan importeres og benyttes i andre komponenter

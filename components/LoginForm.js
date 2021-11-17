@@ -8,17 +8,13 @@ import {
 } from 'react-native';
 import firebase from 'firebase';
 
+
 const LoginForm = (props) => {
     //Instantiering af state-variabler, der skal benyttes i SignUpForm
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+    const [email, setEmail] = useState('h@kr.kr');
+    const [password, setPassword] = useState('qwerty');
     const [isCompleted, setIsCompleted] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null)
-
-    //Her defineres brugeroprettelsesknappen, som aktiverer handleSubmit igennem onPress
-    const renderButton = () => {
-        return <Button onPress={() => handleSubmit()} title="Login" style={styles.button}/>;
-    };
 
     /*
   * Metoden herunder håndterer oprettelse af brugere ved at anvende den prædefinerede metode, som stilles til rådighed af firebase
@@ -62,7 +58,6 @@ const LoginForm = (props) => {
             <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]} onPress={() => handleSubmit(props.navigation.navigate('MainNavigator'))}>
                 <Text style={styles.loginText}>Login</Text>
             </TouchableOpacity>
-            {renderButton()}
         </View>
     );
 }
@@ -72,6 +67,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#DFD0C0'
     },
     header: {
         alignItems: 'center',
@@ -101,7 +97,8 @@ const styles = StyleSheet.create({
         borderRadius:30,
     },
     loginButton: {
-        backgroundColor: '#3498db',
+        backgroundColor: '#B45626',
+        shadowOpacity: 0.1,
     },
 });
 
