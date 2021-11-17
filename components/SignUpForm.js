@@ -7,7 +7,8 @@ import {
     StyleSheet, TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase';
-import GlobalStyles from "../globalStyles/GlobalStyles";
+import StackNavigator from "@react-navigation/stack/src/navigators/createStackNavigator";
+import Feed from "./Feed";
 
 const SignUpForm = (props) => {
     //Instantiering af state-variabler, der skal benyttes i SignUpForm
@@ -15,11 +16,6 @@ const SignUpForm = (props) => {
     const [password, setPassword] = useState('');
     //const [isCompleted, setIsCompleted] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null)
-
-    //Her defineres brugeroprettelsesknappen, som aktiverer handleSubmit igennem onPress
-    const renderButton = () => {
-        return <Button onPress={() => handleSubmit()} title="Create user" />;
-    };
 
     /*
   * Metoden herunder håndterer oprettelse af brugere ved at anvende den prædefinerede metode, som stilles til rådighed af firebase
@@ -42,6 +38,7 @@ const SignUpForm = (props) => {
     // Afslutningsvis, angives det at, hvis errorMessage får fastsat en værdi, skal denne udskrives i en tekstkomponent.
     return (
         <View style={styles.container}>
+
             <Text style={styles.header}>Opret Bruger</Text>
             <TextInput
                 placeholder="Email"
@@ -62,7 +59,6 @@ const SignUpForm = (props) => {
             <TouchableOpacity style={[styles.buttonContainer, styles.signUpButton]} onPress={() => handleSubmit(props.navigation.navigate('MainNavigator'))}>
                 <Text style={styles.loginText}>Opret bruger</Text>
             </TouchableOpacity>
-            {renderButton()}
         </View>
     );
 }

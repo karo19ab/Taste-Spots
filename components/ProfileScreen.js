@@ -7,6 +7,7 @@ import LoginForm from "./LoginForm";
 import GlobalStyles from "../globalStyles/GlobalStyles";
 
 const ProfileScreen = (props) => {
+
     //Her oprettes bruger state variblen
     const [user, setUser] = useState({loggedIn: false});
 
@@ -35,6 +36,7 @@ const ProfileScreen = (props) => {
     //Metoden er et asynkrontkald.
     const handleLogOut = async () => {
         await firebase.auth().signOut();
+        props.navigation.navigate('LandingPage')
     };
 
     //Hvis der af en eller anden grund ikke skulle være muligt at fremfinde den aktive bruger,
@@ -65,10 +67,9 @@ const ProfileScreen = (props) => {
         return (
             <View style={styles.container} >
                 <Text>Current user: {firebase.auth().currentUser.email}</Text>
-                <TouchableOpacity style={[GlobalStyles.buttonContainer, styles.loginButton]} onPress={() => handleLogOut(props.navigation.navigate('LandingPage'))}>
+                <TouchableOpacity style={[GlobalStyles.buttonContainer, styles.loginButton]} onPress={() => handleLogOut()}>
                     <Text style={styles.loginText}>Log ud</Text>
                 </TouchableOpacity>
-                <Button onPress={() => handleLogOut()} title="Log out" />
             </View>
         );
     }
