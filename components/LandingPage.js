@@ -8,24 +8,32 @@ import {
     TouchableOpacity,
     Alert,
     Image,
-    ImageBackground, Button
+    ImageBackground,
+    Button
 } from 'react-native';
-
+import GlobalStyles from "../globalStyles/GlobalStyles";
+import { useFonts, Inter_900Black } from '@expo-google-fonts/inter';
 import FirstImage from "../assets/spices1.png"
 
 
-const LandingPage = (props) => {
 
+const LandingPage = (props) => {
+    let [fontsLoaded] = useFonts({
+        Inter_900Black,
+    });
     return (
-        <View style={styles.container}>
-            <ImageBackground source={FirstImage} resizeMode="cover" style={styles.image}>
-                <TouchableOpacity style={[styles.buttonContainer, styles.loginButton]}>
+        <View style={GlobalStyles.container}>
+            <ImageBackground source={FirstImage} resizeMode="cover" style={styles.landingImage}>
+                <Text style={GlobalStyles.logoName}>Taste Spots</Text>
+                <TouchableOpacity style={[GlobalStyles.buttonContainer, styles.signupButton]}>
                     <Text style={styles.loginText}>Opret bruger</Text>
                 </TouchableOpacity>
-                <Text style={styles.loginLink}>Har du allerede en bruger? <Button title={"Log in her"}/></Text>
+                <Text style={styles.loginLink}>Har du allerede en bruger?
+                    <TouchableOpacity>
+                        <Text style={styles.loginLink}>Login her</Text>
+                    </TouchableOpacity>
+                </Text>
             </ImageBackground>
-
-
         </View>
     );
 }
@@ -33,37 +41,31 @@ const LandingPage = (props) => {
 export default LandingPage;
 
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-    },
-    image: {
+    landingImage: {
         flex: 1,
         justifyContent: 'center',
     },
     text: {
-        color: 'white',
+        color: 'black',
         fontSize: 42,
         lineHeight: 84,
         fontWeight: 'bold',
-        textAlign: 'center',
-        backgroundColor: '#fff',
+        textAlign: 'center'
     },
-    buttonContainer: {
-        height:45,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        marginTop:'130%',
-        width:300,
-        borderRadius:15,
-        marginLeft: '10%'
-    },
-    loginButton: {
-        backgroundColor: '#fff',
+    signupButton: {
+        backgroundColor: 'black',
     },
     loginLink: {
         textAlign: 'center',
-        color: 'white',
+        color: '#fff',
         fontWeight: 'bold',
+        fontSize: 20,
+        marginLeft: "1%",
+        marginTop: "1%"
+    },
+    loginText: {
+        color: "#fff",
+        fontSize: 20,
+        fontWeight: "bold"
     }
 });

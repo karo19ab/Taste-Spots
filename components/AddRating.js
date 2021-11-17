@@ -9,7 +9,7 @@ import {
     StyleSheet,
     SafeAreaView,
     ScrollView,
-    Image,
+    Image, TouchableOpacity,
 } from 'react-native';
 import firebase from "firebase";
 import {Card} from "react-native-paper";
@@ -67,7 +67,7 @@ const AddRating = ({navigation, route}) => {
             </ScrollView>
         )
     } else {
-        const initialState = {Recommend: ''}
+        const initialState = {Anbefaling: ''}
 
         const [newRating, setNewRating] = useState(initialState);
 
@@ -90,7 +90,7 @@ const AddRating = ({navigation, route}) => {
         }
 
         const handleSave = () => {
-            const {Recommend} = newRating;
+            const {Anbefaling} = newRating;
 
             if (initialState.length === 0) {
                 return Alert.alert('Et af felterne er tomme');
@@ -103,7 +103,7 @@ const AddRating = ({navigation, route}) => {
                         .database()
                         .ref(`/Ratings/${id}`)
                         // Vi bruger update, så kun de felter vi angiver, bliver ændret
-                        .update({Recommend});
+                        .update({Anbefaling});
                     // Når bilen er ændret, går vi tilbage.
                     Alert.alert("Din info er nu opdateret");
                     const raing = [id, newRating]
@@ -117,7 +117,7 @@ const AddRating = ({navigation, route}) => {
                     firebase
                         .database()
                         .ref('/Ratings/')
-                        .push({Recommend});
+                        .push({Anbefaling});
                     Alert.alert(`Saved`);
                     setNewRating(initialState)
                 } catch (error) {
@@ -147,7 +147,6 @@ const AddRating = ({navigation, route}) => {
                             console.log(details);
                             // Måske der skal laves en try-catch her...
                             //stedValgt = details.name
-
 
                         }}
                         getDefaultValue={()=>''}
@@ -187,7 +186,7 @@ const AddRating = ({navigation, route}) => {
                             return (
                                 <View key={index}>
                                     <Text style={styles.label}>
-                                        Hvor mange spots vil du give xx
+                                        Hvor mange spots vil du give stedet?
                                     </Text>
                                     <SpotRating/>
                                     <Text style={styles.label}>{key}</Text>

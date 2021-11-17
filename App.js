@@ -77,6 +77,12 @@ export default function App() {
     )
   }
 
+    if (!firebase.auth().currentUser) {
+      return (
+          <LandingPage/>
+      )
+  }
+
 
     return (
           <NavigationContainer>
