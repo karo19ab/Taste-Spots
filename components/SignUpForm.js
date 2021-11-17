@@ -1,13 +1,15 @@
 import React, {useState} from 'react';
-import {Button,Text,
+import {
+    Button, Text,
     View,
     TextInput,
     ActivityIndicator,
-    StyleSheet,
+    StyleSheet, TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase';
+import GlobalStyles from "../globalStyles/GlobalStyles";
 
-function SignUpForm() {
+const SignUpForm = (props) => {
     //Instantiering af state-variabler, der skal benyttes i SignUpForm
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -57,6 +59,9 @@ function SignUpForm() {
             {errorMessage && (
                 <Text style={styles.error}>Error: {errorMessage}</Text>
             )}
+            <TouchableOpacity style={[styles.buttonContainer, styles.signUpButton]} onPress={() => handleSubmit(props.navigation.navigate('MainNavigator'))}>
+                <Text style={styles.loginText}>Opret bruger</Text>
+            </TouchableOpacity>
             {renderButton()}
         </View>
     );
@@ -85,6 +90,18 @@ const styles = StyleSheet.create({
         alignItems:'center',
         textAlign: 'center'
     },
+    buttonContainer: {
+        height:45,
+        flexDirection: 'row',
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginBottom:20,
+        width:250,
+        borderRadius:30,
+    },
+    signUpButton: {
+        backgroundColor: '#3498db',
+    }
 });
 
 //Eksport af SignUpForm, således denne kan importeres og benyttes i andre komponenter

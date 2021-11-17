@@ -24,7 +24,7 @@ console.log(props)
         <View style={GlobalStyles.container}>
             <ImageBackground source={FirstImage} resizeMode="cover" style={styles.landingImage}>
                 <Text style={GlobalStyles.logoName}>Taste Spots</Text>
-                <TouchableOpacity style={[GlobalStyles.buttonContainer, styles.signupButton]}>
+                <TouchableOpacity style={[GlobalStyles.buttonContainer, styles.signupButton]} onPress={() => props.navigation.navigate('SignUpForm')}>
                     <Text style={styles.loginText}>Opret bruger</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>

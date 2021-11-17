@@ -1,13 +1,12 @@
 import React, {useEffect, useState} from 'react';
-import {View, Text, Button, StyleSheet, Image, ScrollView} from 'react-native';
+import {View, Text, Button, StyleSheet, Image, ScrollView, TouchableOpacity} from 'react-native';
 import firebase from 'firebase';
 import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
+import GlobalStyles from "../globalStyles/GlobalStyles";
 
-
-function ProfileScreen () {
-
+const ProfileScreen = (props) => {
     //Her oprettes bruger state variblen
     const [user, setUser] = useState({loggedIn: false});
 
@@ -66,6 +65,9 @@ function ProfileScreen () {
         return (
             <View style={styles.container} >
                 <Text>Current user: {firebase.auth().currentUser.email}</Text>
+                <TouchableOpacity style={[GlobalStyles.buttonContainer, styles.loginButton]} onPress={() => handleLogOut(props.navigation.navigate('LandingPage'))}>
+                    <Text style={styles.loginText}>Log ud</Text>
+                </TouchableOpacity>
                 <Button onPress={() => handleLogOut()} title="Log out" />
             </View>
         );
@@ -93,7 +95,10 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
-    }
+    },
+    loginButton: {
+        backgroundColor: '#3498db',
+    },
 });
 
 //Eksport af Loginform, således denne kan importeres og benyttes i andre komponenter

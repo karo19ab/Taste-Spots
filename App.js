@@ -135,6 +135,7 @@ export default function App() {
                   }
                   <Stack.Screen name={'MainNavigator'} component={MainTabNavigator}/>
                   <Stack.Screen name={'Login'} component={LoginForm}/>
+                  <Stack.Screen name={'SignUpForm'} component={SignUpForm}/>
               </Stack.Navigator>
           </NavigationContainer>
     );

@@ -8,6 +8,7 @@ import {
 } from 'react-native';
 import firebase from 'firebase';
 
+
 const LoginForm = (props) => {
     //Instantiering af state-variabler, der skal benyttes i SignUpForm
     const [email, setEmail] = useState('');
