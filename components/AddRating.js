@@ -18,6 +18,7 @@ import LoginForm from "./LoginForm";
 // import LoginPls from "./LoginPls";
 import {GooglePlacesAutocomplete} from "react-native-google-places-autocomplete";
 import SpotRating from "./SpotRating";
+import UploadPicture from "./UploadPicture";
 
 const AddRating = ({navigation, route}) => {
 
@@ -202,6 +203,7 @@ const AddRating = ({navigation, route}) => {
                         })
                     }
                     {/*Hvis vi er inde på edit Rating, vis save changes i stedet for add Rating*/}
+                    <UploadPicture/>
                     <Button title={isEditRating ? "Gem ændringer" : "Tilføj anmeldelse"} onPress={() => handleSave()} style={styles.button}/>
                 </ScrollView>
             </SafeAreaView>
