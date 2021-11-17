@@ -51,7 +51,7 @@ const styles = StyleSheet.create({
     },
     signupButton: {
         backgroundColor: '#B45626',
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.1,
     },
     loginLink: {
         textAlign: 'center',

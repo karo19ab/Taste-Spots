@@ -70,10 +70,6 @@ export default function App() {
             <Stack.Screen name={'Ratings Feed'} component={Feed}/>
             <Stack.Screen name={'Ratings Details'} component={RatingDetails}/>
             <Stack.Screen name={'Edit Rating'} component={AddRating}/>
-
-          {
-            //<Stack.Screen name={'Add Car'} component={AddRating}/>
-          }
         </Stack.Navigator>
     )
   }

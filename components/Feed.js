@@ -6,7 +6,8 @@ import {
     Text,
     View,
     StyleSheet,
-    TouchableOpacity, Image, ScrollView,
+    TouchableOpacity,
+    Image, ScrollView,
 } from 'react-native';
 import firebase from "firebase";
 import {Card} from "react-native-paper";
@@ -19,6 +20,7 @@ const Feed = ({navigation}) => {
     //Hvis der af en eller anden grund ikke skulle være muligt at fremfinde den aktive bruger,
     //skal der udprintes en besked om dette igennem en tekstkomponent
     if (!firebase.auth().currentUser) {
+
 
         //Her oprettes bruger state variablen
         const [user, setUser] = useState({loggedIn: false});
@@ -43,35 +45,9 @@ const Feed = ({navigation}) => {
             };
         }, []);
 
-
-        return (
-            <View style={styles.page}>
-                <ScrollView>
-                    <Image
-                    source={require('../assets/feedPic.jpeg')}
-                    style={styles.image}/>
-
-
-
-                    <Text style={styles.paragraph}>
-                        Opret eller Login for at se hvor dine venner har spist for nylig!
-                    </Text>
-
-                    <SignUpForm />
-
-                    <LoginForm />
-
-                    <Text style={styles.paragraph2}>
-                        Tekst der skaber lidt plads til login-knap 10hi
-                    </Text>
-                </ScrollView>
-            </View>
-        );
     }
 
-
     const [ratings, setRatings] = useState('');
-
 
     useEffect(() =>{
         if(!ratings)
@@ -102,7 +78,7 @@ const Feed = ({navigation}) => {
                         Press here to rate a venue
                     </Text>
                 </TouchableOpacity>
-                <Text>Current user: {firebase.auth().currentUser.email}</Text>
+                <Text>Current user: { firebase.auth().currentUser && firebase.auth().currentUser.email}</Text>
             </View>
 
         );

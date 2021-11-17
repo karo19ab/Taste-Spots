@@ -41,38 +41,17 @@ const ProfileScreen = (props) => {
 
     //Hvis der af en eller anden grund ikke skulle være muligt at fremfinde den aktive bruger,
     //skal der udprintes en besked om dette igennem en tekstkomponent
-    if (!firebase.auth().currentUser) {
-        return (
-                <ScrollView>
-                    <Image
-                        source={require('../assets/profilePic.jpg')}
-                        style={styles.image}/>
-
-                    <Card style={{padding:20}}>
-                        <SignUpForm />
-                    </Card>
-
-                    <Card style={{padding:20}}>
-                        <LoginForm />
-                    </Card>
-                    <Text style={styles.paragraph2}>
-                        Jeg håber virkelig dette kan hjælpe bare en smule!
-                    </Text>
-                </ScrollView>
-        )
-    }else{
-        //I return() udnyttes en prædefineret metode, som firebase stiller til rådighed.
-        // Metoden returnerer mailadressen af den aktive bruger.
-        // Mailadressen udskrives ved brug af en tekstkomponent.
-        return (
-            <View style={styles.container} >
-                <Text>Current user: {firebase.auth().currentUser.email}</Text>
-                <TouchableOpacity style={[GlobalStyles.buttonContainer, styles.loginButton]} onPress={() => handleLogOut()}>
-                    <Text style={styles.loginText}>Log ud</Text>
-                </TouchableOpacity>
-            </View>
-        );
-    }
+    //I return() udnyttes en prædefineret metode, som firebase stiller til rådighed.
+    // Metoden returnerer mailadressen af den aktive bruger.
+    // Mailadressen udskrives ved brug af en tekstkomponent.
+    return (
+        <View style={styles.container} >
+            <Text>Current user: {firebase.auth().currentUser && firebase.auth().currentUser.email}</Text>
+            <TouchableOpacity style={[GlobalStyles.buttonContainer, styles.loginButton]} onPress={() => handleLogOut()}>
+                <Text style={styles.loginText}>Log ud</Text>
+            </TouchableOpacity>
+        </View>
+    );
 }
 
 //Lokal styling til brug i ProfileScreen
@@ -98,7 +77,8 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     loginButton: {
-        backgroundColor: '#3498db',
+        backgroundColor: '#B45626',
+        shadowOpacity: 0.1,
     },
 });
 

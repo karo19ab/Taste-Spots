@@ -1,16 +1,19 @@
 import React, {useState} from 'react';
 import {
-    Button, Text,
+    Button,
+    Text,
     View,
     TextInput,
     ActivityIndicator,
-    StyleSheet, TouchableOpacity,
+    StyleSheet,
+    TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase';
 import StackNavigator from "@react-navigation/stack/src/navigators/createStackNavigator";
 import Feed from "./Feed";
 
 const SignUpForm = (props) => {
+
     //Instantiering af state-variabler, der skal benyttes i SignUpForm
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -68,6 +71,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#DFD0C0'
     },
     header: {
         alignItems: 'center',
@@ -96,8 +100,9 @@ const styles = StyleSheet.create({
         borderRadius:30,
     },
     signUpButton: {
-        backgroundColor: '#3498db',
-    }
+        backgroundColor: '#B45626',
+        shadowOpacity: 0.1,
+    },
 });
 
 //Eksport af SignUpForm, således denne kan importeres og benyttes i andre komponenter

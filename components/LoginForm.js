@@ -16,8 +16,6 @@ const LoginForm = (props) => {
     const [isCompleted, setIsCompleted] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null)
 
-
-
     /*
   * Metoden herunder håndterer oprettelse af brugere ved at anvende den prædefinerede metode, som stilles til rådighed af firebase
   * signInWithEmailAndPassword tager en mail og et password med som argumenter og foretager et asynkront kald, der eksekverer en brugeroprettelse i firebase
@@ -69,6 +67,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#DFD0C0'
     },
     header: {
         alignItems: 'center',
@@ -98,7 +97,8 @@ const styles = StyleSheet.create({
         borderRadius:30,
     },
     loginButton: {
-        backgroundColor: '#3498db',
+        backgroundColor: '#B45626',
+        shadowOpacity: 0.1,
     },
 });
 
