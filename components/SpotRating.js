@@ -21,7 +21,7 @@ class SpotRating extends Component {
     }
 
     render() {
-        const [newRating, setNewRating] = useState(0);
+        // const [newRating, setNewRating] = useState(0);
 
 
         return (

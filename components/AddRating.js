@@ -32,7 +32,7 @@ const AddRating = ({navigation, route}) => {
     const changeAnbefalingInput = (text) => {
         // Hver gang man skriver noget i text-inputtet, så bliver newRating set'et med disse værdier.
         setNewRating({Anbefaling: text, Sted: newSted, uid: firebase.auth().currentUser.uid});
-        console.log(<SpotRating.state.starCount/>)
+        //console.log(<SpotRating.state.starCount/>)
     }
 
 
