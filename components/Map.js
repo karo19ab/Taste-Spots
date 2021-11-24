@@ -342,7 +342,7 @@ function Map () {
 //Lokal styling til brug i Map
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        //flex: 1,
         //justifyContent: 'center',
         //paddingTop: Constants.statusBarHeight,
         //backgroundColor: '#ecf0f1',

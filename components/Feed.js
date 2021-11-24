@@ -7,7 +7,8 @@ import {
     View,
     StyleSheet,
     TouchableOpacity,
-    Image, ScrollView,
+    Image,
+    ScrollView,
 } from 'react-native';
 import firebase from "firebase";
 import {Card} from "react-native-paper";
@@ -16,36 +17,8 @@ import LoginForm from "./LoginForm";
 
 const Feed = ({navigation}) => {
 
-
     //Hvis der af en eller anden grund ikke skulle være muligt at fremfinde den aktive bruger,
     //skal der udprintes en besked om dette igennem en tekstkomponent
-    if (!firebase.auth().currentUser) {
-
-
-        //Her oprettes bruger state variablen
-        const [user, setUser] = useState({loggedIn: false});
-
-        //onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
-        //Pba. brugerens status foretages et callback i form af setUSer metoden, som håndterer user-state variablens status.
-        function onAuthStateChange(callback) {
-            return firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    callback({loggedIn: true, user: user});
-                } else {
-                    callback({loggedIn: false});
-                }
-            });
-        }
-
-        //Heri aktiverer vi vores listener i form af onAuthStateChanged, så vi dynamisk observerer om brugeren er aktiv eller ej.
-        useEffect(() => {
-            const unsubscribe = onAuthStateChange(setUser);
-            return () => {
-                unsubscribe();
-            };
-        }, []);
-
-    }
 
     const [ratings, setRatings] = useState('');
 
@@ -85,7 +58,7 @@ const Feed = ({navigation}) => {
     }
 
     const handleSelectRating = id => {
-        /*Her søger vi direkte i vores array af biler og finder bil objektet som matcher idet vi har tilsendt*/
+        /*Her søger vi direkte i vores array af ratings og finder rating objektet som matcher det vi har tilsendt*/
         const rating = Object.entries(ratings).find(rating => rating[0] === id /*id*/)
         navigation.navigate('Ratings Details', {rating});
     }
@@ -105,7 +78,7 @@ const Feed = ({navigation}) => {
                         {
         //Måske vi skulle lave et gennemsnit af mad, service, atmosfære og value for money i stedet for bare maden
                         }
-                        {item.Sted}, {item.Maden}
+                        {item.Sted}
                     </Text>
                 </TouchableOpacity>
             ) } }

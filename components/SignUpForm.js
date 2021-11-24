@@ -58,7 +58,7 @@ const SignUpForm = (props) => {
             {errorMessage && (
                 <Text style={styles.error}>Error: {errorMessage}</Text>
             )}
-            <TouchableOpacity style={[styles.buttonContainer, styles.signUpButton]} onPress={() => handleSubmit(props.navigation.navigate('MainNavigator'))}>
+            <TouchableOpacity style={[styles.buttonContainer, styles.signUpButton]} onPress={() => handleSubmit()}>
                 <Text style={styles.loginText}>Opret bruger</Text>
             </TouchableOpacity>
         </View>

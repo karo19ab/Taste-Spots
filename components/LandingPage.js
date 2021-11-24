@@ -19,7 +19,7 @@ import LoginForm from "./LoginForm";
 
 
 const LandingPage = (props) => {
-console.log(props)
+
     return (
         <View style={GlobalStyles.container}>
             <ImageBackground source={FirstImage} resizeMode="cover" style={styles.landingImage}>
