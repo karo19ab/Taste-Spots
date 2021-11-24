@@ -33,7 +33,7 @@ export default function UploadPicture() {
     };
 
     return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding:15}}>
+        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', padding:15, marginTop:'10%'}}>
             <TouchableOpacity style={GlobalStyles.generalButton} onPress={pickImage} >
                 <Text style={GlobalStyles.buttonTxt}>Tilføj billede</Text>
             </TouchableOpacity>

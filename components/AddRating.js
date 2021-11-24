@@ -60,103 +60,79 @@ const AddRating = ({navigation, route}) => {
 
     }
 
-    if (!firebase.auth().currentUser) {
-        //Her oprettes bruger state variblen
-        const [user, setUser] = useState({loggedIn: false});
 
-        //onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
-        //Pba. brugerens status foretages et callback i form af setUSer metoden, som håndterer user-state variablens status.
-        function onAuthStateChange(callback) {
-            return firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    callback({loggedIn: true, user: user});
-                } else {
-                    callback({loggedIn: false});
-                }
-            });
+    /*Returnerer true, hvis vi er på edit Rating*/
+    const isEditRating = route.name === "Edit Rating";
+
+    useEffect(() => {
+        if (isEditRating) {
+            const rating = route.params.rating[1];
+            setNewRating(rating)
         }
-
-        //Heri aktiverer vi vores listener i form af onAuthStateChanged, så vi dynamisk observerer om brugeren er aktiv eller ej.
-        useEffect(() => {
-            const unsubscribe = onAuthStateChange(setUser);
-            return () => {
-                unsubscribe();
-            };
-        }, []);
-
-    } else {
+        //Fjern data, når vi går væk fra screenen
+        return () => {
+            setNewRating(initialState)
+        };
+    }, []);
 
 
-        /*Returnerer true, hvis vi er på edit Rating*/
-        const isEditRating = route.name === "Edit Rating";
+    return (
+        <SafeAreaView style={styles.container}>
+            <GooglePlacesAutocomplete
+                placeholder='Search'
+                minLenght={2}
+                autoFocus={false}
+                fetchDetails={true}
+                renderDescription={row => row.description}
 
-        useEffect(() => {
-            if (isEditRating) {
-                const rating = route.params.rating[1];
-                setNewRating(rating)
-            }
-            //Fjern data, når vi går væk fra screenen
-            return () => {
-                setNewRating(initialState)
-            };
-        }, []);
+                onPress={(data, details = null) => {
+                    //TODO Herunder kan man tilføje logik, når der trykkes på det søgte
 
-
-        return (
-            <SafeAreaView style={styles.container}>
-                <GooglePlacesAutocomplete
-                    placeholder='Search'
-                    minLenght={2}
-                    autoFocus={false}
-                    fetchDetails={true}
-                    renderDescription={row => row.description}
-
-                    onPress={(data, details = null) => {
-                        //TODO Herunder kan man tilføje logik, når der trykkes på det søgte
-
-                        // newSted sættes til at være det navnet på stedet du trykker på.
-                        setNewSted(details.name)
+                    // newSted sættes til at være det navnet på stedet du trykker på.
+                    setNewSted(details.name)
 
 
-                        // buttons();
+                    // buttons();
 
-                    }}
-                    getDefaultValue={() => ''}
-                    query={{
-                        // Husk at krypter API key, fordi ellers er den tilgængelig for alle!
-                        key: 'AIzaSyCc8mR9JJqFV35qcL7WXn8nBvFPNGZ101w',
-                        language: 'en', // Resultatets sprog
-                        types: "establishment",
-                        components: "country:dk",
-                    }}
-                    styles={{
-                        container: {
-                            flex: 0,
-                            borderWidth: 1,
-                            height: "20%",
-                            margin: 15,
-                        },
-                        listView: {backgroundColor: "grey"},
-                    }}
-                    //currentLocation={true}
-                    //currentLocationLabel='Current Location'
-                    nearbyPlacesAPI='GooglePlacesSearch'
-                    GoogleReverseGeocodingQuery={{
-                        // ved ikke helt hvad man bruger dette til
-                    }}
-                    GooglePlacesSearchQuery={{
-                        // Tror ikke noget af det her virker :(
-                        rankby: 'distance',
-                        type: 'restaurant,bar,cafe'
-                    }}
-                    GooglePlacesDetailsQuery={{
-                        fields: 'formatted_address,geometry,name'
-                    }}
-                    debounce={200} // devouncer req i ms. Sat til 0 for at fjerne debounce
+                }}
+                getDefaultValue={() => ''}
+                query={{
+                    // Husk at krypter API key, fordi ellers er den tilgængelig for alle!
+                    key: 'AIzaSyCc8mR9JJqFV35qcL7WXn8nBvFPNGZ101w',
+                    language: 'en', // Resultatets sprog
+                    types: "establishment",
+                    components: "country:dk",
+                }}
+                styles={{
+                    container: {
+                        flex: 0,
+                        borderWidth: 1,
+                        padding: 5,
+                        margin: 15,
+                        borderColor: "grey",
+                        borderRadius: 20
+                    },
+                    listView: {backgroundColor: "grey"},
+                }}
+                //currentLocation={true}
+                //currentLocationLabel='Current Location'
+                nearbyPlacesAPI='GooglePlacesSearch'
+                GoogleReverseGeocodingQuery={{
+                    // ved ikke helt hvad man bruger dette til
+                }}
+                GooglePlacesSearchQuery={{
+                    // Tror ikke noget af det her virker :(
+                    rankby: 'distance',
+                    type: 'restaurant,bar,cafe'
+                }}
+                GooglePlacesDetailsQuery={{
+                    fields: 'formatted_address,geometry,name'
+                }}
+                debounce={200} // devouncer req i ms. Sat til 0 for at fjerne debounce
 
-                />
+            />
 
-                {/*
+            {/*
                     Object.keys(initialState).map((key, index) => {
                         return (
                             <View key={index}>
@@ -175,27 +151,28 @@ const AddRating = ({navigation, route}) => {
                         )
                     })
                     */
-                }
-                <Text style={styles.label}>
-                    Hvor mange spots vil du give stedet?
-                </Text>
-                <SpotRating/>
-                <TextInput
-                    //value={newRating}
-                    onChangeText={(text) => changeAnbefalingInput(text)}
-                    style={styles.input}
-                    placeholder={"Hvad skal dine venner vide?"}
-                />
-                {/*Hvis vi er inde på edit Rating, vis save changes i stedet for add Rating*/}
+            }
+            <Text style={styles.label}>
+                Hvor mange spots vil du give stedet?
+            </Text>
+            <SpotRating/>
+            <TextInput
+                //value={newRating}
+                onChangeText={(text) => changeAnbefalingInput(text)}
+                style={styles.input}
+                placeholder={"Hvad skal dine venner vide?"}
+            />
+            {/*Hvis vi er inde på edit Rating, vis save changes i stedet for add Rating*/}
+            <View>
                 <UploadPicture/>
-                <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center', padding:15}}>
-                    <TouchableOpacity style={GlobalStyles.generalButton} onPress={() => handleSave()} >
-                        <Text style={GlobalStyles.buttonTxt}>Tilføj anmeldelse</Text>
-                    </TouchableOpacity>
-                </View>
-            </SafeAreaView>
-        );
-    }
+            </View>
+            <View style={{ flex: 1, alignItems: 'center', padding:15, marginTop: '5%'}}>
+                <TouchableOpacity style={GlobalStyles.generalButton} onPress={() => handleSave()} >
+                    <Text style={GlobalStyles.buttonTxt}>Tilføj anmeldelse</Text>
+                </TouchableOpacity>
+            </View>
+        </SafeAreaView>
+    );
 }
 
 export default AddRating;
@@ -219,6 +196,7 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 1,
+        borderColor: "grey",
         padding: 10,
         height: 40,
         margin: 15,
