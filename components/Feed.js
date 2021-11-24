@@ -16,6 +16,8 @@ import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 import GlobalStyles from "../globalStyles/GlobalStyles"
 
+import {MOCKUP_USERS} from "../const";
+
 const Feed = ({navigation}) => {
 
     //Hvis der af en eller anden grund ikke skulle være muligt at fremfinde den aktive bruger,
@@ -67,6 +69,8 @@ const Feed = ({navigation}) => {
     // Flatlist forventer et array. Derfor tager vi alle values fra vores cars objekt, og bruger som array til listen
     const ratingsArray = Object.values(ratings);
     const ratingsKeys = Object.keys(ratings);
+
+    ratingsArray.forEach(item => console.log(item.uid))
 
     return (
         <View style={styles.page}>
