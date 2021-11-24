@@ -77,9 +77,13 @@ export default function App() {
     )
   }
 
-  const MainTabNavigator = () => {
 
+
+
+  const MainTabNavigator = () => {
       return(
+          <NavigationContainer>
+
           <Tab.Navigator screenOptions={{
               headerShown: false
           }}>
@@ -122,23 +126,41 @@ export default function App() {
                   }}
               />
           </Tab.Navigator>
-          )
-
+          </NavigationContainer>
+      )
   }
 
-    return (
-          <NavigationContainer>
-              <Stack.Navigator screenOptions={{
-                  headerShown: false
-              }}>
-                  {
-                      !firebase.auth().currentUser
-                      && <Stack.Screen name={'LandingPage'} component={LandingPage}/>
-                  }
-                  <Stack.Screen name={'MainNavigator'} component={MainTabNavigator}/>
-                  <Stack.Screen name={'Login'} component={LoginForm}/>
-                  <Stack.Screen name={'SignUpForm'} component={SignUpForm}/>
-              </Stack.Navigator>
-          </NavigationContainer>
-    );
+   const GuestStack = () => {
+        return (
+            <NavigationContainer>
+                <Stack.Navigator screenOptions={{
+                    headerShown: false
+                }}>
+                    <Stack.Screen name={'LandingPage'} component={LandingPage}/>
+                    <Stack.Screen name={'Login'} component={LoginForm}/>
+                    <Stack.Screen name={'SignUpForm'} component={SignUpForm}/>
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
+    }
+
+    return user.loggedIn ? <MainTabNavigator /> : <GuestStack/> ;
 }
+
+/* const StackTest => () => {
+        return (
+            <NavigationContainer>
+                <Stack.Navigator screenOptions={{
+                    headerShown: false
+                }}>
+                    {
+                        !firebase.auth().currentUser
+                        && <Stack.Screen name={'LandingPage'} component={LandingPage}/>
+                    }
+                    <Stack.Screen name={'MainNavigator'} component={MainTabNavigator}/>
+                    <Stack.Screen name={'Login'} component={LoginForm}/>
+                    <Stack.Screen name={'SignUpForm'} component={SignUpForm}/>
+                </Stack.Navigator>
+            </NavigationContainer>
+        );
+    }*/

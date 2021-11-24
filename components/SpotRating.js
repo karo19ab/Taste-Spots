@@ -7,8 +7,6 @@ import GlobalStyles from "../globalStyles/GlobalStyles"
 //Find ud af hvad component betyder
 class SpotRating extends Component {
 
-
-
     constructor(props) {
         super(props);
         this.state = {

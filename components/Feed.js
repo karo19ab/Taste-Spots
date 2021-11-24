@@ -7,47 +7,21 @@ import {
     View,
     StyleSheet,
     TouchableOpacity,
-    Image, ScrollView,
+    Image,
+    ScrollView,
 } from 'react-native';
 import firebase from "firebase";
 import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
+import GlobalStyles from "../globalStyles/GlobalStyles"
 
 import {MOCKUP_USERS} from "../const";
 
 const Feed = ({navigation}) => {
 
-
     //Hvis der af en eller anden grund ikke skulle være muligt at fremfinde den aktive bruger,
     //skal der udprintes en besked om dette igennem en tekstkomponent
-    if (!firebase.auth().currentUser) {
-
-
-        //Her oprettes bruger state variablen
-        const [user, setUser] = useState({loggedIn: false});
-
-        //onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
-        //Pba. brugerens status foretages et callback i form af setUSer metoden, som håndterer user-state variablens status.
-        function onAuthStateChange(callback) {
-            return firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    callback({loggedIn: true, user: user});
-                } else {
-                    callback({loggedIn: false});
-                }
-            });
-        }
-
-        //Heri aktiverer vi vores listener i form af onAuthStateChanged, så vi dynamisk observerer om brugeren er aktiv eller ej.
-        useEffect(() => {
-            const unsubscribe = onAuthStateChange(setUser);
-            return () => {
-                unsubscribe();
-            };
-        }, []);
-
-    }
 
     const [ratings, setRatings] = useState('');
 
@@ -59,7 +33,6 @@ const Feed = ({navigation}) => {
                 .on('value', snapshot => {
                     setRatings(snapshot.val())
                 });
-
     },[]);
 
     // Vi viser ingenting hvis der ikke er data
@@ -88,7 +61,7 @@ const Feed = ({navigation}) => {
     }
 
     const handleSelectRating = id => {
-        /*Her søger vi direkte i vores array af biler og finder bil objektet som matcher i det vi har tilsendt*/
+        /*Her søger vi direkte i vores array af ratings og finder rating objektet som matcher det vi har tilsendt*/
         const rating = Object.entries(ratings).find(rating => rating[0] === id /*id*/)
         navigation.navigate('Ratings Details', {rating});
     }
@@ -100,22 +73,25 @@ const Feed = ({navigation}) => {
     ratingsArray.forEach(item => console.log(item.uid))
 
     return (
-        <FlatList style={styles.page}
-            data={ratingsArray}
-            // Vi bruger ratingsKeys til at finde ID på den aktuelle bil og returnerer dette som key
-            keyExtractor={(item, index) => ratingsKeys[index]}
-            renderItem={({item,index}) => { return(
-                <TouchableOpacity style={styles.container} onPress={() => handleSelectRating(ratingsKeys[index])}>
-                    <Text>
-                        {
-        //Måske vi skulle lave et gennemsnit af mad, service, atmosfære og value for money i stedet for bare maden
-                        }
-                        {item.Sted}, {item.Anbefaling}
-                    </Text>
-                </TouchableOpacity>
-            ) } }
-        >
-        </FlatList>
+        <View style={styles.page}>
+            <Text style={styles.logoName}>Taste Spots</Text>
+            <FlatList
+                data={ratingsArray}
+                // Vi bruger ratingsKeys til at finde ID på den aktuelle bil og returnerer dette som key
+                keyExtractor={(item, index) => ratingsKeys[index]}
+                renderItem={({item,index}) => { return(
+                    <TouchableOpacity style={styles.container} onPress={() => handleSelectRating(ratingsKeys[index])}>
+                        <Text>
+                            {
+            //Måske vi skulle lave et gennemsnit af mad, service, atmosfære og value for money i stedet for bare maden
+                            }
+                            {item.Sted}
+                        </Text>
+                    </TouchableOpacity>
+                ) } }
+            >
+            </FlatList>
+        </View>
     )
 }
 
@@ -135,7 +111,9 @@ const styles = StyleSheet.create({
     page: {
         backgroundColor: "#fff"
     },
-    label: { fontWeight: 'bold' },
+    label: {
+        fontWeight: 'bold'
+    },
     image: {
         marginHorizontal: "10%",
         marginTop: "10%",
@@ -155,4 +133,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: '30%'
     },
+    logoName: {
+        fontSize: 50,
+        color: "black",
+        marginLeft: "23%"
+    }
 });

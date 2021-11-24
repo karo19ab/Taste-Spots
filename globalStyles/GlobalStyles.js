@@ -40,6 +40,7 @@ const GlobalStyles = StyleSheet.create({
             textAlign: 'center',
             marginLeft: '15%'
         },
+
 });
 
 export default GlobalStyles
