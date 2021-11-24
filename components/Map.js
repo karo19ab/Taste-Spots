@@ -14,25 +14,22 @@ import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 import Constants from 'expo-constants';
-import MapView, {Marker,Callout} from 'react-native-maps';
+import MapView, {Marker, Callout} from 'react-native-maps';
 import * as Location from 'expo-location';
 import {Accuracy} from "expo-location";
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
 import LoginPls from "./LoginPls";
 import {render} from "react-dom";
 
 
+function Map() {
 
-
-function Map () {
-
-   <LoginPls/>
+    <LoginPls/>
 
     // -------------------------------------------------------------------------------------
 
     const initialState = {name: '', lati: '', longi: '', uid: ''}
     const [newSpotWish, setNewSpotWish] = useState(initialState);
-
 
 
     //Her instantieres alle anvendte statevariabler
@@ -50,15 +47,15 @@ function Map () {
     * Læs mere i dokumentationen:  https://docs.expo.dev/versions/latest/sdk/location/
     */
     const getLocationPermission = async () => {
-        await Location.requestForegroundPermissionsAsync().then((item)=>{
+        await Location.requestForegroundPermissionsAsync().then((item) => {
             setlocationPermission(item.granted)
-        } );
+        });
 
     };
 
     // I useEffect kaldes getlocationPermission, der sikrer at enheden forespørger tilladelse
     // så snart appen kører
-    useEffect (() => {
+    useEffect(() => {
         const response = getLocationPermission()
     });
 
@@ -69,9 +66,9 @@ function Map () {
     * Læs mere på den førnævnte dokumentation
     */
     const updateLocation = async () => {
-        await Location.getCurrentPositionAsync({accuracy: Accuracy.Balanced}).then((item)=>{
+        await Location.getCurrentPositionAsync({accuracy: Accuracy.Balanced}).then((item) => {
             setCurrentLocation(item.coords)
-        } );
+        });
     };
     /*
     * Metoden handleLongPress tager en event med som argument og henter værdien af et koordinatsæt fra denne
@@ -89,7 +86,7 @@ function Map () {
   * reverseGeocodeAsync omsætter koordinatsættet til en række data, herunder område- og adresse data.
   * selectedAdress sættes til at være resultatet af det asynkrone kald
     */
-    const handleSelectMarker = async coordinate =>{
+    const handleSelectMarker = async coordinate => {
         setSelectedCoordinate(coordinate)
         await Location.reverseGeocodeAsync(coordinate).then((data) => {
                 setSelectedAddress(data)
@@ -115,7 +112,7 @@ function Map () {
         }
         return (
             <View>
-                <Button style title="update location" onPress={updateLocation} />
+                <Button style title="update location" onPress={updateLocation}/>
                 {currentLocation1 && (
                     <Text>
                         {`lat: ${currentLocation1.latitude},\nLong:${
@@ -139,7 +136,7 @@ function Map () {
     })
 
 
-    function savePlace () {
+    function savePlace() {
         const {name, lati, longi, uid} = newSpotWish;
         try {
             firebase
@@ -153,8 +150,8 @@ function Map () {
         }
     }
 
-    function buttons () {
-        Alert.alert (
+    function buttons() {
+        Alert.alert(
             `${newSpotWish.name}`,
             'What do you wish to do with this spot?',
             [
@@ -175,168 +172,146 @@ function Map () {
     }
 
 
-
-    if (!firebase.auth().currentUser) {
-        //Her oprettes bruger state variblen
-        const [user, setUser] = useState({loggedIn: false});
-
-        //onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
-        //Pba. brugerens status foretages et callback i form af setUSer metoden, som håndterer user-state variablens status.
-        function onAuthStateChange(callback) {
-            return firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    callback({loggedIn: true, user: user});
-                } else {
-                    callback({loggedIn: false});
-                }
-            });
-        }
-
-        //Heri aktiverer vi vores listener i form af onAuthStateChanged, så vi dynamisk observerer om brugeren er aktiv eller ej.
-        useEffect(() => {
-            const unsubscribe = onAuthStateChange(setUser);
-            return () => {
-                unsubscribe();
-            };
-        }, []);
-
-    }else
-        /*
-  * Dernæst kaldes RenderCurrenokation view
-  * Mapview er fremviser et kort, der viser brugerens lokation
-  * Dernæst aktiverer metoden handleLongPress igennem onLongPress
-  * I Mapview vises tre markører ud fra vilkårlige koordinatsæt. Hver markør får en titel og en beskrivelse
-  * Derudover vil alle koordinatsæt i userMarkerCoordinates blive vist som markører på kortet.
-  * For hver af markørerne vil metoden handleSelectMarker blive aktiveret ved onPress,
-  * hvorved selectedCoordinate og selectedAddres får en værdi og der udskrives data om den vaælgte markør
-  *
-  */
+    /*
+* Dernæst kaldes RenderCurrenokation view
+* Mapview er fremviser et kort, der viser brugerens lokation
+* Dernæst aktiverer metoden handleLongPress igennem onLongPress
+* I Mapview vises tre markører ud fra vilkårlige koordinatsæt. Hver markør får en titel og en beskrivelse
+* Derudover vil alle koordinatsæt i userMarkerCoordinates blive vist som markører på kortet.
+* For hver af markørerne vil metoden handleSelectMarker blive aktiveret ved onPress,
+* hvorved selectedCoordinate og selectedAddres får en værdi og der udskrives data om den vaælgte markør
+*
+*/
 
 
-    {
-        return (
-            <View style= {styles.container}>
-                {
-                    // https://www.npmjs.com/package/react-native-google-places-autocomplete
-                    // Video: https://www.youtube.com/watch?v=qlELLikT3FU&ab_channel=DarwinTech
+    return (
+        <View style={styles.container}>
+            {
+                // https://www.npmjs.com/package/react-native-google-places-autocomplete
+                // Video: https://www.youtube.com/watch?v=qlELLikT3FU&ab_channel=DarwinTech
 
-                }
-                <GooglePlacesAutocomplete
-                    placeholder='Search'
-                    minLenght={2}
-                    autoFocus={false}
-                    fetchDetails={true}
-                    renderDescription={row=>row.description}
+            }
+            <GooglePlacesAutocomplete
+                placeholder='Search'
+                minLenght={2}
+                autoFocus={false}
+                fetchDetails={true}
+                renderDescription={row => row.description}
 
-                    onPress={(data, details = null) => {
-                        //TODO Herunder kan man tilføje logik, når der trykkes på det søgte
+                onPress={(data, details = null) => {
+                    //TODO Herunder kan man tilføje logik, når der trykkes på det søgte
 
-                        // Vil forsøge at gøre så man laver en "pin" og zoomer ind på stedet, når man søger
-                        setRegion({
-                            latitude: details.geometry.location.lat,
-                            longitude: details.geometry.location.lng,
-                            latitudeDelta: 0.05,
-                            longitudeDelta: 0.0321,
-                        })
-                        setPlace({
-                            name: details.name
-                        })
+                    // Vil forsøge at gøre så man laver en "pin" og zoomer ind på stedet, når man søger
+                    setRegion({
+                        latitude: details.geometry.location.lat,
+                        longitude: details.geometry.location.lng,
+                        latitudeDelta: 0.05,
+                        longitudeDelta: 0.0321,
+                    })
+                    setPlace({
+                        name: details.name
+                    })
 
-                        setNewSpotWish({
-                            name: details.name,
-                            lati: details.geometry.location.lat,
-                            longi: details.geometry.location.lng,
-                            uid: firebase.auth().currentUser.uid,
-                        })
+                    setNewSpotWish({
+                        name: details.name,
+                        lati: details.geometry.location.lat,
+                        longi: details.geometry.location.lng,
+                        uid: firebase.auth().currentUser.uid,
+                    })
 
-                       // buttons();
+                    // buttons();
 
-                    }}
-                    getDefaultValue={()=>''}
-                    query={{
-                        // Husk at krypter API key, fordi ellers er den tilgængelig for alle!
-                        key: 'AIzaSyCc8mR9JJqFV35qcL7WXn8nBvFPNGZ101w',
-                        language: 'en', // Resultatets sprog
-                        types: "establishment",
-                        components: "country:dk",
-                        radius: 10000,
-
+                }}
+                getDefaultValue={() => ''}
+                query={{
+                    // Husk at krypter API key, fordi ellers er den tilgængelig for alle!
+                    key: 'AIzaSyCc8mR9JJqFV35qcL7WXn8nBvFPNGZ101w',
+                    language: 'en', // Resultatets sprog
+                    types: "establishment",
+                    components: "country:dk",
+                    radius: 10000,
 
 
-                    }}
-                    styles={{
-                        container: { flex: 0, position: "absolute", width: "100%", zIndex: 1, paddingTop: 60, paddingHorizontal: 10},
-                        listView: {backgroundColor: "grey"},
-                    }}
-                    //currentLocation={true}
-                    //currentLocationLabel='Current Location'
-                    nearbyPlacesAPI='GooglePlacesSearch'
-                    GoogleReverseGeocodingQuery={{
-                        // ved ikke helt hvad man bruger dette til
-                    }}
-                    GooglePlacesSearchQuery={{
-                        rankby: 'distance',
-                        type: 'restaurant,bar,cafe'
-                    }}
-                    GooglePlacesDetailsQuery={{
-                        fields: 'formatted_address,geometry,name'
-                    }}
-                    debounce={200} // devouncer req i ms. Sat til 0 for at fjerne debounce
+                }}
+                styles={{
+                    container: {
+                        flex: 0,
+                        position: "absolute",
+                        width: "100%",
+                        zIndex: 1,
+                        paddingTop: 60,
+                        paddingHorizontal: 10
+                    },
+                    listView: {backgroundColor: "grey"},
+                }}
+                //currentLocation={true}
+                //currentLocationLabel='Current Location'
+                nearbyPlacesAPI='GooglePlacesSearch'
+                GoogleReverseGeocodingQuery={{
+                    // ved ikke helt hvad man bruger dette til
+                }}
+                GooglePlacesSearchQuery={{
+                    rankby: 'distance',
+                    type: 'restaurant,bar,cafe'
+                }}
+                GooglePlacesDetailsQuery={{
+                    fields: 'formatted_address,geometry,name'
+                }}
+                debounce={200} // devouncer req i ms. Sat til 0 for at fjerne debounce
 
-                />
+            />
 
-                {
-                    <RenderCurrentLocation props={{hasLocationPermission: hasLocationPermission, currentLocation1: currentLocation1}} />
-                }
-                <MapView
-                    provider={'google'}
-                    initialRegion={region}
-                    style={styles.map}
-                    //style={styles.map}
+            {
+                <RenderCurrentLocation
+                    props={{hasLocationPermission: hasLocationPermission, currentLocation1: currentLocation1}}/>
+            }
+            <MapView
+                provider={'google'}
+                initialRegion={region}
+                style={styles.map}
+                //style={styles.map}
 
 
-                    showsUserLocation
-                    onLongPress={handleLongPress}
-                    >
+                showsUserLocation
+                onLongPress={handleLongPress}
+            >
 
+                <Marker
+                    coordinate={region}
+                    // TODO Skal lige have tilføjet en slags zoom funktion, så man følger pin
+                >
+                    <Callout onPress={() => buttons()}>
+                        <Text>{place.name}</Text>
+                    </Callout>
+
+                </Marker>
+
+
+                {userMarkerCoordinates.map((coordinate, index) => (
                     <Marker
-                        coordinate={region}
-                        // TODO Skal lige have tilføjet en slags zoom funktion, så man følger pin
-                    >
-                        <Callout onPress={() => buttons()}>
-                            <Text>{place.name}</Text>
-                        </Callout>
-
-                    </Marker>
+                        coordinate={coordinate}
+                        key={index.toString()}
+                        onPress={() => handleSelectMarker(coordinate)}
+                    />
+                ))}
 
 
-                    {userMarkerCoordinates.map((coordinate, index) => (
-                        <Marker
-                            coordinate={coordinate}
-                            key={index.toString()}
-                            onPress={() => handleSelectMarker(coordinate)}
-                        />
-                    ))}
+            </MapView>
 
+            {selectedCoordinate && selectedAddress && (
+                <View style={styles.infoBox}>
+                    <Text style={styles.infoText}>
+                        {selectedCoordinate.latitude}, {selectedCoordinate.longitude}
+                    </Text>
+                    <Text style={styles.infoText}>
+                        name: {selectedAddress[0].name} region: {selectedAddress[0].region}
+                    </Text>
+                    <Button title="close" onPress={closeInfoBox}/>
+                </View>
+            )}
 
-
-                </MapView>
-
-                {selectedCoordinate && selectedAddress && (
-                    <View style={styles.infoBox}>
-                        <Text style={styles.infoText}>
-                            {selectedCoordinate.latitude}, {selectedCoordinate.longitude}
-                        </Text>
-                        <Text style={styles.infoText}>
-                            name: {selectedAddress[0].name}  region: {selectedAddress[0].region}
-                        </Text>
-                        <Button title="close" onPress={closeInfoBox} />
-                    </View>
-                )}
-
-            </View>
-        );
-    }
+        </View>
+    );
 }
 
 //Lokal styling til brug i Map

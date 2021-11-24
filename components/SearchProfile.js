@@ -39,33 +39,7 @@ const SearchProfile = () => {
 
 
 
-    if (!firebase.auth().currentUser) {
-        //Her oprettes bruger state variblen
-        const [user, setUser] = useState({loggedIn: false});
 
-        //onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
-        //Pba. brugerens status foretages et callback i form af setUSer metoden, som håndterer user-state variablens status.
-        function onAuthStateChange(callback) {
-            return firebase.auth().onAuthStateChanged(user => {
-                if (user) {
-                    callback({loggedIn: true, user: user});
-                } else {
-                    callback({loggedIn: false});
-                }
-            });
-        }
-
-        //Heri aktiverer vi vores listener i form af onAuthStateChanged, så vi dynamisk observerer om brugeren er aktiv eller ej.
-        useEffect(() => {
-            const unsubscribe = onAuthStateChange(setUser);
-            return () => {
-                unsubscribe();
-            };
-        }, []);
-
-
-
-    } else {
 
         const Profiles = Object.fromEntries(
             Object.entries(MOCKUP_USERS).map(([key, { name, email, id, follows}]) =>
@@ -78,22 +52,9 @@ const SearchProfile = () => {
 
         const idArray = Object.values(Profiles)
         const usersKeys = Object.keys(Profiles)
-        console.log(idArray)
-        console.log(usersKeys)
-        console.log("Object.values(ratings).forEach(item => console.log(item))")
-        console.log(Object.values(ratings).forEach(item => console.log(item.uid)))
 
 
-        const handleFollowProfile = id => {
-            /*Her søger vi direkte i vores array af biler og finder bil objektet som matcher i det vi har tilsendt*/
-            const follow = Object.entries(Profiles).find(follow => follow[0] === id /*id*/)
-            console.log(follow)
-            // forEach igennem idArray med en if firebase.auth().currentUser.uid === idArray[] så skal
 
-        }
-
-console.log("final")
-console.log(final)
 
         return (
             <View>
@@ -125,7 +86,6 @@ console.log(final)
                 })}
             </View>
     )
-    }
 
 }
 
