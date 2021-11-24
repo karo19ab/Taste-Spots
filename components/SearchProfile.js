@@ -15,20 +15,12 @@ const SearchProfile = (props) => {
     return (
         //Viser input boks hvor brugere kan søge efter andre brugere og spisesteder
         <Searchbar
-            placeholder="Search for a profile or place" //Det der står i inputfeltet når det er "empty"
+            placeholder="Søg efter en profil eller et spot" //Det der står i inputfeltet når det er "empty"
             onChangeText={onChangeSearch} //Callback som kaldes når teksten i inputfeltet ændres
             value={searchQuery} //Værdien af inputfeltet
+            style={{marginTop: '10%'}}
         />
     );
 }
 
 export default SearchProfile;
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-});

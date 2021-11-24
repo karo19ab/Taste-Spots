@@ -17,7 +17,7 @@ const GlobalStyles = StyleSheet.create({
             flexDirection: 'row',
             justifyContent: 'center',
             alignItems: 'center',
-            marginTop:'135%',
+            marginTop:'130%',
             width:300,
             borderRadius:15,
             marginLeft: '10%',
@@ -26,7 +26,20 @@ const GlobalStyles = StyleSheet.create({
             fontSize: 50,
             color: "#fff",
             marginLeft: "23%"
-        }
-    });
+        },
+        inputField: {
+            borderColor: 'black',
+            backgroundColor: '#fff',
+            borderRadius:30,
+            borderWidth: 1,
+            width:250,
+            height:45,
+            marginBottom:15,
+            flexDirection: 'row',
+            alignItems:'center',
+            textAlign: 'center',
+            marginLeft: '15%'
+        },
+});
 
 export default GlobalStyles

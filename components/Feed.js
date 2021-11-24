@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff'
     },
     page: {
-        backgroundColor: "#DFD0C0"
+        backgroundColor: "#fff"
     },
     label: { fontWeight: 'bold' },
     image: {

@@ -19,6 +19,7 @@ import LoginForm from "./LoginForm";
 import {GooglePlacesAutocomplete} from "react-native-google-places-autocomplete";
 import SpotRating from "./SpotRating";
 import UploadPicture from "./UploadPicture";
+import GlobalStyles from "../globalStyles/GlobalStyles"
 
 const AddRating = ({navigation, route}) => {
 
@@ -194,7 +195,7 @@ const AddRating = ({navigation, route}) => {
                                     <TextInput
                                         value={newRating[key]}
                                         onChangeText={(event) => changeTextInput(key, event)}
-                                        style={styles.input}
+                                        style={GlobalStyles.inputField}
                                         placeholder={"Hvad skal dine venner vide?"}
                                     />
                                 </View>
@@ -216,7 +217,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: 'center',
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#fff',
     },
     row: {
         flexDirection: 'row',
@@ -235,6 +236,7 @@ const styles = StyleSheet.create({
         height: 40,
         margin: 15,
         marginTop: 5,
+        backgroundColor: '#fff'
 
     },
     image: {
@@ -254,5 +256,5 @@ const styles = StyleSheet.create({
         fontSize: 18,
         fontWeight: 'bold',
         textAlign: 'center',
-    }
+    },
 });

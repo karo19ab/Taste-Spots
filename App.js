@@ -1,4 +1,5 @@
-import React, {useEffect, useState} from 'react';
+import React, {useEffect, useState, } from 'react';
+import {StyleSheet} from 'react-native';
 
 import firebase from 'firebase';
 import ProfileScreen from "./components/ProfileScreen";
@@ -33,7 +34,9 @@ const firebaseConfig = {
 const Stack = createStackNavigator();
 
 //Her oprettes en instans af tabnavigator
-const Tab = createBottomTabNavigator();
+const Tab = createBottomTabNavigator(
+
+);
 
 export default function App() {
   //Her oprettes bruger state variblen
@@ -66,7 +69,7 @@ export default function App() {
 
   const StackNavigation = () => {
     return(
-        <Stack.Navigator>
+        <Stack.Navigator >
             <Stack.Screen name={'Ratings Feed'} component={Feed}/>
             <Stack.Screen name={'Ratings Details'} component={RatingDetails}/>
             <Stack.Screen name={'Edit Rating'} component={AddRating}/>
@@ -77,7 +80,9 @@ export default function App() {
   const MainTabNavigator = () => {
 
       return(
-          <Tab.Navigator>
+          <Tab.Navigator screenOptions={{
+              headerShown: false
+          }}>
               <Tab.Screen
                   name="Feed"
                   component={StackNavigation}
