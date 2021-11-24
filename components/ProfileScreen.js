@@ -66,7 +66,7 @@ const ProfileScreen = (props) => {
                 });
     });
 console.log(ratings)
-    
+
     // Flatlist forventer et array. Derfor tager vi alle values fra vores ratings objekt, og bruger som array til listen
     const ratingsArray = Object.values(ratings).filter(item => item.uid === firebase.auth().currentUser.uid);
     const ratingsKeys = Object.keys(ratings);

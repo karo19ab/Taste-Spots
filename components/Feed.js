@@ -14,6 +14,7 @@ import firebase from "firebase";
 import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
+import GlobalStyles from "../globalStyles/GlobalStyles"
 
 const Feed = ({navigation}) => {
 
@@ -68,22 +69,25 @@ const Feed = ({navigation}) => {
     const ratingsKeys = Object.keys(ratings);
 
     return (
-        <FlatList style={styles.page}
-            data={ratingsArray}
-            // Vi bruger ratingsKeys til at finde ID på den aktuelle bil og returnerer dette som key
-            keyExtractor={(item, index) => ratingsKeys[index]}
-            renderItem={({item,index}) => { return(
-                <TouchableOpacity style={styles.container} onPress={() => handleSelectRating(ratingsKeys[index])}>
-                    <Text>
-                        {
-        //Måske vi skulle lave et gennemsnit af mad, service, atmosfære og value for money i stedet for bare maden
-                        }
-                        {item.Sted}
-                    </Text>
-                </TouchableOpacity>
-            ) } }
-        >
-        </FlatList>
+        <View style={styles.page}>
+            <Text style={styles.logoName}>Taste Spots</Text>
+            <FlatList
+                data={ratingsArray}
+                // Vi bruger ratingsKeys til at finde ID på den aktuelle bil og returnerer dette som key
+                keyExtractor={(item, index) => ratingsKeys[index]}
+                renderItem={({item,index}) => { return(
+                    <TouchableOpacity style={styles.container} onPress={() => handleSelectRating(ratingsKeys[index])}>
+                        <Text>
+                            {
+            //Måske vi skulle lave et gennemsnit af mad, service, atmosfære og value for money i stedet for bare maden
+                            }
+                            {item.Sted}
+                        </Text>
+                    </TouchableOpacity>
+                ) } }
+            >
+            </FlatList>
+        </View>
     )
 }
 
@@ -103,7 +107,9 @@ const styles = StyleSheet.create({
     page: {
         backgroundColor: "#fff"
     },
-    label: { fontWeight: 'bold' },
+    label: {
+        fontWeight: 'bold'
+    },
     image: {
         marginHorizontal: "10%",
         marginTop: "10%",
@@ -123,4 +129,9 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         marginBottom: '30%'
     },
+    logoName: {
+        fontSize: 50,
+        color: "black",
+        marginLeft: "23%"
+    }
 });

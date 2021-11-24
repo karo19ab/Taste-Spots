@@ -130,7 +130,7 @@ export default function App() {
       )
   }
 
-   const StackTest = () => {
+   const GuestStack = () => {
         return (
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{
@@ -144,7 +144,7 @@ export default function App() {
         );
     }
 
-    return user.loggedIn ? <MainTabNavigator /> : <StackTest/> ;
+    return user.loggedIn ? <MainTabNavigator /> : <GuestStack/> ;
 }
 
 /* const StackTest => () => {
