@@ -188,8 +188,11 @@ const AddRating = ({navigation, route}) => {
                 />
                 {/*Hvis vi er inde på edit Rating, vis save changes i stedet for add Rating*/}
                 <UploadPicture/>
-                <Button title={"Tilføj anmeldelse"} onPress={() => handleSave()}
-                        style={styles.button}/>
+                <View style={{ flex: 4, alignItems: 'center', justifyContent: 'center', padding:15}}>
+                    <TouchableOpacity style={GlobalStyles.generalButton} onPress={() => handleSave()} >
+                        <Text style={GlobalStyles.buttonTxt}>Tilføj anmeldelse</Text>
+                    </TouchableOpacity>
+                </View>
             </SafeAreaView>
         );
     }
