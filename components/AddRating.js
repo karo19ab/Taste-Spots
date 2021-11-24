@@ -133,8 +133,10 @@ const AddRating = ({navigation, route}) => {
                         container: {
                             flex: 0,
                             borderWidth: 1,
-                            height: "20%",
+                            padding: 5,
                             margin: 15,
+                            borderColor: "grey",
+                            borderRadius: 20
                         },
                         listView: {backgroundColor: "grey"},
                     }}
@@ -216,6 +218,7 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 1,
+        borderColor: "grey",
         padding: 10,
         height: 40,
         margin: 15,

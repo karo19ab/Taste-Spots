@@ -14,6 +14,8 @@ import {Card} from "react-native-paper";
 import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 
+import {MOCKUP_USERS} from "../const";
+
 const Feed = ({navigation}) => {
 
 
@@ -57,6 +59,7 @@ const Feed = ({navigation}) => {
                 .on('value', snapshot => {
                     setRatings(snapshot.val())
                 });
+
     },[]);
 
     // Vi viser ingenting hvis der ikke er data
@@ -85,7 +88,7 @@ const Feed = ({navigation}) => {
     }
 
     const handleSelectRating = id => {
-        /*Her søger vi direkte i vores array af biler og finder bil objektet som matcher idet vi har tilsendt*/
+        /*Her søger vi direkte i vores array af biler og finder bil objektet som matcher i det vi har tilsendt*/
         const rating = Object.entries(ratings).find(rating => rating[0] === id /*id*/)
         navigation.navigate('Ratings Details', {rating});
     }
@@ -93,6 +96,8 @@ const Feed = ({navigation}) => {
     // Flatlist forventer et array. Derfor tager vi alle values fra vores cars objekt, og bruger som array til listen
     const ratingsArray = Object.values(ratings);
     const ratingsKeys = Object.keys(ratings);
+
+    ratingsArray.forEach(item => console.log(item.uid))
 
     return (
         <FlatList style={styles.page}
@@ -105,7 +110,7 @@ const Feed = ({navigation}) => {
                         {
         //Måske vi skulle lave et gennemsnit af mad, service, atmosfære og value for money i stedet for bare maden
                         }
-                        {item.Sted}, {item.Maden}
+                        {item.Sted}, {item.Anbefaling}
                     </Text>
                 </TouchableOpacity>
             ) } }

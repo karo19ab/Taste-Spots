@@ -265,7 +265,7 @@ function Map () {
 
                     }}
                     styles={{
-                        container: { flex: 0, position: "absolute", width: "100%", zIndex: 1},
+                        container: { flex: 0, position: "absolute", width: "100%", zIndex: 1, paddingTop: 60, paddingHorizontal: 10},
                         listView: {backgroundColor: "grey"},
                     }}
                     //currentLocation={true}
@@ -303,7 +303,7 @@ function Map () {
                         coordinate={region}
                         // TODO Skal lige have tilføjet en slags zoom funktion, så man følger pin
                     >
-                        <Callout onPress={() => {console.log(newSpotWish)}}>
+                        <Callout onPress={() => buttons()}>
                             <Text>{place.name}</Text>
                         </Callout>
 
