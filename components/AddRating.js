@@ -110,7 +110,7 @@ const AddRating = ({navigation, route}) => {
                         padding: 5,
                         margin: 15,
                         borderColor: "grey",
-                        borderRadius: 20
+                        borderRadius: 10
                     },
                     listView: {backgroundColor: "grey"},
                 }}
@@ -156,11 +156,14 @@ const AddRating = ({navigation, route}) => {
                 Hvor mange spots vil du give stedet?
             </Text>
             <SpotRating/>
+            <Text style={styles.label}>
+                Hvad skal dine venner vide?
+            </Text>
             <TextInput
                 //value={newRating}
                 onChangeText={(text) => changeAnbefalingInput(text)}
                 style={styles.input}
-                placeholder={"Hvad skal dine venner vide?"}
+                placeholder={"Fx maden, atmosfære, betjening, value for money.."}
             />
             {/*Hvis vi er inde på edit Rating, vis save changes i stedet for add Rating*/}
             <View>
@@ -200,7 +203,7 @@ const styles = StyleSheet.create({
         padding: 10,
         height: 40,
         margin: 15,
-        marginTop: "10%",
+        borderRadius: 10
 
     },
     image: {
