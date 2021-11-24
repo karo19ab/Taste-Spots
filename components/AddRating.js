@@ -4,6 +4,7 @@ import {
     Button,
     Text,
     View,
+    FlatList,
     TextInput,
     Alert,
     StyleSheet,
@@ -23,6 +24,41 @@ import GlobalStyles from "../globalStyles/GlobalStyles"
 
 const AddRating = ({navigation, route}) => {
 
+    const initialState = {uid: '', Sted: '', Anbefaling: ''}
+    const [newRating, setNewRating] = useState(initialState);
+    // newSted laves, så den set'es i google-places, mens den kan kaldes efterfølgende.
+    const [newSted, setNewSted] = useState('');
+
+
+    const changeAnbefalingInput = (text) => {
+        // Hver gang man skriver noget i text-inputtet, så bliver newRating set'et med disse værdier.
+        setNewRating({Anbefaling: text, Sted: newSted, uid: firebase.auth().currentUser.uid});
+        //console.log(<SpotRating.state.starCount/>)
+    }
+
+
+    function handleSave() {
+        // Den rating som er lavet når man skriver i inputfeltet vil blive pushet.
+        // Hvis ikke der står noget i Anbefalingsfeltet, så vil der komme en alert.
+
+        if (newRating.Anbefaling === '' || newRating.Sted === '') {
+            Alert.alert(`Et eller flere af felterne mangler at blive udfyldt :)`);
+        } else {
+            const {uid, Sted, Anbefaling} = newRating;
+            try {
+
+                firebase
+                    .database()
+                    .ref('/Ratings/')
+                    .push({uid, Sted, Anbefaling});
+                Alert.alert(`Saved`);
+                setNewRating(initialState)
+            } catch (error) {
+                console.log(`Error: ${error.message}`);
+            }
+        }
+
+    }
 
     if (!firebase.auth().currentUser) {
         //Her oprettes bruger state variblen
@@ -48,30 +84,8 @@ const AddRating = ({navigation, route}) => {
             };
         }, []);
 
-        return (
-            <ScrollView>
-                <Image
-                    source={require('../assets/welcomePic.jpeg')}
-                    style={styles.image}/>
-                <Text style={styles.paragraph}>
-                    Opret eller Login for at dele hvor du har spist for nylig!
-                </Text>
-                <Card style={{padding:20}}>
-                    <SignUpForm />
-                </Card>
-
-                <Card style={{padding:20}}>
-                    <LoginForm />
-                </Card>
-                <Text style={styles.paragraph2}>
-                    Jeg håber virkelig dette kan hjælpe bare en smule!
-                </Text>
-            </ScrollView>
-        )
     } else {
-        const initialState = {Anbefaling: ''}
 
-        const [newRating, setNewRating] = useState(initialState);
 
         /*Returnerer true, hvis vi er på edit Rating*/
         const isEditRating = route.name === "Edit Rating";
@@ -87,125 +101,95 @@ const AddRating = ({navigation, route}) => {
             };
         }, []);
 
-        const changeTextInput = (name, event) => {
-            setNewRating({...newRating, [name]: event});
-        }
 
-        const handleSave = () => {
-            const {Anbefaling} = newRating;
-
-            if (initialState.length === 0) {
-                return Alert.alert('Et af felterne er tomme');
-            }
-
-            if (isEditRating) {
-                const id = route.params.rating[0];
-                try {
-                    firebase
-                        .database()
-                        .ref(`/Ratings/${id}`)
-                        // Vi bruger update, så kun de felter vi angiver, bliver ændret
-                        .update({Anbefaling});
-                    // Når bilen er ændret, går vi tilbage.
-                    Alert.alert("Din info er nu opdateret");
-                    const raing = [id, newRating]
-                    navigation.navigate("Ratings Details", {raing});
-                } catch (error) {
-                    console.log(`Error: ${error.message}`);
-                }
-
-            } else {
-                try {
-                    firebase
-                        .database()
-                        .ref('/Ratings/')
-                        .push({Anbefaling});
-                    Alert.alert(`Saved`);
-                    setNewRating(initialState)
-                } catch (error) {
-                    console.log(`Error: ${error.message}`);
-                }
-            }
-        }
-
-        const ratingObj = {
-            ratings: 3,
-            views: 34000
-        }
         return (
             <SafeAreaView style={styles.container}>
-                <ScrollView>
-                    <GooglePlacesAutocomplete
-                        placeholder='Search'
-                        miniLenght={2}
-                        autoFocus={false}
-                        fetchDetails={true}
-                        renderDescription={row=>row.description}
+                <GooglePlacesAutocomplete
+                    placeholder='Search'
+                    minLenght={2}
+                    autoFocus={false}
+                    fetchDetails={true}
+                    renderDescription={row => row.description}
 
-                        onPress={(data, details = null) => {
-                            //TODO Herunder kan man tilføje logik, når der trykkes på det søgte
+                    onPress={(data, details = null) => {
+                        //TODO Herunder kan man tilføje logik, når der trykkes på det søgte
 
-                            // 'details' is provided when fetchDetails = true
-                            console.log(details);
-                            // Måske der skal laves en try-catch her...
-                            //stedValgt = details.name
+                        // newSted sættes til at være det navnet på stedet du trykker på.
+                        setNewSted(details.name)
 
-                        }}
-                        getDefaultValue={()=>''}
-                        query={{
-                            // Husk at kryptér API key, fordi ellers er den tilgængelig for alle!
-                            key: 'AIzaSyCc8mR9JJqFV35qcL7WXn8nBvFPNGZ101w', // Google Places API som vi har skabt
-                            language: 'en', // Resultatets sprog
-                            types: "establishment", // Viser kun businesses. Kan desværre ikke sætte det til kun restauranter fx...
-                            components: "country:dk", // Viser kun resultater fra DK
-                            // Forsøger at sætte søgning til at søge inden for en radius af 20km af KBH (Virker ikke)
-                        }}
-                        styles={{
-                            container: { flex: 0, width: "100%", zIndex: 1},
-                            listView: {backgroundColor: "grey"},
-                        }}
-                        currentLocation={true}
-                        currentLocationLabel='Current Location'
-                        nearbyPlacesAPI='GooglePlacesSearch'
-                        GoogleReverseGeocodingQuery={{
-                            // kan bruges til reverse geocoding
-                        }}
-                        GooglePlacesSearchQuery={{
-                            rankby: 'distance',
-                            type: 'restaurant'
-                        }}
-                        GooglePlacesDetailsQuery={{
-                            // Man skal bare skille fields ad med et komma-tegn.
-                            // Mulige req kan ses her: https://developers.google.com/maps/documentation/places/web-service/details
-                            fields: 'name,place_id,geometry,url'
 
-                        }}
-                        debounce={200} // devouncer req i ms. Sat til 0 for at fjerne debounce
+                        // buttons();
 
-                    />
-                    {
-                        Object.keys(initialState).map((key, index) => {
-                            return (
-                                <View key={index}>
-                                    <Text style={styles.label}>
-                                        Hvor mange spots vil du give stedet?
-                                    </Text>
-                                    <SpotRating/>
-                                    <Text style={styles.label}>{key}</Text>
-                                    <TextInput
-                                        value={newRating[key]}
-                                        onChangeText={(event) => changeTextInput(key, event)}
-                                        style={GlobalStyles.inputField}
-                                        placeholder={"Hvad skal dine venner vide?"}
-                                    />
-                                </View>
-                            )
-                        })
-                    }
-                    {/*Hvis vi er inde på edit Rating, vis save changes i stedet for add Rating*/}
-                    <UploadPicture/>
-                    <Button title={isEditRating ? "Gem ændringer" : "Tilføj anmeldelse"} onPress={() => handleSave()} style={styles.button}/>
-                </ScrollView>
+                    }}
+                    getDefaultValue={() => ''}
+                    query={{
+                        // Husk at krypter API key, fordi ellers er den tilgængelig for alle!
+                        key: 'AIzaSyCc8mR9JJqFV35qcL7WXn8nBvFPNGZ101w',
+                        language: 'en', // Resultatets sprog
+                        types: "establishment",
+                        components: "country:dk",
+                    }}
+                    styles={{
+                        container: {
+                            flex: 0,
+                            borderWidth: 1,
+                            height: "20%",
+                            margin: 15,
+                        },
+                        listView: {backgroundColor: "grey"},
+                    }}
+                    //currentLocation={true}
+                    //currentLocationLabel='Current Location'
+                    nearbyPlacesAPI='GooglePlacesSearch'
+                    GoogleReverseGeocodingQuery={{
+                        // ved ikke helt hvad man bruger dette til
+                    }}
+                    GooglePlacesSearchQuery={{
+                        // Tror ikke noget af det her virker :(
+                        rankby: 'distance',
+                        type: 'restaurant,bar,cafe'
+                    }}
+                    GooglePlacesDetailsQuery={{
+                        fields: 'formatted_address,geometry,name'
+                    }}
+                    debounce={200} // devouncer req i ms. Sat til 0 for at fjerne debounce
+
+                />
+
+                {/*
+                    Object.keys(initialState).map((key, index) => {
+                        return (
+                            <View key={index}>
+                                <Text style={styles.label}>
+                                    Hvor mange spots vil du give stedet?
+                                </Text>
+                                <SpotRating/>
+                                <Text style={styles.label}>{key}</Text>
+                                <TextInput
+                                    value={newRating[key]}
+                                    onChangeText={(event) => changeTextInput(key, event)}
+                                    style={styles.input}
+                                    placeholder={"Hvad skal dine venner vide?"}
+                                />
+                            </View>
+                        )
+                    })
+                    */
+                }
+                <Text style={styles.label}>
+                    Hvor mange spots vil du give stedet?
+                </Text>
+                <SpotRating/>
+                <TextInput
+                    //value={newRating}
+                    onChangeText={(text) => changeAnbefalingInput(text)}
+                    style={styles.input}
+                    placeholder={"Hvad skal dine venner vide?"}
+                />
+                {/*Hvis vi er inde på edit Rating, vis save changes i stedet for add Rating*/}
+                <UploadPicture/>
+                <Button title={"Tilføj anmeldelse"} onPress={() => handleSave()}
+                        style={styles.button}/>
             </SafeAreaView>
         );
     }
@@ -232,11 +216,10 @@ const styles = StyleSheet.create({
     },
     input: {
         borderWidth: 1,
-        padding:10,
+        padding: 10,
         height: 40,
         margin: 15,
-        marginTop: 5,
-        backgroundColor: '#fff'
+        marginTop: "10%",
 
     },
     image: {

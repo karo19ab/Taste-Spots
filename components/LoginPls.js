@@ -2,8 +2,7 @@ import firebase from "firebase";
 import React, {useEffect, useState} from 'react';
 
 
-
-function LoginPls () {
+function LoginPls() {
 
     //Her oprettes bruger state variblen
     const [user, setUser] = useState({loggedIn: false});

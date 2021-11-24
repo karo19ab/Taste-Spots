@@ -168,7 +168,7 @@ function Map () {
                 },
                 {
                     text: 'Rate the Spot',
-                    onPress: () => console.log('Navigate pls')
+                    onPress: () => console.log(newSpotWish)
                 }
             ]
         )
@@ -176,27 +176,30 @@ function Map () {
 
 
 
-    //Hvis der af en eller anden grund ikke skulle være muligt at fremfinde den aktive bruger,
-    //skal der udprintes en besked om dette igennem en tekstkomponent
     if (!firebase.auth().currentUser) {
-        return (
-            <ScrollView>
-                <Image
-                    source={require('../assets/dk-madkort.jpeg')}
-                    style={styles.image}/>
+        //Her oprettes bruger state variblen
+        const [user, setUser] = useState({loggedIn: false});
 
-                <Card style={{padding:20}}>
-                    <SignUpForm />
-                </Card>
+        //onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
+        //Pba. brugerens status foretages et callback i form af setUSer metoden, som håndterer user-state variablens status.
+        function onAuthStateChange(callback) {
+            return firebase.auth().onAuthStateChanged(user => {
+                if (user) {
+                    callback({loggedIn: true, user: user});
+                } else {
+                    callback({loggedIn: false});
+                }
+            });
+        }
 
-                <Card style={{padding:20}}>
-                    <LoginForm />
-                </Card>
-                <Text style={styles.paragraph2}>
-                    Jeg håber virkelig dette kan hjælpe bare en smule!
-                </Text>
-            </ScrollView>
-        )
+        //Heri aktiverer vi vores listener i form af onAuthStateChanged, så vi dynamisk observerer om brugeren er aktiv eller ej.
+        useEffect(() => {
+            const unsubscribe = onAuthStateChange(setUser);
+            return () => {
+                unsubscribe();
+            };
+        }, []);
+
     }else
         /*
   * Dernæst kaldes RenderCurrenokation view
@@ -300,7 +303,7 @@ function Map () {
                         coordinate={region}
                         // TODO Skal lige have tilføjet en slags zoom funktion, så man følger pin
                     >
-                        <Callout onPress={() => buttons()}>
+                        <Callout onPress={() => {console.log(newSpotWish)}}>
                             <Text>{place.name}</Text>
                         </Callout>
 

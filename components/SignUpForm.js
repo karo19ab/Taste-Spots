@@ -10,7 +10,6 @@ import {
 } from 'react-native';
 import firebase from 'firebase';
 import StackNavigator from "@react-navigation/stack/src/navigators/createStackNavigator";
-import Feed from "./Feed";
 
 const SignUpForm = (props) => {
 

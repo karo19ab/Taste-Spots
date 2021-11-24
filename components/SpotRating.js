@@ -1,11 +1,13 @@
 import StarRating from 'react-native-star-rating';
 import * as React from 'react';
-import {Component} from "react";
+import {Component, useState} from "react";
 import {StyleSheet} from "react-native";
 import GlobalStyles from "../globalStyles/GlobalStyles"
 
 //Find ud af hvad component betyder
 class SpotRating extends Component {
+
+
 
     constructor(props) {
         super(props);
@@ -22,6 +24,9 @@ class SpotRating extends Component {
     }
 
     render() {
+        // const [newRating, setNewRating] = useState(0);
+
+
         return (
             <StarRating
                 disabled={false}
@@ -33,6 +38,7 @@ class SpotRating extends Component {
                 selectedStar={(rating) => this.onStarRatingPress(rating)}
                 fullStarColor={'#B45626'}
             />
+
         );
     }
 }
