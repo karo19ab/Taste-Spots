@@ -68,15 +68,24 @@ export default function App() {
     };
   }, []);
 
-  const StackNavigation = () => {
+  const StackNavigationFeed = () => {
     return(
         <Stack.Navigator >
             <Stack.Screen name={'Ratings Feed'} component={Feed}/>
             <Stack.Screen name={'Ratings Details'} component={RatingDetails}/>
-            <Stack.Screen name={'Edit Rating'} component={AddRating}/>
         </Stack.Navigator>
     )
   }
+
+    const StackNavigationProfile = () => {
+        return(
+            <Stack.Navigator >
+                <Stack.Screen name={'Profile Screen'} component={ProfileScreen}/>
+                <Stack.Screen name={'Ratings Details'} component={RatingDetails}/>
+                <Stack.Screen name={'Edit Rating'} component={AddRating}/>
+            </Stack.Navigator>
+        )
+    }
 
   const MainTabNavigator = () => {
       return(
@@ -87,7 +96,7 @@ export default function App() {
           }}>
               <Tab.Screen
                   name="Feed"
-                  component={StackNavigation}
+                  component={StackNavigationFeed}
                   options={{tabBarIcon: ({color, size}) => (
                           <Ionicons name="restaurant" color={color} size={size} />),headerShown:null}}
               />
@@ -115,7 +124,7 @@ export default function App() {
               />
               <Tab.Screen
                   name="Profile"
-                  component={ProfileScreen}
+                  component={StackNavigationProfile}
                   options={{
                       tabBarLabel: 'Profile',
                       tabBarIcon: ({color, size}) => (
