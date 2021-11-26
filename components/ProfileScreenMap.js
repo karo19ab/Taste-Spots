@@ -1,4 +1,4 @@
-import React, {useEffect, useState, Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     View,
     Text,
@@ -16,12 +16,13 @@ import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 import Feed from "./Feed";
 import GlobalStyles from "../globalStyles/GlobalStyles";
-import kasperProfile from "../assets/kasperProfile.png"
+import kasperProfile from "../assets/kasperProfile.png";
+import profileMap from "../assets/profileMap.png"
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import ProfileScreenMap from './ProfileScreenMap'
+import ProfileScreen from './ProfileScreen'
 
 
-const ProfileScreen = (props) => {
+const ProfileScreenMap = (props) => {
     //useState til at vise ratings på profilside.
     const [ratings, setRatings] = useState('');
 
@@ -44,7 +45,7 @@ const ProfileScreen = (props) => {
                     setRatings(snapshot.val())
                 });
     });
-console.log(ratings)
+    console.log(ratings)
 
     // Flatlist forventer et array. Derfor tager vi alle values fra vores ratings objekt, og bruger som array til listen
     const ratingsArray = Object.values(ratings).filter(item => item.uid === firebase.auth().currentUser.uid);
@@ -97,12 +98,12 @@ console.log(ratings)
             <View style={[styles.userInfo, styles.bordered]}>
                 <View style={styles.section}>
                     <TouchableOpacity>
-                        <IonIcon name="restaurant" size={17} color="black"></IonIcon>
+                        <IonIcon name="restaurant-outline" size={17} color="black"></IonIcon>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.section}>
                     <TouchableOpacity>
-                        <IonIcon name="map-outline" size={17} color="black"></IonIcon>
+                        <IonIcon name="map" size={17} color="black"></IonIcon>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.section}>
@@ -111,28 +112,11 @@ console.log(ratings)
                     </TouchableOpacity>
                 </View>
             </View>
-
             {/*Nederst på profilsiden, hvor anmeldelserne oprettet af profilen bliver vist*/}
             <View>
-                {/*<Text>Vis anmeldelser</Text>*/}
-                {/*FlatList der viser anmeldelser (Skal laves om til at vise brugeren logget inds anmeldelser)*/}
-                <FlatList style={styles.page}
-                          data={ratingsArray}
-                    // Vi bruger ratingsKeys til at finde ID på den aktuelle bil og returnerer dette som key
-                          keyExtractor={(item, index) => ratingsKeys[index]}
-                          renderItem={({item,index}) => { return(
-                              <TouchableOpacity key={index} style={styles.feedContainer} onPress={() => handleSelectRating(ratingsKeys[index])}>
-                                  <Text>
-                                      {item.Sted}
-                                  </Text>
-                              </TouchableOpacity>
-                          ) } }
-                >
-                </FlatList>
-                <TouchableOpacity style={styles.buttonContainer} onPress={() => handleLogOut()}>
-                    <Text style={styles.loginText}>Log ud</Text>
-                </TouchableOpacity>
+                <Image source={profileMap} style={styles.map}/>
             </View>
+
             {/*Log ud knap*/}
             <Text>Current user: {firebase.auth().currentUser && firebase.auth().currentUser.email}</Text>
         </View>
@@ -170,7 +154,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#DFD0C0",
     },
     headerContent:{
-      margin: '8%',
+        margin: '8%',
     },
     paragraph2: {
         fontSize: 18,
@@ -221,7 +205,12 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingVertical: 15,
     },
+    map: {
+        width: 400,
+        height: 410,
+
+    }
 });
 
 //Eksport af Loginform, således denne kan importeres og benyttes i andre komponenter
-export default ProfileScreen
+export default ProfileScreenMap

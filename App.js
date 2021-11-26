@@ -17,6 +17,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SignUpForm from "./components/SignUpForm";
 import LoginForm from "./components/LoginForm";
 import LandingPage from "./components/LandingPage";
+import ProfileScreenMap from "./components/ProfileScreenMap"
 
 //Malene overskriver
 // Your web app's Firebase configuration
@@ -77,9 +78,6 @@ export default function App() {
     )
   }
 
-
-
-
   const MainTabNavigator = () => {
       return(
           <NavigationContainer>
@@ -118,6 +116,16 @@ export default function App() {
               <Tab.Screen
                   name="Profile"
                   component={ProfileScreen}
+                  options={{
+                      tabBarLabel: 'Profile',
+                      tabBarIcon: ({color, size}) => (
+                          <MaterialCommunityIcons name="account" color={color} size={size}/>
+                      ),
+                  }}
+              />
+              <Tab.Screen
+                  name="Profilemap"
+                  component={ProfileScreenMap}
                   options={{
                       tabBarLabel: 'Profile',
                       tabBarIcon: ({color, size}) => (
