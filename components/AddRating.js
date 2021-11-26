@@ -166,9 +166,14 @@ const AddRating = ({navigation, route}) => {
                 placeholder={"Fx maden, atmosfære, betjening, value for money.."}
             />
             {/*Hvis vi er inde på edit Rating, vis save changes i stedet for add Rating*/}
-            <UploadPicture/>
-            <Button title={"Tilføj anmeldelse"} onPress={() => handleSave()}
-                    style={styles.button}/>
+            <View>
+                <UploadPicture/>
+            </View>
+            <View style={{ flex: 1, alignItems: 'center', padding:15, marginTop: '5%'}}>
+                <TouchableOpacity style={GlobalStyles.generalButton} onPress={() => handleSave()} >
+                    <Text style={GlobalStyles.buttonTxt}>Tilføj anmeldelse</Text>
+                </TouchableOpacity>
+            </View>
         </SafeAreaView>
     );
 }
