@@ -56,7 +56,6 @@ const Feed = ({navigation}) => {
                 </TouchableOpacity>
                 <Text>Current user: { firebase.auth().currentUser && firebase.auth().currentUser.email}</Text>
             </View>
-
         );
     }
 

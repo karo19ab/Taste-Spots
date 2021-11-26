@@ -146,21 +146,3 @@ export default function App() {
 
     return user.loggedIn ? <MainTabNavigator /> : <GuestStack/> ;
 }
-
-/* const StackTest => () => {
-        return (
-            <NavigationContainer>
-                <Stack.Navigator screenOptions={{
-                    headerShown: false
-                }}>
-                    {
-                        !firebase.auth().currentUser
-                        && <Stack.Screen name={'LandingPage'} component={LandingPage}/>
-                    }
-                    <Stack.Screen name={'MainNavigator'} component={MainTabNavigator}/>
-                    <Stack.Screen name={'Login'} component={LoginForm}/>
-                    <Stack.Screen name={'SignUpForm'} component={SignUpForm}/>
-                </Stack.Navigator>
-            </NavigationContainer>
-        );
-    }*/
