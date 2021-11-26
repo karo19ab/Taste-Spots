@@ -24,7 +24,6 @@ class SpotRating extends Component {
     render() {
         // const [newRating, setNewRating] = useState(0);
 
-
         return (
             <StarRating
                 disabled={false}

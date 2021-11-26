@@ -22,6 +22,18 @@ const GlobalStyles = StyleSheet.create({
             borderRadius:15,
             marginLeft: '10%',
         },
+        generalButton:{
+            height:50,
+            backgroundColor:"#B45626",
+            flexDirection: 'row',
+            justifyContent: 'center',
+            alignItems: 'center',
+            width:"50%",
+            borderRadius:15
+        },
+        buttonTxt:{
+            color:"white"
+        },
         logoName: {
             fontSize: 50,
             color: "#fff",
