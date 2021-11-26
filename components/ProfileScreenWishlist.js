@@ -17,12 +17,15 @@ import LoginForm from "./LoginForm";
 import Feed from "./Feed";
 import GlobalStyles from "../globalStyles/GlobalStyles";
 import kasperProfile from "../assets/kasperProfile.png";
-import profileMap from "../assets/profileMap.png"
+import restaurantSilo from "../assets/restaurantSilo.png"
+import hoest from "../assets/hoest.png"
+import mogk from "../assets/mogk.png"
+import norrebro from "../assets/norrebro.png"
 import IonIcon from 'react-native-vector-icons/Ionicons';
 import ProfileScreen from './ProfileScreen'
 
 
-const ProfileScreenMap = (props) => {
+const ProfileScreenWishlist = (props) => {
     //useState til at vise ratings på profilside.
     const [ratings, setRatings] = useState('');
 
@@ -102,20 +105,43 @@ const ProfileScreenMap = (props) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.section}>
-                    <TouchableOpacity>
-                        <IonIcon name="map" size={17} color="black"></IonIcon>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('Profile Screen Map')}>
+                        <IonIcon name="map-outline" size={17} color="black"></IonIcon>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.section}>
-                    <TouchableOpacity onPress={() => props.navigation.navigate('Profile Screen Wish')}>
-                        <IonIcon name="star-outline" size={17} color="black"></IonIcon>
+                    <TouchableOpacity>
+                        <IonIcon name="star" size={17} color="black"></IonIcon>
                     </TouchableOpacity>
                 </View>
             </View>
             {/*Nederst på profilsiden, hvor anmeldelserne oprettet af profilen bliver vist*/}
-            <View>
-                <Image source={profileMap} style={styles.map}/>
-            </View>
+            <ScrollView>
+                <View style={styles.widgetlayout}>
+                    <View>
+                        <Image source={restaurantSilo} style={styles.widget}/>
+                    </View>
+                    <View>
+                        <Image source={hoest} style={styles.widget}/>
+                    </View>
+                </View>
+                <View style={ styles.widgetlayout}>
+                    <View>
+                        <Image source={mogk} style={styles.widget}/>
+                    </View>
+                    <View>
+                        <Image source={norrebro} style={styles.widget}/>
+                    </View>
+                </View>
+                <View style={ styles.widgetlayout}>
+                    <View>
+                        <Image source={restaurantSilo} style={styles.widget}/>
+                    </View>
+                    <View>
+                        <Image source={restaurantSilo} style={styles.widget}/>
+                    </View>
+                </View>
+            </ScrollView>
 
             {/*Log ud knap*/}
         </View>
@@ -128,6 +154,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         backgroundColor: '#fff',
+
     },
     feedContainer: {
         flex: 1,
@@ -203,12 +230,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingVertical: 15,
     },
-    map: {
-        width: 400,
-        height: 410,
-
+    widget: {
+        width: 170,
+        height: 170,
+        marginLeft: '4%',
+        borderRadius:15,
+    },
+    widgetlayout: {
+        flexDirection: 'row',
+        marginTop: '3%'
     }
 });
 
 //Eksport af Loginform, således denne kan importeres og benyttes i andre komponenter
-export default ProfileScreenMap
+export default ProfileScreenWishlist

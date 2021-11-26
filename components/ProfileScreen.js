@@ -101,12 +101,12 @@ console.log(ratings)
                     </TouchableOpacity>
                 </View>
                 <View style={styles.section}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('Profile Screen Map')}>
                         <IonIcon name="map-outline" size={17} color="black"></IonIcon>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.section}>
-                    <TouchableOpacity>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('Profile Screen Wish')}>
                         <IonIcon name="star-outline" size={17} color="black"></IonIcon>
                     </TouchableOpacity>
                 </View>
@@ -145,7 +145,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         backgroundColor: '#fff',
-        padding: 1,
     },
     feedContainer: {
         flex: 1,
