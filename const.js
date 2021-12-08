@@ -24,13 +24,15 @@ export const MOCKUP_USERS = {
         follows: {}
     }
 }
-    export const KEYS ={
-        user1: {
-            id: "-MosPGnWihJzGrkGuFVV",
-        },
-        user2: {
-            id: "hovY0y3ubtYtPvUXIzmrjO2cvat1",
-        },
-    }
+export const KEYS = {
+    user1: {
+        id: "-MosPGnWihJzGrkGuFVV",
+    },
+    user2: {
+        id: "hovY0y3ubtYtPvUXIzmrjO2cvat1",
+    },
+}
+
+
 
 

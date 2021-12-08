@@ -18,22 +18,25 @@ import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 // import LoginPls from "./LoginPls";
 import {GooglePlacesAutocomplete} from "react-native-google-places-autocomplete";
-import SpotRating from "./SpotRating";
 import UploadPicture from "./UploadPicture";
-import GlobalStyles from "../globalStyles/GlobalStyles"
+import GlobalStyles from "../globalStyles/GlobalStyles";
+import StarRating from "react-native-star-rating";
 
 const AddRating = ({navigation, route}) => {
 
-    const initialState = {uid: '', Sted: '', Anbefaling: ''}
+    const initialState = {uid: '', Sted: '', Vurdering: 3, Anbefaling: ''}
     const [newRating, setNewRating] = useState(initialState);
     // newSted laves, så den set'es i google-places, mens den kan kaldes efterfølgende.
     const [newSted, setNewSted] = useState('');
+    const [newVurdering, setNewVurdering] = useState(3);
+
+
 
 
     const changeAnbefalingInput = (text) => {
         // Hver gang man skriver noget i text-inputtet, så bliver newRating set'et med disse værdier.
-        setNewRating({Anbefaling: text, Sted: newSted, uid: firebase.auth().currentUser.uid});
-        //console.log(<SpotRating.state.starCount/>)
+        setNewRating({Anbefaling: text, Sted: newSted, Vurdering: newVurdering, uid: firebase.auth().currentUser.uid});
+
     }
 
 
@@ -44,13 +47,15 @@ const AddRating = ({navigation, route}) => {
         if (newRating.Anbefaling === '' || newRating.Sted === '') {
             Alert.alert(`Et eller flere af felterne mangler at blive udfyldt :)`);
         } else {
-            const {uid, Sted, Anbefaling} = newRating;
+            const {uid, Sted, Vurdering, Anbefaling} = newRating;
+
+
             try {
 
                 firebase
                     .database()
                     .ref('/Ratings/')
-                    .push({uid, Sted, Anbefaling});
+                    .push({uid, Sted, Vurdering, Anbefaling});
                 Alert.alert(`Saved`);
                 setNewRating(initialState)
             } catch (error) {
@@ -74,6 +79,11 @@ const AddRating = ({navigation, route}) => {
             setNewRating(initialState)
         };
     }, []);
+
+    //Når man trykker
+    function onStarRatingPress(rating) {
+        setNewVurdering(rating)
+    }
 
 
     return (
@@ -155,7 +165,17 @@ const AddRating = ({navigation, route}) => {
             <Text style={styles.label}>
                 Hvor mange spots vil du give stedet?
             </Text>
-            <SpotRating/>
+            {/*Vi har taget koden ud af "SpotRating komponenten for at kunne bruge en useState*/}
+            <StarRating
+                disabled={false}
+                emptyStar={'ios-location-outline'}
+                fullStar={'ios-location-sharp'}
+                iconSet={'Ionicons'}
+                maxStars={6}
+                rating={newVurdering}
+                selectedStar={(rating) => onStarRatingPress(rating)}
+                fullStarColor={'#B45626'}
+            />
             <Text style={styles.label}>
                 Hvad skal dine venner vide?
             </Text>

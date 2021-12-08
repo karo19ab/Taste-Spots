@@ -69,7 +69,7 @@ const Feed = ({navigation}) => {
     const ratingsArray = Object.values(ratings);
     const ratingsKeys = Object.keys(ratings);
 
-    ratingsArray.forEach(item => console.log(item.uid))
+    // ratingsArray.forEach(item => console.log(item.uid))
 
     return (
         <View style={styles.page}>

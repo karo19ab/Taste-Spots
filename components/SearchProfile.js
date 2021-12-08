@@ -31,6 +31,7 @@ const SearchProfile = () => {
         followingArr.forEach(follow => {
             Object.values(ratings).forEach(item => {
                 if (item.uid === follow){
+                    // https://javascript.plainenglish.io/how-to-add-to-an-array-in-react-state-3d08ddb2e1dc
                     setFinal(final => [...final, item])
                 }
             })

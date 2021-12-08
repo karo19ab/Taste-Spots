@@ -19,7 +19,7 @@ import GlobalStyles from "../globalStyles/GlobalStyles";
 import kasperProfile from "../assets/kasperProfile.png"
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-const ProfileScreen = (props) => {
+const ProfileScreen = ({navigation}) => {
     //useState til at vise ratings på profilside.
     const [ratings, setRatings] = useState('');
 
@@ -42,7 +42,13 @@ const ProfileScreen = (props) => {
                     setRatings(snapshot.val())
                 });
     });
-console.log(ratings)
+
+    const handleSelectRating = id => {
+        /*Her søger vi direkte i vores array af ratings og finder rating objektet som matcher det vi har tilsendt*/
+        const rating = Object.entries(ratings).find(rating => rating[0] === id /*id*/)
+        navigation.navigate('Ratings Details', {rating});
+    }
+
 
     // Flatlist forventer et array. Derfor tager vi alle values fra vores ratings objekt, og bruger som array til listen
     const ratingsArray = Object.values(ratings).filter(item => item.uid === firebase.auth().currentUser.uid);
