@@ -135,6 +135,6 @@ const styles = StyleSheet.create({
     logoName: {
         fontSize: 50,
         color: "black",
-        marginLeft: "23%"
+        textAlign: 'center'
     }
 });

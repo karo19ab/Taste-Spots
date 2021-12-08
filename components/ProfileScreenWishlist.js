@@ -1,4 +1,4 @@
-import React, {useEffect, useState, Component} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
     View,
     Text,
@@ -16,12 +16,16 @@ import SignUpForm from "./SignUpForm";
 import LoginForm from "./LoginForm";
 import Feed from "./Feed";
 import GlobalStyles from "../globalStyles/GlobalStyles";
-import kasperProfile from "../assets/kasperProfile.png"
+import kasperProfile from "../assets/kasperProfile.png";
+import restaurantSilo from "../assets/restaurantSilo.png"
+import hoest from "../assets/hoest.png"
+import mogk from "../assets/mogk.png"
+import norrebro from "../assets/norrebro.png"
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import ProfileScreenMap from './ProfileScreenMap'
+import ProfileScreen from './ProfileScreen'
 
 
-const ProfileScreen = ({navigation}) => {
+const ProfileScreenWishlist = (props) => {
     //useState til at vise ratings på profilside.
     const [ratings, setRatings] = useState('');
 
@@ -44,13 +48,7 @@ const ProfileScreen = ({navigation}) => {
                     setRatings(snapshot.val())
                 });
     });
-
-    const handleSelectRating = id => {
-        /*Her søger vi direkte i vores array af ratings og finder rating objektet som matcher det vi har tilsendt*/
-        const rating = Object.entries(ratings).find(rating => rating[0] === id /*id*/)
-        navigation.navigate('Ratings Details', {rating});
-    }
-
+    console.log(ratings)
 
     // Flatlist forventer et array. Derfor tager vi alle values fra vores ratings objekt, og bruger som array til listen
     const ratingsArray = Object.values(ratings).filter(item => item.uid === firebase.auth().currentUser.uid);
@@ -102,8 +100,8 @@ const ProfileScreen = ({navigation}) => {
             {/*Her kan man skifte mellem ens anmeldelser, mapview over hvor man har spist og ønskeliste.*/}
             <View style={[styles.userInfo, styles.bordered]}>
                 <View style={styles.section}>
-                    <TouchableOpacity>
-                        <IonIcon name="restaurant" size={17} color="black"></IonIcon>
+                    <TouchableOpacity onPress={() => props.navigation.navigate('Profile Screen')}>
+                        <IonIcon name="restaurant-outline" size={17} color="black"></IonIcon>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.section}>
@@ -112,35 +110,40 @@ const ProfileScreen = ({navigation}) => {
                     </TouchableOpacity>
                 </View>
                 <View style={styles.section}>
-                    <TouchableOpacity onPress={() => props.navigation.navigate('Profile Screen Wish')}>
-                        <IonIcon name="star-outline" size={17} color="black"></IonIcon>
+                    <TouchableOpacity>
+                        <IonIcon name="star" size={17} color="black"></IonIcon>
                     </TouchableOpacity>
                 </View>
             </View>
-
             {/*Nederst på profilsiden, hvor anmeldelserne oprettet af profilen bliver vist*/}
-            <View>
-                {/*<Text>Vis anmeldelser</Text>*/}
-                {/*FlatList der viser anmeldelser (Skal laves om til at vise brugeren logget inds anmeldelser)*/}
-                <FlatList style={styles.page}
-                          data={ratingsArray}
-                    // Vi bruger ratingsKeys til at finde ID på den aktuelle bil og returnerer dette som key
-                          keyExtractor={(item, index) => ratingsKeys[index]}
-                          renderItem={({item,index}) => { return(
-                              <TouchableOpacity key={index} style={styles.feedContainer} onPress={() => handleSelectRating(ratingsKeys[index])}>
-                                  <Text>
-                                      {item.Sted}
-                                  </Text>
-                              </TouchableOpacity>
-                          ) } }
-                >
-                </FlatList>
-                <TouchableOpacity style={styles.buttonContainer} onPress={() => handleLogOut()}>
-                    <Text style={styles.loginText}>Log ud</Text>
-                </TouchableOpacity>
-            </View>
+            <ScrollView>
+                <View style={styles.widgetlayout}>
+                    <View>
+                        <Image source={restaurantSilo} style={styles.widget}/>
+                    </View>
+                    <View>
+                        <Image source={hoest} style={styles.widget}/>
+                    </View>
+                </View>
+                <View style={ styles.widgetlayout}>
+                    <View>
+                        <Image source={mogk} style={styles.widget}/>
+                    </View>
+                    <View>
+                        <Image source={norrebro} style={styles.widget}/>
+                    </View>
+                </View>
+                <View style={ styles.widgetlayout}>
+                    <View>
+                        <Image source={restaurantSilo} style={styles.widget}/>
+                    </View>
+                    <View>
+                        <Image source={restaurantSilo} style={styles.widget}/>
+                    </View>
+                </View>
+            </ScrollView>
+
             {/*Log ud knap*/}
-            <Text>Current user: {firebase.auth().currentUser && firebase.auth().currentUser.email}</Text>
         </View>
     );
 }
@@ -151,6 +154,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         backgroundColor: '#fff',
+
     },
     feedContainer: {
         flex: 1,
@@ -175,7 +179,7 @@ const styles = StyleSheet.create({
         backgroundColor: "#DFD0C0",
     },
     headerContent:{
-      margin: '8%',
+        margin: '8%',
     },
     paragraph2: {
         fontSize: 18,
@@ -191,7 +195,7 @@ const styles = StyleSheet.create({
         width:300,
         borderRadius:15,
         marginLeft: '10%',
-        backgroundColor: '#DFD0C0',
+        backgroundColor: '#B45626',
         shadowOpacity: 0.1,
     },
     name:{
@@ -226,7 +230,17 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         paddingVertical: 15,
     },
+    widget: {
+        width: 170,
+        height: 170,
+        marginLeft: '4%',
+        borderRadius:15,
+    },
+    widgetlayout: {
+        flexDirection: 'row',
+        marginTop: '3%'
+    }
 });
 
 //Eksport af Loginform, således denne kan importeres og benyttes i andre komponenter
-export default ProfileScreen
+export default ProfileScreenWishlist

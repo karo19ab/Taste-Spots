@@ -17,6 +17,8 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import SignUpForm from "./components/SignUpForm";
 import LoginForm from "./components/LoginForm";
 import LandingPage from "./components/LandingPage";
+import ProfileScreenMap from "./components/ProfileScreenMap"
+import ProfileScreenWishlist from "./components/ProfileScreenWishlist"
 
 //Malene overskriver
 // Your web app's Firebase configuration
@@ -78,16 +80,17 @@ export default function App() {
 
     const StackNavigationProfile = () => {
         return(
-            <Stack.Navigator >
+            <Stack.Navigator screenOptions={{
+                headerShown: false
+            }}>
                 <Stack.Screen name={'Profile Screen'} component={ProfileScreen}/>
+                <Stack.Screen name={'Profile Screen Map'} component={ProfileScreenMap}/>
+                <Stack.Screen name={'Profile Screen Wish'} component={ProfileScreenWishlist}/>
                 <Stack.Screen name={'Ratings Details'} component={RatingDetails}/>
                 <Stack.Screen name={'Edit Rating'} component={AddRating}/>
             </Stack.Navigator>
         )
     }
-
-
-
 
   const MainTabNavigator = () => {
       return(
