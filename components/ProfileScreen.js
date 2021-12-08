@@ -185,7 +185,7 @@ const styles = StyleSheet.create({
         width:300,
         borderRadius:15,
         marginLeft: '10%',
-        backgroundColor: '#B45626',
+        backgroundColor: '#DFD0C0',
         shadowOpacity: 0.1,
     },
     name:{
