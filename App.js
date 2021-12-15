@@ -1,27 +1,29 @@
-import React, {useEffect, useState, } from 'react';
-import {StyleSheet} from 'react-native';
-
+// Funktionaliteter
 import firebase from 'firebase';
-import ProfileScreen from "./components/ProfileScreen";
-import SearchProfile from "./components/SearchProfile";
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import { createStackNavigator } from '@react-navigation/stack';
-import RatingDetails from "./components/RatingDetails";
-import Feed from "./components/Feed";
-import AddRating from "./components/AddRating";
-import ImagePickerExample from "./components/AddRating";
-import Map from "./components/Map";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
-import SignUpForm from "./components/SignUpForm";
-import LoginForm from "./components/LoginForm";
-import LandingPage from "./components/LandingPage";
-import ProfileScreenMap from "./components/ProfileScreenMap"
-import ProfileScreenWishlist from "./components/ProfileScreenWishlist"
+import React, {useEffect, useState,} from 'react';
+import {NavigationContainer} from '@react-navigation/native';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 
-//Malene overskriver
-// Your web app's Firebase configuration
+// Ikoner
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
+
+// Komponenter
+import Map from "./components/Map";
+import Feed from "./components/Feed";
+import Friends from "./components/Friends";
+import LoginForm from "./components/LoginForm";
+import AddRating from "./components/AddRating";
+import SignUpForm from "./components/SignUpForm";
+import LandingPage from "./components/LandingPage";
+import ProfileScreen from "./components/ProfileScreen";
+import RatingDetails from "./components/RatingDetails";
+import ProfileScreenMap from "./components/ProfileScreenMap";
+import ProfileScreenWishlist from "./components/ProfileScreenWishlist";
+
+
+// Vores Firebase konfigurationer
 const firebaseConfig = {
     apiKey: "AIzaSyAtDYZsBwF5FBtu44xeOnDzAXZiHGedSJc",
     authDomain: "brugerinddragelse-317c1.firebaseapp.com",
@@ -32,117 +34,137 @@ const firebaseConfig = {
     appId: "1:747991614026:web:1c721bd804f75890e29cb3"
 };
 
-//Her instantieres en StackNavigator.
+//StackNavigator instantieres.
 const Stack = createStackNavigator();
 
-//Her oprettes en instans af tabnavigator
-const Tab = createBottomTabNavigator(
-
-);
+//Tabnavigator instantieres
+const Tab = createBottomTabNavigator();
 
 export default function App() {
-  //Her oprettes bruger state variblen
-  const [user, setUser] = useState({loggedIn: false});
 
-  //Koden sikrer at kun én Firebase initieres under brug af appen.
-  if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-  }
+    // UseState til brugere
+    const [user, setUser] = useState({loggedIn: false});
 
-  //onAuthstatechanged er en prædefineret metode, forsynet af firebase, som konstant observerer brugerens status (logget ind vs logget ud)
-  //Pba. brugerens status foretages et callback i form af setUSer metoden, som håndterer user-state variablens status.
-  function onAuthStateChange(callback) {
-    return firebase.auth().onAuthStateChanged(user => {
-      if (user) {
-        callback({loggedIn: true, user: user});
-      } else {
-        callback({loggedIn: false});
-      }
-    });
-  }
+    // Her sikres at kun én Firebase initieres under brug af appen.
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
 
-  //Heri aktiverer vi vores listener i form af onAuthStateChanged, så vi dynamisk observerer om brugeren er aktiv eller ej.
-  useEffect(() => {
-    const unsubscribe = onAuthStateChange(setUser);
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+    // onAuthstatechanged observerer brugerens status konstant (logget ind vs logget ud)
+    // Pba. brugerens status foretages et callback, som håndterer user-state variablens status.
+    function onAuthStateChange(callback) {
+        return firebase.auth().onAuthStateChanged(user => {
+            if (user) {
+                callback({loggedIn: true, user: user});
+            } else {
+                callback({loggedIn: false});
+            }
+        });
+    }
 
-  const StackNavigationFeed = () => {
-    return(
-        <Stack.Navigator >
-            <Stack.Screen name={'Ratings Feed'} component={Feed}/>
-            <Stack.Screen name={'Ratings Details'} component={RatingDetails}/>
-        </Stack.Navigator>
-    )
-  }
+    // I denne useEffect aktiverer vi vores listener i form af onAuthStateChanged,
+    // så vi dynamisk observerer om brugeren er aktiv eller ej.
+    useEffect(() => {
+        const unsubscribe = onAuthStateChange(setUser);
+        return () => {
+            unsubscribe();
+        };
+    }, []);
 
-    const StackNavigationProfile = () => {
-        return(
-            <Stack.Navigator screenOptions={{
-                headerShown: false
-            }}>
-                <Stack.Screen name={'Profile Screen'} component={ProfileScreen}/>
-                <Stack.Screen name={'Profile Screen Map'} component={ProfileScreenMap}/>
-                <Stack.Screen name={'Profile Screen Wish'} component={ProfileScreenWishlist}/>
+    // Her sættes en StackNavigation op til vores Feed, så man kan trykke på anmeldelserne og se flere detaljer
+    const StackNavigationFeed = () => {
+        return (
+            <Stack.Navigator>
+                <Stack.Screen name={'Ratings Feed'} component={Feed}/>
                 <Stack.Screen name={'Ratings Details'} component={RatingDetails}/>
-                <Stack.Screen name={'Edit Rating'} component={AddRating}/>
             </Stack.Navigator>
         )
     }
 
-  const MainTabNavigator = () => {
-      return(
-          <NavigationContainer>
+    // Samme gøres her til Profil-siden
+    const StackNavigationProfile = () => {
+        return (
+            // Fjerner header så der ikke står "Profil" øverst på siden
+            <Stack.Navigator screenOptions={{
+                headerShown: false
+            }}>
+                {/* Der er en del sider her, da man skal kunne skifte mellem forskellige sider på ens profil */}
+                <Stack.Screen name={'Profile Screen'} component={ProfileScreen}/>
+                <Stack.Screen name={'Ratings Details'} component={RatingDetails}/>
+                <Stack.Screen name={'Profile Screen Map'} component={ProfileScreenMap}/>
+                <Stack.Screen name={'Profile Screen Wish'} component={ProfileScreenWishlist}/>
+            </Stack.Navigator>
+        )
+    }
 
-          <Tab.Navigator screenOptions={{
-              headerShown: false
-          }}>
-              <Tab.Screen
-                  name="Feed"
-                  component={StackNavigationFeed}
-                  options={{tabBarIcon: ({color, size}) => (
-                          <Ionicons name="restaurant" color={color} size={size} />),headerShown:null}}
-              />
-              <Tab.Screen
-                  name="Search"
-                  component={SearchProfile}
-                  options={{tabBarIcon: ({color, size}) => (
-                          <Ionicons name="search" color={color} size={size} />)}}
-              />
-              <Tab.Screen
-                  name="Add"
-                  component={AddRating}
-                  options={{tabBarIcon: ({color, size}) => (
-                          <Ionicons name="add" color={color} size={size} />)}}
-              />
-              <Tab.Screen
-                  name="Map"
-                  component={Map}
-                  options={{
-                      tabBarLabel: 'Map',
-                      tabBarIcon: ({color, size}) => (
-                          <MaterialCommunityIcons name="map" color={color} size={size}/>
-                      ),
-                  }}
-              />
-              <Tab.Screen
-                  name="Profile"
-                  component={StackNavigationProfile}
-                  options={{
-                      tabBarLabel: 'Profile',
-                      tabBarIcon: ({color, size}) => (
-                          <MaterialCommunityIcons name="account" color={color} size={size}/>
-                      ),
-                  }}
-              />
-          </Tab.Navigator>
-          </NavigationContainer>
-      )
-  }
+    // Nu laves vores TabNavigator til nor man ER logget ind
+    const MainTabNavigator = () => {
+        return (
+            <NavigationContainer>
+                <Tab.Navigator screenOptions={{
+                    headerShown: false
+                }}>
 
-   const GuestStack = () => {
+                    {/* Feed-Tab'en, som henviser til Feed-Stacken */}
+                    <Tab.Screen
+                        name="Feed"
+                        component={StackNavigationFeed}
+                        options={{
+                            // Tilføjer ikoner til Tab Navigatoren der gerne skulle ligne noget med restauranter
+                            tabBarIcon: ({color, size}) => (
+                                <Ionicons name="restaurant" color={color} size={size}/>), headerShown: null
+                        }}
+                    />
+
+                    {/* Venner-Tab'en, som henviser til komponenten Friends */}
+                    <Tab.Screen
+                        name="Venner"
+                        component={Friends}
+                        options={{
+                            // Tilføjer ikoner til Tab Navigatoren der gerne skulle ligne noget med "venner"
+                            tabBarIcon: ({color, size}) => (
+                                <Ionicons name="people" color={color} size={size}/>)
+                        }}
+                    />
+
+                    {/* Anmeldelses-Tab'en, som henviser til komponenten hvor man kan lave en anmeldelse */}
+                    <Tab.Screen
+                        name="Tilføj"
+                        component={AddRating}
+                        options={{
+                            tabBarIcon: ({color, size}) => (
+                                <Ionicons name="add" color={color} size={size}/>)
+                        }}
+                    />
+
+                    {/* Kort-Tab'en, som henviser til kort-komponenten */}
+                    <Tab.Screen
+                        name="Kort"
+                        component={Map}
+                        options={{
+                            tabBarIcon: ({color, size}) => (
+                                <Ionicons name="map" color={color} size={size}/>)
+                        }}
+                    />
+
+                    {/* Profil-Tab'en, som henviser til Profil-Stacken */}
+                    <Tab.Screen
+                        name="Profil"
+                        component={StackNavigationProfile}
+                        options={{
+                            tabBarLabel: 'Profil',
+                            tabBarIcon: ({color, size}) => (
+                                <MaterialCommunityIcons name="account" color={color} size={size}/>
+                            ),
+                        }}
+                    />
+                </Tab.Navigator>
+            </NavigationContainer>
+        )
+    }
+
+    // Her sætter vi vores Stack op til når man IKKE ER logget ind
+    const GuestStack = () => {
         return (
             <NavigationContainer>
                 <Stack.Navigator screenOptions={{
@@ -156,5 +178,8 @@ export default function App() {
         );
     }
 
-    return user.loggedIn ? <MainTabNavigator /> : <GuestStack/> ;
+    // Her tilføjer vi en Ternary Operator, hvor condition = er brugeren logget ind?
+    // Hvis ja, vis Main TabNavigator
+    // Ellers, vis GuestStack
+    return user.loggedIn ? <MainTabNavigator/> : <GuestStack/>;
 }

@@ -1,4 +1,5 @@
 export const MOCKUP_USERS = {
+    // Dummy brugere med de korrekte id fra Firebase
     user1: {
         name: "Malene Hellesen",
         email: "malene@malene.dk",
@@ -23,14 +24,6 @@ export const MOCKUP_USERS = {
         id: "CC3rt2PV4FQ09Bgqyi0DdIsNQGi1",
         follows: {}
     }
-}
-export const KEYS = {
-    user1: {
-        id: "-MosPGnWihJzGrkGuFVV",
-    },
-    user2: {
-        id: "hovY0y3ubtYtPvUXIzmrjO2cvat1",
-    },
 }
 
 

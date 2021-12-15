@@ -1,43 +1,40 @@
-import React, {useState} from 'react';
+// Funktionaliteter
 import {
-    Button,
     Text,
     View,
     TextInput,
-    ActivityIndicator,
     StyleSheet,
     TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase';
-import StackNavigator from "@react-navigation/stack/src/navigators/createStackNavigator";
+import React, {useState} from 'react';
 
 const SignUpForm = (props) => {
 
     //Instantiering af state-variabler, der skal benyttes i SignUpForm
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    //const [isCompleted, setIsCompleted] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null)
 
     /*
-  * Metoden herunder håndterer oprettelse af brugere ved at anvende den prædefinerede metode, som stilles til rådighed af firebase
-  * signInWithEmailAndPassword tager en mail og et password med som argumenter og foretager et asynkront kald, der eksekverer en brugeroprettelse i firebase
-  * Opstår der fejl under forsøget på oprettelse, vil der i catch blive fremsat en fejlbesked, som, ved brug af
-  * setErrorMessage, angiver værdien for state-variablen, errormessage
-  */
-
-    const handleSubmit = async() => {
+    Metoden herunder håndterer oprettelse af brugere ved at anvende den prædefinerede metode, som stilles til rådighed af firebase
+    createUserWithEmailAndPassword tager en mail og et password med som argumenter og foretager et asynkront kald, der eksekverer en brugeroprettelse i firebase
+    Opstår der fejl under forsøget på oprettelse, vil der i catch blive fremsat en fejlbesked, som, ved brug af
+    setErrorMessage, angiver værdien for state-variablen, errormessage
+    */
+    const handleSubmit = async () => {
         try {
-            await firebase.auth().createUserWithEmailAndPassword(email, password).then((data)=>{
+            await firebase.auth().createUserWithEmailAndPassword(email, password).then((data) => {
             });
-        } catch (error){
-            setErrorMessage(error.message+"hej")
+        } catch (error) {
+            setErrorMessage(error.message + "hej")
         }
     }
 
-    //I return oprettes en tekstkomponent, der angiver at dette er SignUpfrom
-    //Dernæst er der to inputfelter, som løbeende sætter værdien af state-variablerne, mail og password.
-    // Afslutningsvis, angives det at, hvis errorMessage får fastsat en værdi, skal denne udskrives i en tekstkomponent.
+    // I return oprettes en tekstkomponent, der angiver at dette er SignUpform
+    // Dernæst er der to inputfelter, som løbeende sætter værdien af state-variablerne, mail og password.
+    // Derefter angives det at, hvis errorMessage får fastsat en værdi, skal denne udskrives i en tekstkomponent.
+    // Ved tryk på knappen kaldes handleSubmit ovenfor
     return (
         <View style={styles.container}>
 
@@ -80,23 +77,23 @@ const styles = StyleSheet.create({
     },
     inputField: {
         backgroundColor: '#fff',
-        borderRadius:30,
+        borderRadius: 30,
         borderWidth: 1,
-        width:250,
-        height:45,
-        marginBottom:15,
+        width: 250,
+        height: 45,
+        marginBottom: 15,
         flexDirection: 'row',
-        alignItems:'center',
+        alignItems: 'center',
         textAlign: 'center'
     },
     buttonContainer: {
-        height:45,
+        height: 45,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginBottom:20,
-        width:250,
-        borderRadius:30,
+        marginBottom: 20,
+        width: 250,
+        borderRadius: 30,
     },
     signUpButton: {
         backgroundColor: '#B45626',

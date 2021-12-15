@@ -1,31 +1,21 @@
-import React, {useEffect, useState} from 'react';
+// Funktionaliteter
 import {
     View,
     Text,
+    Alert,
     Button,
     StyleSheet,
-    Image,
-    ScrollView,
     Dimensions,
-    Alert
 } from 'react-native';
 import firebase from 'firebase';
-import {Card} from "react-native-paper";
-import SignUpForm from "./SignUpForm";
-import LoginForm from "./LoginForm";
-import Constants from 'expo-constants';
-import MapView, {Marker, Callout} from 'react-native-maps';
-import * as Location from 'expo-location';
 import {Accuracy} from "expo-location";
+import * as Location from 'expo-location';
+import React, {useEffect, useState} from 'react';
+import MapView, {Marker, Callout} from 'react-native-maps';
 import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete';
-import LoginPls from "./LoginPls";
-import {render} from "react-dom";
 
 
 function Map() {
-
-    <LoginPls/>
-
     // -------------------------------------------------------------------------------------
 
     const initialState = {name: '', lati: '', longi: '', uid: ''}
@@ -297,18 +287,6 @@ function Map() {
 
 
             </MapView>
-
-            {selectedCoordinate && selectedAddress && (
-                <View style={styles.infoBox}>
-                    <Text style={styles.infoText}>
-                        {selectedCoordinate.latitude}, {selectedCoordinate.longitude}
-                    </Text>
-                    <Text style={styles.infoText}>
-                        name: {selectedAddress[0].name} region: {selectedAddress[0].region}
-                    </Text>
-                    <Button title="close" onPress={closeInfoBox}/>
-                </View>
-            )}
 
         </View>
     );

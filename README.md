@@ -1,12 +1,27 @@
-# Kommentarer til opgave 3
+# Kommentarer til aflevering
 
-Vi opdaterer programmet løbende, så hvis ikke programmet ligner hvad der kan ses i YT-videoen, så er det derfor. Vi henviser i så fald til https://github.com/karo19ab/Opgave-3.git 
+## Advarsler i appen:
 
-Der vil være hjemmelavet kodekommentering til den rigtig aflevering af projektet, og vi beklager meget, at det er blevet lavet endnu!
+Når man logger ind, kommer der en advarsel om at Profil-stacken går i et loop. 
+Det er vi godt klar over og det sådan set med vilje, så man kan trykke på de 
+forskellige undersider hvor end man i stacken. 
 
-NB: Når vi selv har downloadet koden fra Github, er der kommet nogle advarsler når vi har kørt "expo start" omkring Watchman på Mac. Vi håber ikke I får samme problem, men koden virker stadig som tiltænkt, uanset om du trykker "tilføj til papirkurv" eller "ignorér". Vi håber derfor ikke at det volder jer nogen problemer :)
+Andre gange når nan logger ind, så kommer den med en rød error, 
+hvor "The action 'NAVIGATE' with payload {"name": "MainNavigator"} was not 
+handled by any navigator. 
+Det må vel være pga. vores MainTabNavigator i App.js, men ved ikke helt hvorfor. 
+Appen virker til trods for denne fejlbesked...
 
-Link til Youtube video med gennemgang af, hvad koden her egentlig kan, samt en forsmag på hvad vi forsøger at arbejde henimod gennem en video af vores mock-up:
-https://youtu.be/VpGidQcUxjA 
+Der kommer en gul advarsel når man laver en ny anmeldelse. Er ikke helt sikker på hvorfor, 
+men det fungerer som tilsigtet på trods af advarslen :D
 
-Videoen varer 13 minutter (!), hvilket er liiiiidt lang tid, så hvis I udelukkende er interesseret i hvad vores kode gør, så kan man nøjes med se ca. sidste halvdel. Første halvdel er en gennemgang af vores idé samt mock-up som er en TO-BE version af appen lavet FØR opgaven blev skrevet. Der er helt sikkert nogle ændringer efter opgaven, som kunne resultere i en ny version af vores mock-up 
+## Gode råd til brugeroplevelse:
+
+På Venner/følge-siden: Tryk to gange på clear liste for rent faktisk cleare den
+
+På kort-siden: Prøv at skriv en lokation ind og se hvad der sker med pin'en. 
+Derefter, tryk på pin'en og efterfølgende tryk igen på navnet der dukker op. 
+Trykker du på "add to wishlist", så bliver stedet rent faktisk sendt ind i databasen i Firebase!
+Desværre har vi ikke rigtig haft tid til at smide det ind på profil-siden endnu. 
+Trykker du på den anden knap i stedet, vil du bar få en tekst i konsollen.
+

@@ -1,32 +1,29 @@
-
-import React, { Component } from 'react';
+// Funktionaliteter
 import {
-    StyleSheet,
     Text,
     View,
-    TextInput,
-    TouchableOpacity,
-    Alert,
-    Image,
+    StyleSheet,
     ImageBackground,
-    Button
+    TouchableOpacity,
 } from 'react-native';
+import React from 'react';
 import GlobalStyles from "../globalStyles/GlobalStyles";
 
+// Assets
 import FirstImage from "../assets/spices1.png"
-import LoginForm from "./LoginForm";
-
-
 
 const LandingPage = (props) => {
-
     return (
         <View style={GlobalStyles.container}>
             <ImageBackground source={FirstImage} resizeMode="cover" style={styles.landingImage}>
                 <Text style={GlobalStyles.logoName}>Taste Spots</Text>
+
+                {/* Knap til sign up */}
                 <TouchableOpacity style={[GlobalStyles.buttonContainer, styles.signupButton]} onPress={() => props.navigation.navigate('SignUpForm')}>
                     <Text style={styles.loginText}>Opret bruger</Text>
                 </TouchableOpacity>
+
+                {/* Knap til login */}
                 <TouchableOpacity onPress={() => props.navigation.navigate('Login')}>
                     <Text style={styles.loginLink}>Har du allerede en bruger? <Text style={styles.loginHer}>Login her</Text></Text>
                 </TouchableOpacity>
@@ -41,13 +38,6 @@ const styles = StyleSheet.create({
     landingImage: {
         flex: 1,
         justifyContent: 'center',
-    },
-    text: {
-        color: 'black',
-        fontSize: 42,
-        lineHeight: 84,
-        fontWeight: 'bold',
-        textAlign: 'center'
     },
     signupButton: {
         backgroundColor: '#B45626',

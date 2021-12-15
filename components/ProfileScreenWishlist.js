@@ -1,78 +1,48 @@
-import React, {useEffect, useState} from 'react';
+// Funktionaliteter
 import {
     View,
     Text,
-    Button,
-    StyleSheet,
     Image,
+    StyleSheet,
     ScrollView,
     TouchableOpacity,
-    SafeAreaView,
-    FlatList
 } from 'react-native';
+import React from 'react';
 import firebase from 'firebase';
-import {Card} from "react-native-paper";
-import SignUpForm from "./SignUpForm";
-import LoginForm from "./LoginForm";
-import Feed from "./Feed";
-import GlobalStyles from "../globalStyles/GlobalStyles";
-import kasperProfile from "../assets/kasperProfile.png";
-import restaurantSilo from "../assets/restaurantSilo.png"
-import hoest from "../assets/hoest.png"
-import mogk from "../assets/mogk.png"
-import norrebro from "../assets/norrebro.png"
+
+// Assets
+import mogk from "../assets/mogk.png";
+import hoest from "../assets/hoest.png";
+import norrebro from "../assets/norrebro.png";
+import restaurantSilo from "../assets/restaurantSilo.png";
+import profilepicture from "../assets/profilepicture.png";
+
+// Ikoner
 import IonIcon from 'react-native-vector-icons/Ionicons';
-import ProfileScreen from './ProfileScreen'
 
 
 const ProfileScreenWishlist = (props) => {
-    //useState til at vise ratings på profilside.
-    const [ratings, setRatings] = useState('');
 
-    //handleLogout håndterer log ud af en aktiv bruger.
-    //Metoden er en prædefineret metode, som firebase stiller tilrådighed
-    //Metoden er et asynkrontkald.
+    // Samme som i ProfileScreen.js
     const handleLogOut = async () => {
-        console.log(firebase.auth().currentUser);
         await firebase.auth().signOut();
     };
 
-
-    //Finder ud af om der er nogle ratings i firebase.
-    useEffect(() =>{
-        if(!ratings)
-            firebase
-                .database()
-                .ref('/Ratings')
-                .on('value', snapshot => {
-                    setRatings(snapshot.val())
-                });
-    });
-    console.log(ratings)
-
-    // Flatlist forventer et array. Derfor tager vi alle values fra vores ratings objekt, og bruger som array til listen
-    const ratingsArray = Object.values(ratings).filter(item => item.uid === firebase.auth().currentUser.uid);
-    const ratingsKeys = Object.keys(ratings);
-
-    //Hvis der af en eller anden grund ikke skulle være muligt at fremfinde den aktive bruger,
-    //skal der udprintes en besked om dette igennem en tekstkomponent
-    //I return() udnyttes en prædefineret metode, som firebase stiller til rådighed.
-    // Metoden returnerer mailadressen af den aktive bruger.
-    // Mailadressen udskrives ved brug af en tekstkomponent.
-
     return (
-        <View style={styles.container} >
-            {/*Et sted til at profilbillede og info om profilen*/}
+        <View style={styles.container}>
+
+            {/* Vi viser en dummy profil øverst */}
             <View style={styles.header}>
                 <View style={styles.headerContent}>
-                    <Image source={kasperProfile} style={styles.image} />
-                    <Text style={styles.name}>Kasper Rønbøg </Text>
-                    <Text style={styles.UserInfo}>Østerbro </Text>
+                    <Image source={profilepicture} style={styles.image}/>
+                    <Text style={styles.name}>* Profilnavn * </Text>
+                    <Text style={styles.UserInfo}> * Biografi * </Text>
                 </View>
-                {/*Viser antal følgere, hvor mange man selv følger og hvor mange anbefalinger der er lavet af profilen*/}
+
+                {/* Vi viser dummy antal følgere, hvor mange man selv følger og hvor mange anbefalinger der er lavet af profilen */}
                 <View style={[styles.userInfo, styles.bordered]}>
                     <View style={styles.section}>
-                        <Text category='s1' style={styles.space}>
+                        <Text category='s1' >
                             33
                         </Text>
                         <Text appearance='hint' category='s2'>
@@ -80,16 +50,16 @@ const ProfileScreenWishlist = (props) => {
                         </Text>
                     </View>
                     <View style={styles.section}>
-                        <Text category='s1' style={styles.space}>
-                            0
+                        <Text category='s1'>
+                            423
                         </Text>
                         <Text appearance='hint' category='s2'>
                             Followers
                         </Text>
                     </View>
                     <View style={styles.section}>
-                        <Text category='s1' style={styles.space}>
-                            0
+                        <Text category='s1'>
+                            249
                         </Text>
                         <Text appearance='hint' category='s2'>
                             Following
@@ -97,25 +67,27 @@ const ProfileScreenWishlist = (props) => {
                     </View>
                 </View>
             </View>
-            {/*Her kan man skifte mellem ens anmeldelser, mapview over hvor man har spist og ønskeliste.*/}
+
+            {/* Her kan man skifte mellem ens anmeldelser, kort over hvor man har spist og ønskeliste */}
             <View style={[styles.userInfo, styles.bordered]}>
                 <View style={styles.section}>
                     <TouchableOpacity onPress={() => props.navigation.navigate('Profile Screen')}>
-                        <IonIcon name="restaurant-outline" size={17} color="black"></IonIcon>
+                        <IonIcon name="restaurant-outline" size={17} color="black"/>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.section}>
                     <TouchableOpacity onPress={() => props.navigation.navigate('Profile Screen Map')}>
-                        <IonIcon name="map-outline" size={17} color="black"></IonIcon>
+                        <IonIcon name="map-outline" size={17} color="black"/>
                     </TouchableOpacity>
                 </View>
                 <View style={styles.section}>
                     <TouchableOpacity>
-                        <IonIcon name="star" size={17} color="black"></IonIcon>
+                        <IonIcon name="star" size={17} color="black"/>
                     </TouchableOpacity>
                 </View>
             </View>
-            {/*Nederst på profilsiden, hvor anmeldelserne oprettet af profilen bliver vist*/}
+
+            {/* Her viser vi en dummy- ønskeliste */}
             <ScrollView>
                 <View style={styles.widgetlayout}>
                     <View>
@@ -125,7 +97,7 @@ const ProfileScreenWishlist = (props) => {
                         <Image source={hoest} style={styles.widget}/>
                     </View>
                 </View>
-                <View style={ styles.widgetlayout}>
+                <View style={styles.widgetlayout}>
                     <View>
                         <Image source={mogk} style={styles.widget}/>
                     </View>
@@ -133,7 +105,7 @@ const ProfileScreenWishlist = (props) => {
                         <Image source={norrebro} style={styles.widget}/>
                     </View>
                 </View>
-                <View style={ styles.widgetlayout}>
+                <View style={styles.widgetlayout}>
                     <View>
                         <Image source={restaurantSilo} style={styles.widget}/>
                     </View>
@@ -141,9 +113,12 @@ const ProfileScreenWishlist = (props) => {
                         <Image source={restaurantSilo} style={styles.widget}/>
                     </View>
                 </View>
-            </ScrollView>
 
-            {/*Log ud knap*/}
+                {/* Log ud knap som TouchableOpacity */}
+                <TouchableOpacity style={styles.buttonContainer} onPress={() => handleLogOut()}>
+                    <Text style={styles.loginText}>Log ud</Text>
+                </TouchableOpacity>
+            </ScrollView>
         </View>
     );
 }
@@ -154,17 +129,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         backgroundColor: '#fff',
-
-    },
-    feedContainer: {
-        flex: 1,
-        borderWidth: 1,
-        borderRadius:10,
-        marginTop: "5%",
-        padding: 5,
-        height: 50,
-        justifyContent:'center',
-        backgroundColor: '#fff'
     },
     image: {
         width: 90,
@@ -172,41 +136,37 @@ const styles = StyleSheet.create({
         borderRadius: 63,
         borderWidth: 4,
         borderColor: "white",
-        marginBottom:5,
+        marginBottom: 5,
         marginTop: '10%'
     },
-    header:{
+    header: {
         backgroundColor: "#DFD0C0",
     },
-    headerContent:{
-        margin: '8%',
-    },
-    paragraph2: {
-        fontSize: 18,
-        fontWeight: 'bold',
-        textAlign: 'center',
+    headerContent: {
+        marginHorizontal: "6%",
+        marginTop: '2%',
     },
     buttonContainer: {
-        height:50,
+        height: 50,
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        marginTop:'5%',
-        width:300,
-        borderRadius:15,
+        marginTop: '5%',
+        width: 300,
+        borderRadius: 15,
         marginLeft: '10%',
-        backgroundColor: '#B45626',
+        backgroundColor: '#DFD0C0',
         shadowOpacity: 0.1,
     },
-    name:{
-        fontSize:22,
-        color:"#000000",
-        fontWeight:'600',
+    name: {
+        fontSize: 22,
+        color: "#000000",
+        fontWeight: '600',
     },
-    UserInfo:{
-        fontSize:16,
-        color:"#778899",
-        fontWeight:'600',
+    UserInfo: {
+        fontSize: 16,
+        color: "#778899",
+        fontWeight: '600',
     },
     section: {
         flex: 1,
@@ -215,17 +175,6 @@ const styles = StyleSheet.create({
     bordered: {
         borderBottomWidth: 1,
     },
-    space: {
-        marginBottom: 3,//Mellemrum mellem fx "spots" og antal.
-    },
-    separator: {
-        alignSelf: 'center',
-        flexDirection: 'row',
-        width: 1,
-    },
-    text: {
-        color: 'black'
-    },
     userInfo: {
         flexDirection: 'row',
         paddingVertical: 15,
@@ -233,12 +182,13 @@ const styles = StyleSheet.create({
     widget: {
         width: 170,
         height: 170,
-        marginLeft: '4%',
-        borderRadius:15,
+        marginHorizontal: "2%",
+        borderRadius: 15,
     },
     widgetlayout: {
         flexDirection: 'row',
-        marginTop: '3%'
+        margin: '4%',
+        alignItems: 'center'
     }
 });
 

@@ -1,28 +1,27 @@
-import React, {useState} from 'react';
+// Funktionaliteter
 import {
-    Button, Text,
+    Text,
     View,
     TextInput,
-    ActivityIndicator,
-    StyleSheet, TouchableOpacity,
+    StyleSheet,
+    TouchableOpacity,
 } from 'react-native';
 import firebase from 'firebase';
+import React, {useState} from 'react';
 
 
 const LoginForm = (props) => {
     //Instantiering af state-variabler, der skal benyttes i SignUpForm
     const [email, setEmail] = useState('h@kr.kr');
     const [password, setPassword] = useState('qwerty');
-    const [isCompleted, setIsCompleted] = useState(false);
     const [errorMessage, setErrorMessage] = useState(null)
 
     /*
-  * Metoden herunder håndterer oprettelse af brugere ved at anvende den prædefinerede metode, som stilles til rådighed af firebase
-  * signInWithEmailAndPassword tager en mail og et password med som argumenter og foretager et asynkront kald, der eksekverer en brugeroprettelse i firebase
-  * Opstår der fejl under forsøget på oprettelse, vil der i catch blive fremsat en fejlbesked, som, ved brug af
-  * setErrorMessage, angiver værdien for state-variablen, errormessage
-  */
-
+    Metoden herunder håndterer oprettelse af brugere ved at anvende den prædefinerede metode, som stilles til rådighed af firebase.
+    signInWithEmailAndPassword tager en email og et password med som argumenter og foretager et asynkront kald, der eksekverer et login i firebase
+    Opstår der fejl under forsøget på login, vil der i catch blive fremsat en fejlbesked, som, ved brug af
+    setErrorMessage, angiver værdien for state-variablen, errormessage
+    */
     const handleSubmit = async() => {
         try {
             await firebase.auth().signInWithEmailAndPassword(email, password).then((data)=>{
@@ -32,9 +31,10 @@ const LoginForm = (props) => {
         }
     }
 
-    //I return oprettes en tekstkomponent, der angiver at dette er SignUpfrom
-    //Dernæst er der to inputfelter, som løbeende sætter værdien af state-variablerne, mail og password.
-    // Afslutningsvis, angives det at, hvis errorMessage får fastsat en værdi, skal denne udskrives i en tekstkomponent.
+    // I return oprettes en tekstkomponent, der angiver at dette er Login-formen
+    // Dernæst er der to inputfelter, som løbende sætter værdien af state-variablerne, mail og password
+    // Derefter angives det at, hvis errorMessage får fastsat en værdi, skal denne udskrives i en tekstkomponent
+    // Ved tryk på knappen kaldes handleSubmit ovenfor
     return (
         <View style={styles.container}>
             <Text style={styles.header}>Log in</Text>
