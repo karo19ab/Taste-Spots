@@ -1,20 +1,24 @@
 # Kommentarer til aflevering
 
+Youtube link for gennemgang af funktionalitet: https://youtu.be/5c5Etq2wErQ 
+
+
 ## Advarsler i appen:
 
-Når man logger ind, kommer der en advarsel om at Profil-stacken går i et loop. 
-Det er vi godt klar over og det sådan set med vilje, så man kan trykke på de 
-forskellige undersider hvor end man i stacken. 
-
-Andre gange når nan logger ind, så kommer den med en rød error, 
+Når nan logger ind, så kommer den med en rød error, 
 hvor "The action 'NAVIGATE' with payload {"name": "MainNavigator"} was not 
 handled by any navigator. 
 Det må vel være pga. vores MainTabNavigator i App.js, men ved ikke helt hvorfor. 
 Appen virker til trods for denne fejlbesked...
 
+Andre gange kommer der en advarsel om at Profil-stacken går i et loop. 
+Det er vi godt klar over og det sådan set med vilje, så man kan trykke på de 
+forskellige undersider hvor end man i stacken. 
+
 Der kommer en gul advarsel når man laver en ny anmeldelse. Er ikke helt sikker på hvorfor, 
 men det fungerer som tilsigtet på trods af advarslen :D
 
+Der kommer også en gul advarsel når man følger venner, men det er også helt normalt!
 
 
 ## Gode råd til brugeroplevelse:
