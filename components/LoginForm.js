@@ -102,5 +102,5 @@ const styles = StyleSheet.create({
     },
 });
 
-//Eksport af SignUpForm, således denne kan importeres og benyttes i andre komponenter
+//Eksport af LoginForm, således denne kan importeres og benyttes i andre komponenter
 export default LoginForm;

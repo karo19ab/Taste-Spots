@@ -235,13 +235,7 @@ function Map() {
                 }}
                 debounce={200} // devouncer req i ms
             />
-            {
 
-                // Derudover vil alle koordinatsæt i userMarkerCoordinates blive vist som markører på kortet.
-                // For hver af markørerne vil metoden handleSelectMarker blive aktiveret ved onPress,
-                // hvorved selectedCoordinate og selectedAddres får en værdi og der udskrives data om den vaælgte markør
-
-            }
             {/* Først vises den nuværende lokation med en blå, genkendelig knap */}
             <RenderCurrentLocation
                 props={{hasLocationPermission: hasLocationPermission, currentLocation1: currentLocation1}}/>
@@ -283,10 +277,7 @@ function Map() {
                         onPress={() => console.log("Action")}
                     />
                 ))}
-
-
             </MapView>
-
         </View>
     );
 }
@@ -299,5 +290,5 @@ const styles = StyleSheet.create({
     },
 });
 
-//Eksport af Loginform, således denne kan importeres og benyttes i andre komponenter
+//Eksport af Map, således denne kan importeres og benyttes i andre komponenter
 export default Map;

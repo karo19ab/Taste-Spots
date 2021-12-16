@@ -165,5 +165,4 @@ const styles = StyleSheet.create({
     }
 });
 
-//Eksport af Loginform, således denne kan importeres og benyttes i andre komponenter
 export default ProfileScreenMap
