@@ -15,6 +15,8 @@ Appen virker til trods for denne fejlbesked...
 Der kommer en gul advarsel når man laver en ny anmeldelse. Er ikke helt sikker på hvorfor, 
 men det fungerer som tilsigtet på trods af advarslen :D
 
+
+
 ## Gode råd til brugeroplevelse:
 
 På Venner/følge-siden: Tryk to gange på clear liste for rent faktisk cleare den

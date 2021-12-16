@@ -105,14 +105,6 @@ const ProfileScreenWishlist = (props) => {
                         <Image source={norrebro} style={styles.widget}/>
                     </View>
                 </View>
-                <View style={styles.widgetlayout}>
-                    <View>
-                        <Image source={restaurantSilo} style={styles.widget}/>
-                    </View>
-                    <View>
-                        <Image source={restaurantSilo} style={styles.widget}/>
-                    </View>
-                </View>
 
                 {/* Log ud knap som TouchableOpacity */}
                 <TouchableOpacity style={styles.buttonContainer} onPress={() => handleLogOut()}>

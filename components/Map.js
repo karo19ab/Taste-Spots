@@ -16,90 +16,64 @@ import {GooglePlacesAutocomplete} from 'react-native-google-places-autocomplete'
 
 
 function Map() {
-    // -------------------------------------------------------------------------------------
-
+    //Her instantieres alle anvendte statevariabler
     const initialState = {name: '', lati: '', longi: '', uid: ''}
     const [newSpotWish, setNewSpotWish] = useState(initialState);
-
-
-    //Her instantieres alle anvendte statevariabler
-    const [hasLocationPermission, setlocationPermission] = useState(false)
+    const [hasLocationPermission, setHasLocationPermission] = useState(false)
     const [currentLocation1, setCurrentLocation] = useState(null)
     const [userMarkerCoordinates, setUserMarkerCoordinates] = useState([])
-    const [selectedCoordinate, setSelectedCoordinate] = useState(null)
-    const [selectedAddress, setSelectedAddress] = useState(null)
 
     /*
-    * getLocationPermission udnytter den prædefinerede asynkrone metode requestForegroundPermissionsAsync,
-    * som aktiverer en forespørgsel om tilladelse til at benytte enhedens position
-    * resultatet af denne handling leveres og benyttes til at sætte værdien af locationPermission
-    * Værdien sættes pba. af værdien item.granted
-    * Læs mere i dokumentationen:  https://docs.expo.dev/versions/latest/sdk/location/
+    Dokumentation:  https://docs.expo.dev/versions/latest/sdk/location/
+    getLocationPermission udnytter den prædefinerede asynkrone metode requestForegroundPermissionsAsync,
+    som aktiverer en forespørgsel om tilladelse til at benytte enhedens position
+    resultatet af denne handling leveres og benyttes til at sætte værdien af locationPermission
+    Værdien sættes pba. af værdien item.granted
     */
     const getLocationPermission = async () => {
         await Location.requestForegroundPermissionsAsync().then((item) => {
-            setlocationPermission(item.granted)
+            setHasLocationPermission(item.granted)
         });
 
     };
 
-    // I useEffect kaldes getlocationPermission, der sikrer at enheden forespørger tilladelse
-    // så snart appen kører
+    // I useEffect kaldes getlocationPermission, der sikrer at enheden forespørger tilladelse så snart appen kører
     useEffect(() => {
         const response = getLocationPermission()
     });
 
     /*
-    * Metoden updateLocation udnytter det prædefinerede asynkrone kald, getCurrentPositionAsync, returnerer enhedens aktuelle position
-    * Resultatet fra kaldet benyttes til at fastsætte værdien af currentlokation.
-    * argumentet, Accuracy.Balanced, angiver den nøjagtighed vi ønsker skal bruges til at angive positionen.
-    * Læs mere på den førnævnte dokumentation
+    Metoden updateLocation udnytter det prædefinerede asynkrone kald, getCurrentPositionAsync, returnerer enhedens aktuelle position
+    Resultatet fra kaldet benyttes til at fastsætte værdien af currentlokation.
+    argumentet, Accuracy.Balanced, angiver den nøjagtighed vi ønsker skal bruges til at angive positionen.
     */
     const updateLocation = async () => {
         await Location.getCurrentPositionAsync({accuracy: Accuracy.Balanced}).then((item) => {
             setCurrentLocation(item.coords)
         });
     };
-    /*
-    * Metoden handleLongPress tager en event med som argument og henter værdien af et koordinatsæt fra denne
-    * Værdien gemmes i en variabel, der tilføjes til et array af koordinater.
-    */
+
+    // Metoden handleLongPress tager en event med som argument og henter værdien af et koordinatsæt fra denne
+    // Værdien gemmes i en variabel, der tilføjes til et array af koordinater.
     const handleLongPress = event => {
         const coordinate = event.nativeEvent.coordinate
         setUserMarkerCoordinates((oldArray) => [...oldArray, coordinate])
     };
 
-    /*
-  * Metoden handleSelectMarker tager en koordinat med som argument. Kordinaten bruges
-  * til at sætte værdien af selectedCoordinat-variablen
-  * Dernæst aktiveres et asynkront kald, i form af den prædefinerede metode, reverseGeocodeAsync.
-  * reverseGeocodeAsync omsætter koordinatsættet til en række data, herunder område- og adresse data.
-  * selectedAdress sættes til at være resultatet af det asynkrone kald
-    */
-    const handleSelectMarker = async coordinate => {
-        setSelectedCoordinate(coordinate)
-        await Location.reverseGeocodeAsync(coordinate).then((data) => {
-                setSelectedAddress(data)
-            }
-        )
-    };
-
-
-    //Metoden closeInfoBox nulstiller værdienne fro selectedAddress og selectedCoordinate
-    const closeInfoBox = () =>
-        setSelectedCoordinate(null) && setSelectedAddress(null)
 
     // RenderCurrentLocation tager props med som argument og tjekker om, der er givet adgang til enhedens lokationsdata
-    // Er der ikke givet adgang returneres der en tekstkomponent med instruktioner til brugeren
-    //Er der givet tilladelse og currenLocation ikke har en værdi, vil der fremvises en knap komponent
-    //Er der givet tilladelse go currentlokation har en værdi, vil lokationsdata blive udskrvet i en infoboks
     const RenderCurrentLocation = (props) => {
+        // Er der ikke givet adgang returneres der en tekstkomponent med instruktioner til brugeren
         if (props.hasLocationPermission === null) {
             return null;
         }
+
+        // Er der givet tilladelse og currenLocation ikke har en værdi, vil der fremvises en forklarende text
         if (props.hasLocationPermission === false) {
             return <Text>No location access. Go to settings to change</Text>;
         }
+
+        // Er der givet tilladelse og currentlokation har en værdi, vil lokationsdata blive udskrevet i en infoboks
         return (
             <View>
                 <Button style title="update location" onPress={updateLocation}/>
@@ -114,6 +88,8 @@ function Map() {
         );
     };
 
+    // Her har vi sætter vi scenen for, Google Places søgningen foretages fra, vha. useState.
+    // Denne useState skal agere det sted (eller "region" som vi kalder det), hvor man har søgt. Den er sat til centrum i 1. omgang
     const [region, setRegion] = React.useState({
         latitude: 55.676098,
         longitude: 12.568337,
@@ -121,38 +97,53 @@ function Map() {
         longitudeDelta: 0.0421,
     })
 
+    // Her bruger vi en useState til at sætte Rådhuspladsen som et startsted (hardcoded)
     const [place, setPlace] = React.useState({
         name: 'Rådhuspladsen'
     })
 
 
+    // Nedenfor ses koden, der muliggører at gemme et sted i Firebase
     function savePlace() {
+        // Starter ud med at definere vores state
         const {name, lati, longi, uid} = newSpotWish;
+
+        // Try/Catch med at tilføje til db gennem prædefinerede Firebase-metoder
         try {
             firebase
                 .database()
                 .ref('/SpotWishlist/')
                 .push({name, lati, longi, uid});
             Alert.alert(`Added to Wishlist :)`);
+
+            // Resetter useState tilbage til initialState.
             setNewSpotWish(initialState)
+
+            // Fejlmeddelelse bliver vores catch
         } catch (error) {
             console.log(`Error: ${error.message}`);
         }
     }
 
+    // Her laves alert-boksen med diverse knapper
     function buttons() {
         Alert.alert(
+            // Titlen bliver stedet, man har søgt efter i Google Places feltet.
             `${newSpotWish.name}`,
             'What do you wish to do with this spot?',
             [
+                // Cancel-knap
                 {
                     text: 'Cancel',
                     style: 'cancel'
                 },
+                // Knap, der kører savePlace-metoden ovenfor
                 {
                     text: 'Add to Wishlist',
                     onPress: () => savePlace()
                 },
+                // Knap, bare skriver objektet for stedet man har søgt på, i konsollen.
+                // Tanken for denne knap var, at det den skulle sende en videre til anmeldelsessiden
                 {
                     text: 'Rate the Spot',
                     onPress: () => console.log(newSpotWish)
@@ -162,67 +153,62 @@ function Map() {
     }
 
 
-    /*
-* Dernæst kaldes RenderCurrenokation view
-* Mapview er fremviser et kort, der viser brugerens lokation
-* Dernæst aktiverer metoden handleLongPress igennem onLongPress
-* I Mapview vises tre markører ud fra vilkårlige koordinatsæt. Hver markør får en titel og en beskrivelse
-* Derudover vil alle koordinatsæt i userMarkerCoordinates blive vist som markører på kortet.
-* For hver af markørerne vil metoden handleSelectMarker blive aktiveret ved onPress,
-* hvorved selectedCoordinate og selectedAddres får en værdi og der udskrives data om den vaælgte markør
-*
-*/
-
-
     return (
-        <View style={styles.container}>
+        <View>
             {
-                // https://www.npmjs.com/package/react-native-google-places-autocomplete
-                // Video: https://www.youtube.com/watch?v=qlELLikT3FU&ab_channel=DarwinTech
-
+                /*
+                GooglePlacesAutocomplete er smart fordi den kører på Google's API over steder.
+                Den fungerer som et input felt der foreslår steder, hvortil vi kan lave metoder o.l. via onPress.
+                https://www.npmjs.com/package/react-native-google-places-autocomplete
+                Video: https://www.youtube.com/watch?v=qlELLikT3FU&ab_channel=DarwinTech
+                */
             }
             <GooglePlacesAutocomplete
                 placeholder='Search'
+                // Minimumlængde på at komme med foreslag (viker ikke føler jeg)
                 minLenght={2}
                 autoFocus={false}
+                // Når vi sætter nedenstående til true, vil man kunne få Details med som kan bruges længere nede
                 fetchDetails={true}
                 renderDescription={row => row.description}
 
+                /*
+                Det er som sagt i onPress det mest spændende sker.
+                Der er altså tale om logik, når man trykker på det Google's foreslåede sted
+                */
                 onPress={(data, details = null) => {
-                    //TODO Herunder kan man tilføje logik, når der trykkes på det søgte
-
-                    // Vil forsøge at gøre så man laver en "pin" og zoomer ind på stedet, når man søger
+                    // Her sikrer vi, at region bliver as til Google-stedet-har-trykket-på's lokationsdata.
                     setRegion({
                         latitude: details.geometry.location.lat,
                         longitude: details.geometry.location.lng,
+                        // Delta, så vidt jeg forstår, har noget at gøre med udseendet i vinduet, men er ikke helt sikker
+                        // Det er til gengæld en nødvendighed for at det virker.
                         latitudeDelta: 0.05,
                         longitudeDelta: 0.0321,
                     })
+
+                    // vi gemmer navnet på stedet i place, så vi kan bruge det senere.
                     setPlace({
                         name: details.name
                     })
 
+                    // Her sættes newSpotWish, som er hvad der sendes til DB længere oppe
                     setNewSpotWish({
                         name: details.name,
                         lati: details.geometry.location.lat,
                         longi: details.geometry.location.lng,
                         uid: firebase.auth().currentUser.uid,
                     })
-
-                    // buttons();
-
                 }}
                 getDefaultValue={() => ''}
                 query={{
-                    // Husk at krypter API key, fordi ellers er den tilgængelig for alle!
-                    key: 'AIzaSyCc8mR9JJqFV35qcL7WXn8nBvFPNGZ101w',
+                    // Husk at kryptere API key hvis det skal være en rigtig app, fordi ellers er den tilgængelig for alle!
+                    key: 'AIzaSyCc8mR9JJqFV35qcL7WXn8nBvFPNGZ101w', // API-nøgle
                     language: 'en', // Resultatets sprog
-                    types: "establishment",
-                    components: "country:dk",
-                    radius: 10000,
-
-
+                    types: "establishment", // Der skal kun dukke virksomheder op i søgningen
+                    components: "country:dk", // Kun resultater fra Danmark
                 }}
+                // Input-feltets styile
                 styles={{
                     container: {
                         flex: 0,
@@ -234,54 +220,67 @@ function Map() {
                     },
                     listView: {backgroundColor: "grey"},
                 }}
-                //currentLocation={true}
-                //currentLocationLabel='Current Location'
                 nearbyPlacesAPI='GooglePlacesSearch'
                 GoogleReverseGeocodingQuery={{
                     // ved ikke helt hvad man bruger dette til
                 }}
                 GooglePlacesSearchQuery={{
-                    rankby: 'distance',
+                    // Jeg synes ikke noget af det her virker, selvom jeg har prøvet at lege en del med det.
+                    rankBy: 'distance',
                     type: 'restaurant,bar,cafe'
                 }}
                 GooglePlacesDetailsQuery={{
+                    // Hernede vælger vi så, hvad der skal kunne bruges når man skriver details... oppe i onPress.
                     fields: 'formatted_address,geometry,name'
                 }}
-                debounce={200} // devouncer req i ms. Sat til 0 for at fjerne debounce
-
+                debounce={200} // devouncer req i ms
             />
-
             {
-                <RenderCurrentLocation
-                    props={{hasLocationPermission: hasLocationPermission, currentLocation1: currentLocation1}}/>
+
+                // Derudover vil alle koordinatsæt i userMarkerCoordinates blive vist som markører på kortet.
+                // For hver af markørerne vil metoden handleSelectMarker blive aktiveret ved onPress,
+                // hvorved selectedCoordinate og selectedAddres får en værdi og der udskrives data om den vaælgte markør
+
             }
+            {/* Først vises den nuværende lokation med en blå, genkendelig knap */}
+            <RenderCurrentLocation
+                props={{hasLocationPermission: hasLocationPermission, currentLocation1: currentLocation1}}/>
+
+            {/*Mapview er fremviser et kort, der viser brugerens lokation */}
             <MapView
+                // Kortstil
                 provider={'google'}
+                // Startpunkt
                 initialRegion={region}
                 style={styles.map}
-                //style={styles.map}
-
-
                 showsUserLocation
+                // Når man holder inde på kortet kaldes metoden, der skaber en "pin"
                 onLongPress={handleLongPress}
             >
-
+                {/* I Mapview vises en markør for den lokation, som region viser */}
                 <Marker
                     coordinate={region}
-                    // TODO Skal lige have tilføjet en slags zoom funktion, så man følger pin
                 >
+                    {
+                        /*
+                        Callout vil vise navnet på stedet man har trykket på fra Google-searchbar.
+                        Når man trykker på denne Callout, vil alertboksen dukke op med knapperne fra metoden buttons.
+                        */
+                    }
                     <Callout onPress={() => buttons()}>
                         <Text>{place.name}</Text>
                     </Callout>
-
                 </Marker>
 
-
+                {/* Vi kalder her en markør for når man holder fingeren inde på et sted på kortet */}
                 {userMarkerCoordinates.map((coordinate, index) => (
                     <Marker
                         coordinate={coordinate}
                         key={index.toString()}
-                        onPress={() => handleSelectMarker(coordinate)}
+
+                        // Et tryk på markøren printer bare "Action" i konsollen for at vise, at vi kunne have lavet
+                        // noget logik her
+                        onPress={() => console.log("Action")}
                     />
                 ))}
 
@@ -294,43 +293,10 @@ function Map() {
 
 //Lokal styling til brug i Map
 const styles = StyleSheet.create({
-    container: {
-        //flex: 1,
-        //justifyContent: 'center',
-        //paddingTop: Constants.statusBarHeight,
-        //backgroundColor: '#ecf0f1',
-        //padding: 8,
-    },
     map: {
         width: Dimensions.get("window").width,
         height: Dimensions.get("window").height,
     },
-    infoBox: {
-        height: 200,
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        right: 0,
-        backgroundColor: 'yellow',
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    infoText: {
-        fontSize: 15,
-    },
-    image: {
-        marginHorizontal: "10%",
-        marginTop: "5%",
-        marginBottom: "5%",
-        width: "80%",
-        height: "25%",
-    },
-    paragraph2: {
-        marginTop: '50%',
-        fontSize: 18,
-        fontWeight: 'bold',
-        textAlign: 'left',
-    }
 });
 
 //Eksport af Loginform, således denne kan importeres og benyttes i andre komponenter

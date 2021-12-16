@@ -80,6 +80,7 @@ const AddRating = () => {
             }
             <GooglePlacesAutocomplete
                 placeholder='Search'
+                // Minimumlængde på at komme med foreslag (viker ikke føler jeg)
                 minLenght={2}
                 autoFocus={false}
                 // Når vi sætter nedenstående til true, vil man kunne få Details med som kan bruges længere nede
@@ -122,7 +123,7 @@ const AddRating = () => {
                 }}
                 GooglePlacesSearchQuery={{
                     // Jeg synes ikke noget af det her virker, selvom jeg har prøvet at lege en del med det.
-                    rankby: 'distance',
+                    rankBy: 'distance',
                     type: 'restaurant,bar,cafe'
                 }}
                 GooglePlacesDetailsQuery={{
