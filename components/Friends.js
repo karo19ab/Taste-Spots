@@ -110,7 +110,7 @@ const Friends = () => {
                 >
                 </FlatList>
                 {/* Knap der viser de anmeldelser som personen du følger har anmeldt ved at kalde showFollowing() */}
-                <View style={{alignItems: 'center', marginTop: '5%'}}>
+                <View style={{alignItems: 'center', marginTop: '2%'}}>
                     <TouchableOpacity onPress={() => showFollowing()} style={GlobalStyles.generalButton}>
                         <Text>Vis dine fulgte venners anmeldelser</Text>
                     </TouchableOpacity>
@@ -119,7 +119,6 @@ const Friends = () => {
                     <TouchableOpacity onPress={() => clear()} style={{
                         borderWidth: 1,
                         borderRadius: 10,
-                        marginTop: '1.5%',
                         padding: 8,
                         justifyContent: 'center',
                         backgroundColor: '#fff',
@@ -187,7 +186,7 @@ const styles = StyleSheet.create({
     logoName: {
         fontSize: 25,
         color: "black",
-        marginTop: '15%',
+        marginTop: '5%',
         textAlign: 'center',
         fontWeight: 'bold',
     },
@@ -200,7 +199,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         flexDirection: 'row',
         fontWeight: "bold",
-        marginTop: "3%"
     },
     text2: {
         fontSize: 15,
